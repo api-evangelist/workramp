@@ -1,0 +1,38 @@
+name: WorkRamp API Rate Limits
+description: WorkRamp does not publicly disclose specific rate limit thresholds in
+  their API documentation. Clients should implement exponential backoff and handle
+  HTTP 429 Too Many Requests responses gracefully. Pagination is offset-based with
+  a default of 25 results per page and a maximum of 100 per page.
+url: https://developers.workramp.com/reference/getting-started
+created: '2026-06-13'
+modified: '2026-06-13'
+rateLimits:
+  - type: requests
+    description: Specific per-minute or per-hour rate limit thresholds are not published
+      by WorkRamp. HTTP 429 responses signal rate limit exhaustion.
+    limit: undisclosed
+    window: undisclosed
+    errorCode: 429
+    retryAfter: true
+    notes: Implement exponential backoff when receiving HTTP 429 responses
+pagination:
+  type: offset
+  parameters:
+    page: page number (integer, 1-indexed)
+    per_page: results per page
+  defaults:
+    per_page: 25
+  maximums:
+    per_page: 100
+headers:
+  - name: Authorization
+    required: true
+    description: Bearer token API key; format is "Bearer <api_key>"
+  - name: Content-Type
+    required: true
+    description: Must be "application/json" for POST and PUT requests
+recommendations:
+  - Implement exponential backoff for HTTP 429 responses
+  - Use pagination parameters (page, per_page) to retrieve large datasets in chunks
+  - Cache responses where appropriate to reduce API call volume
+  - Monitor for HTTP 429 responses and back off before retrying

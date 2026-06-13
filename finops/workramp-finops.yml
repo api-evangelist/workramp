@@ -1,0 +1,50 @@
+name: WorkRamp FinOps
+description: Financial operations guidance for WorkRamp API consumers. WorkRamp uses
+  an enterprise quote-based model with no public per-call API pricing. All API access
+  is bundled within platform subscription tiers. Cost optimization focuses on right-sizing
+  the subscription plan to actual learner seat counts and feature usage, and avoiding
+  overprovisionng of enterprise seats.
+url: https://www.workramp.com/workramp-pricing
+created: '2026-06-13'
+modified: '2026-06-13'
+costModel:
+  type: subscription-bundled
+  description: API access is included within the Enterprise subscription tier at no
+    additional per-call or consumption-based cost. There is no published pay-as-you-go
+    or API-only pricing.
+  billingCycle: annual
+  currency: USD
+  pricingPage: https://www.workramp.com/workramp-pricing
+costDrivers:
+  - name: Learner Seat Count
+    description: Primary cost driver; total price scales with the number of licensed
+      learner seats across employee and customer/partner clouds.
+    impact: high
+  - name: Plan Tier
+    description: Enterprise tiers include API access, advanced analytics, AI features,
+      and integrations unavailable on Professional tiers.
+    impact: high
+  - name: Cloud Type
+    description: Employee Learning Cloud and Customer Learning Cloud are priced separately;
+      organizations using both will negotiate combined contracts.
+    impact: medium
+  - name: Add-ons
+    description: Optional add-on features (e.g., additional content libraries, premium
+      support) can increase total contract value.
+    impact: low
+optimization:
+  - Audit active learner seats regularly and right-size the contract at renewal
+  - Evaluate whether Employee and Customer Learning Clouds can be consolidated for
+    a better bundle rate
+  - Use the API to automate user provisioning and deprovisioning via SCIM to prevent
+    paying for inactive seats
+  - Negotiate multi-year contracts for discounted annual rates
+  - Request a detailed feature-tier breakdown to avoid paying for Enterprise features
+    not being used
+estimates:
+  - tier: Professional (Customer Learning Cloud)
+    annualRange: '$20,000–$30,000'
+    notes: Estimated range; actual pricing requires a sales quote
+  - tier: Enterprise (Employee or Customer Learning Cloud)
+    annualRange: '$30,000–$75,000+'
+    notes: Scales significantly with seat count and add-ons; requires sales quote

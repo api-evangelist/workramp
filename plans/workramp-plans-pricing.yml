@@ -1,0 +1,56 @@
+name: WorkRamp Plans and Pricing
+description: WorkRamp uses a quote-based pricing model with no published list prices.
+  Plans are divided into Employee Learning Cloud and Customer Learning Cloud, each
+  with Professional and Enterprise tiers. API access and advanced integrations are
+  available on Enterprise tiers. Contracts typically start around $20,000–$30,000
+  annually for professional tiers and scale to $50,000+ for enterprise deployments.
+url: https://www.workramp.com/workramp-pricing
+created: '2026-06-13'
+modified: '2026-06-13'
+plans:
+  - name: Employee Learning Cloud - Enterprise
+    description: Advanced LMS capabilities for workforce learning at scale, including
+      AI-powered features, deeper analytics, integrations, and API access.
+    contact: https://www.workramp.com/workramp-pricing
+    pricingModel: custom-quote
+    features:
+      - Advanced LMS capabilities
+      - AI-powered learning recommendations
+      - HRIS integrations
+      - Advanced analytics and reporting
+      - API access (REST and SCIM)
+      - Custom branding
+      - Certification management
+      - SCORM support
+      - Dedicated support
+  - name: Customer Learning Cloud - Professional
+    description: Core functionality for customer, partner, and channel training with
+      built-in content creation and branded academies.
+    contact: https://www.workramp.com/workramp-pricing
+    pricingModel: custom-quote
+    features:
+      - Customer and partner training
+      - Built-in content authoring
+      - Branded academies
+      - Certification management
+      - Basic analytics
+  - name: Customer Learning Cloud - Enterprise
+    description: Advanced customer learning features including WorkRamp AI, deeper
+      analytics, customer integrations, expanded support, and full API access.
+    contact: https://www.workramp.com/workramp-pricing
+    pricingModel: custom-quote
+    features:
+      - WorkRamp AI
+      - Advanced analytics
+      - Customer integrations
+      - Full REST API access
+      - SCIM provisioning
+      - Webhooks
+      - Expanded support
+      - Custom branding
+notes:
+  - Pricing is not publicly listed; all plans require a custom quote via sales contact
+  - Annual contracts commonly start around $20,000–$30,000 for professional tiers
+  - Enterprise deployments typically scale to $50,000+ annually
+  - API access (REST and SCIM) is included with Enterprise plan tiers
+  - A free trial or demo can be requested via the pricing page
