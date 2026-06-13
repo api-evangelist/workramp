@@ -1,0 +1,68 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebAPI",
+  "name": "WorkRamp API",
+  "description": "REST API for managing users, learning content, certifications, SCORM courses, registrations, enrollments, segments, webhooks, and SCIM provisioning within the WorkRamp revenue enablement platform.",
+  "url": "https://developers.workramp.com/reference/getting-started",
+  "documentation": "https://developers.workramp.com/reference/getting-started",
+  "termsOfService": "https://www.workramp.com/",
+  "provider": {
+    "@type": "Organization",
+    "name": "WorkRamp",
+    "url": "https://www.workramp.com/"
+  },
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "https://app.workramp.com/api/v1"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://www.workramp.com/workramp-pricing"
+  },
+  "keywords": [
+    "Users",
+    "Learning",
+    "Certifications",
+    "SCORM",
+    "Registrations",
+    "Enrollments",
+    "Webhooks",
+    "SCIM",
+    "Academy",
+    "Segments",
+    "Guides",
+    "Paths",
+    "Competencies",
+    "Assessments",
+    "Coaching",
+    "Onboarding",
+    "Enterprise"
+  ],
+  "potentialAction": [
+    {
+      "@type": "Action",
+      "name": "Get All Users",
+      "target": "https://app.workramp.com/api/v1/users"
+    },
+    {
+      "@type": "Action",
+      "name": "List Certifications",
+      "target": "https://app.workramp.com/api/v1/certifications"
+    },
+    {
+      "@type": "Action",
+      "name": "Manage SCORM Courses",
+      "target": "https://app.workramp.com/api/v1/scorms"
+    },
+    {
+      "@type": "Action",
+      "name": "Manage Webhooks",
+      "target": "https://app.workramp.com/api/v1/webhooks"
+    },
+    {
+      "@type": "Action",
+      "name": "SCIM Provisioning",
+      "target": "https://app.workramp.com/api/v1/scim/v2"
+    }
+  ]
+}
