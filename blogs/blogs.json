@@ -24,7 +24,7 @@
     {
       "title": "The Future of Learning Management Systems in 2026",
       "url": "https://www.workramp.com/blog/the-future-of-learning-management-systems-in-2026",
-      "description": "LMS platforms will move beyond course management — a look at emerging trends and capabilities."
+      "description": "LMS platforms will move beyond course management \u2014 a look at emerging trends and capabilities."
     },
     {
       "title": "Best LMS for Customer Success Teams",
@@ -256,5 +256,17 @@
       "url": "https://www.workramp.com/blog/workramp-and-udemy-for-business-offer-an-end-to-end-learning-experience-for-the-enterprise",
       "description": "Partnership with Udemy for Business to deliver comprehensive enterprise learning experiences."
     }
-  ]
+  ],
+  "repo": "workramp",
+  "feeds": [
+    {
+      "source": "https://help.workramp.com/en/",
+      "feed_url": "https://help.workramp.com/en/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-06-14T20:42:17Z"
 }
