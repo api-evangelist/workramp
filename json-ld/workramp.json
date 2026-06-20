@@ -4,7 +4,7 @@
   "name": "WorkRamp",
   "description": "WorkRamp is a revenue enablement platform with a REST API for managing learning paths, assessments, competencies, coaching, and onboarding programs. The API supports enterprise user management, academy contact management, SCORM administration, certifications, registrations, webhooks, and SCIM provisioning for go-to-market teams.",
   "url": "https://www.workramp.com/",
-  "logo": "https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg",
+  "logo": "https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg",
   "sameAs": [
     "https://www.linkedin.com/company/workramp",
     "https://x.com/workramp"

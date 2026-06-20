@@ -5,7 +5,7 @@ description: WorkRamp is a revenue enablement platform with a REST API for manag
   API supports enterprise user management, academy contact management, SCORM administration,
   certifications, registrations, webhooks, and SCIM provisioning for go-to-market
   teams.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/workramp/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -28,7 +28,7 @@ apis:
     description: REST API for managing users, learning content, certifications, SCORM
       courses, registrations, enrollments, segments, webhooks, and SCIM provisioning
       within the WorkRamp revenue enablement platform.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://developers.workramp.com/reference/getting-started
     baseURL: https://app.workramp.com/api/v1
     tags:
