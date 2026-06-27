@@ -45,7 +45,7 @@ apis:
         url: https://developers.workramp.com/reference/getting-started
       - type: Authentication
         url: https://developers.workramp.com/reference/authentication
-      - type: Changelog
+      - type: ChangeLog
         url: https://developers.workramp.com/changelog
       - type: OpenAPI
         url: https://developers.workramp.com/llms.txt
@@ -62,7 +62,7 @@ common:
     url: https://help.workramp.com/en/
   - type: Blog
     url: https://www.workramp.com/blog
-  - type: Changelog
+  - type: ChangeLog
     url: https://developers.workramp.com/changelog
   - type: Status
     url: https://workramp.statuspage.io/
