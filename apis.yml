@@ -54,6 +54,10 @@ apis:
         url: https://help.workramp.com/en/
         email: support@workramp.com
 common:
+  - type: TrustCenter
+    url: security/workramp-trust-center.yml
+  - type: DomainSecurity
+    url: security/workramp-domain-security.yml
   - type: Website
     url: https://www.workramp.com/
   - type: Documentation
