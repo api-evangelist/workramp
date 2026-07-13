@@ -2,13 +2,14 @@
   "repo": "workramp",
   "feeds": [
     {
-      "source": "https://www.workramp.com/blog",
-      "feed_url": "",
+      "source": "https://help.workramp.com/en/",
+      "feed_url": "https://help.workramp.com/en/",
+      "title": "",
       "saved": 0,
-      "method": "agent-scrape"
+      "method": "none"
     }
   ],
-  "fetched": "2026-06-27T13:21:37Z",
+  "fetched": "2026-07-11T11:50:51Z",
   "post_count": 1,
-  "agent_pulled": "2026-06-27"
+  "agent_pulled": "2026-07-04"
 }
