@@ -3,13 +3,13 @@
   "feeds": [
     {
       "source": "https://help.workramp.com/en/",
-      "feed_url": "https://help.workramp.com/en/",
+      "feed_url": "https://help.workramp.com/en/feed.xml",
       "title": "",
-      "saved": 0,
-      "method": "none"
+      "saved": 1,
+      "method": "discovered"
     }
   ],
-  "fetched": "2026-07-11T11:50:51Z",
-  "post_count": 1,
+  "fetched": "2026-08-01T15:49:00Z",
+  "post_count": 2,
   "agent_pulled": "2026-07-04"
 }
