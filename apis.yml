@@ -1,26 +1,39 @@
 aid: workramp
 name: WorkRamp
-description: WorkRamp is a revenue enablement platform with a REST API for managing
-  learning paths, assessments, competencies, coaching, and onboarding programs. The
-  API supports enterprise user management, academy contact management, SCORM administration,
-  certifications, registrations, webhooks, and SCIM provisioning for go-to-market
-  teams.
+description: >-
+  WorkRamp is a revenue-enablement and learning platform now sold by Confirm as two products
+  — Learn:Up (the employee LMS, formerly WorkRamp) and Academy (customer and partner
+  training) — after Learning Pool rebranded as Confirm and consolidated WorkRamp, Confirm HR,
+  AI Sims and Elucidat under one Workforce Enablement System. The API is still served from
+  app.workramp.com and documented at developers.workramp.com as the "Confirm Learn:Up &
+  Academy API". It is a private REST API — access is granted per enterprise on request — and
+  covers users, groups, custom attributes, guides/courses, paths (training series),
+  challenges, SCORM courses and assignments, resources, events and event sessions, item
+  folders and libraries, the content catalog, Academy contacts, segments, trainings,
+  certifications, registrations and email domains, plus webhook subscriptions and SCIM 2.0
+  provisioning. Authentication is a static admin-scoped API key sent as a bearer token;
+  published rate limits are 3,000 calls/hour sustained with a 13,000 calls/hour burst, and EU
+  tenants call app.eu.workramp.com.
 accessModel:
   pricing: paid
-  onboarding: unknown
+  onboarding: sales
   trial: false
   try_now: false
   public: false
   label: Paid
-  confidence: medium
+  confidence: high
   source:
-  - plans
-  generated: '2026-07-22'
-  method: derived
+    - plans
+    - docs
+  generated: '2026-08-13'
+  method: searched
+  note: >-
+    "This is a private API. Contact support@workramp.com to see if you are eligible, and
+    request access." An enterprise account provisioned for Learn:Up is a prerequisite.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/workramp.png
 url: https://raw.githubusercontent.com/api-evangelist/workramp/refs/heads/main/apis.yml
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 type: Index
 tags:
@@ -34,12 +47,20 @@ tags:
   - Certifications
   - Coaching
   - Go-to-Market
+  - SCIM
+  - SCORM
+  - Webhooks
+  - Customer Education
 apis:
   - aid: workramp:workramp-api
     name: WorkRamp API
-    description: REST API for managing users, learning content, certifications, SCORM
-      courses, registrations, enrollments, segments, webhooks, and SCIM provisioning
-      within the WorkRamp revenue enablement platform.
+    description: >-
+      REST API for the Confirm Learn:Up and Academy platform (formerly WorkRamp): manage
+      users, groups and custom attributes, guides/courses, paths, challenges, SCORM courses
+      and assignments, resources, events and sessions, item folders, libraries and the
+      content catalog, plus Academy contacts, segments, trainings, certifications and
+      registrations, webhook subscriptions and SCIM 2.0 provisioning. 137 operations across
+      two published definitions, secured with an admin-scoped API key sent as a bearer token.
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://developers.workramp.com/reference/getting-started
     baseURL: https://app.workramp.com/api/v1
@@ -55,29 +76,75 @@ apis:
     properties:
       - type: Documentation
         url: https://developers.workramp.com/reference/getting-started
+      - type: APIReference
+        url: https://developers.workramp.com/reference/getting-started
+      - type: GettingStarted
+        url: https://developers.workramp.com/reference/getting-started
       - type: Authentication
-        url: https://developers.workramp.com/reference/authentication
+        url: https://developers.workramp.com/reference/basic-auth
       - type: ChangeLog
         url: https://developers.workramp.com/changelog
       - type: OpenAPI
-        url: https://developers.workramp.com/llms.txt
+        name: Confirm Learn:Up & Academy API — read and SCIM surface
+        url: openapi/workramp-api-settings-openapi.yml
+      - type: OpenAPI
+        name: Confirm Learn:Up & Academy API — write surface
+        url: openapi/workramp-json-api-openapi.yml
+      - type: Overlay
+        url: overlays/workramp-api-settings-overlay.yaml
+      - type: Overlay
+        url: overlays/workramp-json-api-overlay.yaml
     contact:
       - FN: WorkRamp Support
         url: https://help.workramp.com/en/
         email: support@workramp.com
 common:
+  - type: AgenticAccess
+    url: agentic-access/workramp-agentic-access.yml
+  - type: Authentication
+    url: authentication/workramp-authentication.yml
+  - type: Conventions
+    url: conventions/workramp-conventions.yml
+  - type: ErrorCatalog
+    url: errors/workramp-problem-types.yml
+  - type: DataModel
+    url: data-model/workramp-data-model.yml
+  - type: Conformance
+    url: conformance/workramp-conformance.yml
+  - type: Compliance
+    url: https://trust.confirm.com/
   - type: TrustCenter
     url: security/workramp-trust-center.yml
   - type: DomainSecurity
     url: security/workramp-domain-security.yml
+  - type: VulnerabilityDisclosure
+    url: security/workramp-vulnerability-disclosure.yml
+  - type: Security
+    url: https://www.confirm.com/policies/security
+  - type: Lifecycle
+    url: lifecycle/workramp-lifecycle.yml
+  - type: StatusPage
+    url: https://workramp.statuspage.io/
+  - type: Webhooks
+    url: asyncapi/workramp-webhooks.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/workramp-llms.txt
+  - type: Packages
+    url: packages/workramp-packages.yml
   - type: Website
     url: https://www.workramp.com/
+  - type: DeveloperPortal
+    url: https://developers.workramp.com/
   - type: Documentation
     url: https://developers.workramp.com/reference/getting-started
   - type: HelpCenter
     url: https://help.workramp.com/en/
+  - type: Support
+    url: https://help.workramp.com/en/collections/2493185-api
   - type: Blog
-    url: https://www.workramp.com/blog
+    url: https://www.confirm.com/blog
   - type: ChangeLog
     url: https://developers.workramp.com/changelog
   - type: Status
@@ -87,7 +154,17 @@ common:
   - type: X
     url: https://x.com/workramp
   - type: Pricing
-    url: https://www.workramp.com/workramp-pricing
+    url: https://www.confirm.com/scale-up/pricing
+  - type: SignUp
+    url: https://www.confirm.com/book-a-demo
+  - type: Login
+    url: https://app.workramp.com/login
+  - type: TermsOfService
+    url: https://www.confirm.com/terms-and-conditions
+  - type: PrivacyPolicy
+    url: https://www.confirm.com/policies/privacy-policy-us
+  - type: SLA
+    url: https://www.confirm.com/policies/tol-service-level-agreement
   - type: Plans
     url: plans/workramp-plans-pricing.yml
   - type: RateLimits
@@ -97,3 +174,25 @@ common:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-rebrand:
+  from: WorkRamp
+  to: Confirm
+  products:
+    - {was: 'WorkRamp (Employee Learning Cloud)', now: 'Learn:Up'}
+    - {was: 'WorkRamp (Customer Learning Cloud)', now: Academy}
+    - {was: Confirm HR, now: Perform}
+    - {was: AI Sims, now: Practice}
+    - {was: Elucidat, now: Create}
+  detail: >-
+    Learning Pool rebranded as Confirm and consolidated WorkRamp under it. www.workramp.com
+    301s to https://www.confirm.com/scale-up/products/learn-up and the status page is already
+    renamed "Confirm LearnUp and Academy", but the API itself is unmoved: host
+    app.workramp.com, portal developers.workramp.com, support support@workramp.com. The
+    developer portal H1 now reads "Confirm Learn:Up & Academy API". No migration notice has
+    been posted to the API changelog.
+  checked: '2026-08-13'
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1
