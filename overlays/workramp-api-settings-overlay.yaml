@@ -1,0 +1,72 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for WorkRamp (api-settings)
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: openapi/workramp-api-settings-openapi.yml
+  note: >-
+    The document this overlay extends was harvested verbatim from the provider's ReadMe
+    reference pages (see openapi/workramp-openapi-provenance.yml). This overlay carries the
+    API Evangelist annotations WITHOUT mutating that harvest. Nothing here changes a path,
+    a parameter or a response shape.
+extends: openapi/workramp-api-settings-openapi.yml
+actions:
+  - target: $.info
+    update:
+      title: Confirm Learn:Up & Academy API — read and SCIM surface
+      description: >-
+        Read (GET) surface of the WorkRamp API, sold by Confirm as Learn:Up (employee LMS) and Academy (customer and partner training), plus the SCIM 2.0 provisioning endpoints. Private API: contact support@workramp.com for eligibility.
+      contact:
+        name: WorkRamp Support (Confirm)
+        email: support@workramp.com
+        url: https://developers.workramp.com/reference/getting-started
+      termsOfService: https://www.confirm.com/terms-and-conditions
+      x-apievangelist-artifacts:
+        authentication: authentication/workramp-authentication.yml
+        conventions: conventions/workramp-conventions.yml
+        errors: errors/workramp-problem-types.yml
+        rate_limits: rate-limits/workramp-rate-limits.yml
+        lifecycle: lifecycle/workramp-lifecycle.yml
+        data_model: data-model/workramp-data-model.yml
+        webhooks: asyncapi/workramp-webhooks.yml
+        conformance: conformance/workramp-conformance.yml
+  - target: $.servers
+    update:
+      - url: https://app.workramp.com
+        description: Global (default)
+      - url: https://app.eu.workramp.com
+        description: >-
+          Europe. "If you are an EU customer, replace app.workramp.com with
+          app.eu.workramp.com in all API URLs" —
+          https://developers.workramp.com/reference/getting-started. The published
+          document declares only the global host.
+  - target: $.components.securitySchemes.sec0
+    update:
+      description: >-
+        Static API key issued by an admin on the in-app Integrations -> API page and sent as
+        `Authorization: Bearer <key>`. It is not an OAuth token: there are no scopes, no
+        expiry and no least-privilege restriction, and the key inherits every permission of
+        the admin user it is attached to.
+  - target: $.info
+    update:
+      x-apievangelist-rate-limits:
+        sustained: 3000 requests per hour
+        burst: 13000 requests per hour
+        exhaustion_status: 429
+        retry_after_header: false
+        source: https://developers.workramp.com/reference/getting-started
+      x-apievangelist-idempotency:
+        supported: false
+        note: No idempotency key header or parameter exists on any operation; POSTs are not safe to blind-retry.
+      x-apievangelist-timestamps:
+        primary: unix-epoch-milliseconds
+        secondary: iso-8601 on some endpoints, migration in progress
+        source: https://developers.workramp.com/reference/timestamps
+      x-apievangelist-quality:
+        untagged_operations: 81
+        operations: 81
+        components_schemas: 0
+        note: >-
+          No operation carries a tag and the document defines no components.schemas, so every request and response body is inline and nothing is reusable. Nine published paths are malformed as shipped (unbalanced braces, ':param' placeholders, a double slash, an embedded query string and a bare '/'). Recorded, not corrected.

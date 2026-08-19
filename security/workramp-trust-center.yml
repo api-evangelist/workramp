@@ -1,15 +1,78 @@
-generated: '2026-07-11'
+generated: '2026-08-13'
 method: searched
 probe: true
-source: https://trust.workramp.com/
-url: https://trust.workramp.com/
+source: https://trust.confirm.com/
+url: https://trust.confirm.com/
+platform: SafeBase
+note: >-
+  The trust center is served from confirm.com, not workramp.com, because WorkRamp is
+  now the Confirm "Learn:Up" and "Academy" products — Learning Pool rebranded as
+  Confirm and consolidated WorkRamp, Confirm HR, AI Sims and Elucidat under it, and
+  www.workramp.com 301s to https://www.confirm.com/scale-up/products/learn-up. The
+  legacy trust.workramp.com now returns 403.
 certifications:
-- SOC 2
-- ISO 27001
+  - SOC 2 Type 2
+  - ISO/IEC 27001:2022
+  - Cyber Essentials
+  - GDPR
+  - CCPA
+certification_evidence:
+  - name: ISO/IEC 27001:2022
+    detail: 'certificate number 188806'
+    url: https://info.confirm.com/hubfs/ISO27001%20Certificate%20-%20Learning%20Pool.pdf
+    source: https://www.confirm.com/policies/security
+  - name: Cyber Essentials
+    detail: 2026/27 certificate
+    url: https://info.confirm.com/hubfs/Cyber%20Essentials%202026_27.pdf
+    source: https://www.confirm.com/policies/security
+  - name: SOC 2 Type 2
+    detail: report available on request via the trust center / security team
+    source: https://trust.confirm.com/
+  - name: GDPR
+    source: https://trust.confirm.com/
+  - name: CCPA
+    source: https://trust.confirm.com/
+sections:
+  - Compliance
+  - Risk Profile
+  - Product Security
+  - Reports (Pentest Report, SOC 2 Report)
+  - Data Security
+  - App Security (Responsible Disclosure, Code Analysis, Credential Management)
+  - AI (AI Overview, AI Training Data and Bias, AI Security)
+  - Legal (Subprocessors, Data Processing Agreement)
+  - Data Privacy
+  - Infrastructure (Amazon Web Services, Anti-DDoS, BC/DR)
+  - Endpoint Security
+  - Network Security
+  - Corporate Security
+  - Policies
+practices:
+  penetration_testing: annual third-party penetration testing on all systems
+  encryption_in_transit: TLS 1.2 and above
+  password_storage: hashed
+  hosting: AWS (UK and US regions)
+  backups: 7 daily / 4 weekly / 12 monthly retention
+policy_documents:
+  - name: Information Security Policy
+    url: https://info.confirm.com/hubfs/Information-Security-Policy.pdf
+  - name: Security overview
+    url: https://www.confirm.com/policies/security
+  - name: Acceptable Use Policy
+    url: https://www.confirm.com/policies/acceptable-use-policy
+  - name: Fair Usage Policy
+    url: https://www.confirm.com/policies/fair-usage-policy
+  - name: Hosting Services Policy
+    url: https://www.confirm.com/policies/hosting-services-policy
+  - name: TOL Service Level Agreement
+    url: https://www.confirm.com/policies/tol-service-level-agreement
 evidence:
-- source: https://trust.workramp.com/
-  keywords:
-  - soc 2
-  - soc2
-  - iso 27001
-  - trust center
+  - source: https://trust.confirm.com/
+    http_status: 200
+    keywords: [trust center, soc 2, iso/iec 27001, gdpr, ccpa, responsible disclosure]
+  - source: https://www.confirm.com/policies/security
+    http_status: 200
+    keywords: [iso27001:2022, cyber essentials, soc2 type2, penetration testing]
+  - source: https://trust.workramp.com/
+    http_status: 403
+    keywords: [legacy trust center, superseded by trust.confirm.com]

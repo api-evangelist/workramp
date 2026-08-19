@@ -1,38 +1,79 @@
 name: WorkRamp API Rate Limits
-description: WorkRamp does not publicly disclose specific rate limit thresholds in
-  their API documentation. Clients should implement exponential backoff and handle
-  HTTP 429 Too Many Requests responses gracefully. Pagination is offset-based with
-  a default of 25 results per page and a maximum of 100 per page.
+description: >-
+  WorkRamp (Confirm Learn:Up & Academy) publishes two rate ceilings on its getting-started
+  page — a burst allowance of up to 13,000 API calls per hour and a sustained hourly rate of
+  up to 3,000 API calls per hour — and states that these apply only to the External API
+  endpoints documented in the API reference. Exhaustion returns HTTP 429 with a JSON body
+  of {"error": "Rate limited. See info at <docs url>"}. No RateLimit-* or Retry-After
+  response headers are declared in the contract or documented, so a client cannot read its
+  remaining budget at runtime; the only runtime signal is the 429 itself. Collection reads
+  are offset-paginated and the docs warn that failing to set `limit` can get a request
+  blocked by rate limiting.
+generated: '2026-08-13'
+method: searched
+source: https://developers.workramp.com/reference/getting-started
 url: https://developers.workramp.com/reference/getting-started
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
+limit_count: 2
 rateLimits:
-  - type: requests
-    description: Specific per-minute or per-hour rate limit thresholds are not published
-      by WorkRamp. HTTP 429 responses signal rate limit exhaustion.
-    limit: undisclosed
-    window: undisclosed
+  - type: burst
+    scope: per-enterprise API key
+    description: Burst rates up to 13,000 API calls / hour, as published on the getting-started page.
+    limit: 13000
+    unit: requests
+    window: 1 hour
     errorCode: 429
-    retryAfter: true
-    notes: Implement exponential backoff when receiving HTTP 429 responses
+    retryAfter: false
+    source: https://developers.workramp.com/reference/getting-started
+  - type: sustained
+    scope: per-enterprise API key
+    description: Hourly rate up to 3,000 API calls / hour, as published on the getting-started page.
+    limit: 3000
+    unit: requests
+    window: 1 hour
+    errorCode: 429
+    retryAfter: false
+    source: https://developers.workramp.com/reference/getting-started
+applies_to: >-
+  "API Call Rate Limits only apply to the External API endpoints found in our API
+  documentation." — https://developers.workramp.com/reference/getting-started
+exhaustion:
+  status: 429
+  body: '{"error": "Rate limited. See info at https://developers.workramp.com/reference/get-all-users-in-enterprise"}'
+  declared_in: openapi/workramp-api-settings-openapi.yml#get-all-users-in-enterprise
+response_headers:
+  documented: []
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After headers are documented, and none appear
+    in either harvested OpenAPI document. The 429 status and its JSON body are the only
+    runtime exhaustion signal.
 pagination:
   type: offset
   parameters:
-    page: page number (integer, 1-indexed)
-    per_page: results per page
-  defaults:
-    per_page: 25
-  maximums:
-    per_page: 100
+    page: Zero-indexed page of results, used together with `limit`.
+    limit: Number of results returned per page.
+  guidance: >-
+    "Best practice is to always set to 1 when querying for one user, or less than 100 when
+    doing batches" — failure to limit can result in the request being blocked by rate limiting.
+  source: openapi/workramp-api-settings-openapi.yml#get-all-users-in-enterprise
 headers:
   - name: Authorization
     required: true
-    description: Bearer token API key; format is "Bearer <api_key>"
+    description: 'Bearer token API key; format is "Bearer <api_key>"'
   - name: Content-Type
     required: true
-    description: Must be "application/json" for POST and PUT requests
+    description: Must be "application/json" for POST, PUT and PATCH requests
+regions:
+  - name: Global
+    host: https://app.workramp.com
+  - name: Europe
+    host: https://app.eu.workramp.com
+    note: >-
+      "If you are an EU customer, replace app.workramp.com with app.eu.workramp.com in all
+      API URLs." Limits are published once and are not stated per region.
 recommendations:
-  - Implement exponential backoff for HTTP 429 responses
-  - Use pagination parameters (page, per_page) to retrieve large datasets in chunks
-  - Cache responses where appropriate to reduce API call volume
-  - Monitor for HTTP 429 responses and back off before retrying
+  - Stay under 3,000 calls/hour sustained; treat 13,000/hour as a short burst ceiling only.
+  - Always set `limit` on collection endpoints — unlimited reads are explicitly called out as a blocking risk.
+  - Implement exponential backoff on 429; there is no Retry-After to read.
+  - Cache reference data (groups, content catalog, certifications) rather than re-reading it per job.

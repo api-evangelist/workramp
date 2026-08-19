@@ -1,0 +1,125 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.workramp.com/reference/getting-started
+derived_from:
+  - openapi/workramp-api-settings-openapi.yml
+  - openapi/workramp-json-api-openapi.yml
+docs:
+  getting_started: https://developers.workramp.com/reference/getting-started
+  authentication: https://developers.workramp.com/reference/basic-auth
+  timestamps: https://developers.workramp.com/reference/timestamps
+  webhooks: https://developers.workramp.com/reference/elc-webhooks-intro
+base_urls:
+  default: https://app.workramp.com
+  europe: https://app.eu.workramp.com
+  note: >-
+    "If you are an EU customer, replace app.workramp.com with app.eu.workramp.com in all API
+    URLs." Both harvested OpenAPI documents declare only the default host in servers[].
+authentication:
+  style: static API key sent as an HTTP bearer token
+  header: 'Authorization: Bearer <api_key>'
+  detail: authentication/workramp-authentication.yml
+content_type:
+  request: application/json
+  response: application/json
+  exception: 'POST /api/v1/instant_auth returns text/plain on 401'
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No idempotency key header, parameter or retry-safety contract appears anywhere in the
+    137 harvested operations or in the published documentation. Retrying a failed POST —
+    creating a user, an assignment or a webhook subscription — is not guaranteed safe, and
+    there is no documented dedupe window. Recorded as an ABSENCE; no Idempotency pointer is
+    emitted in apis.yml.
+  partial_mitigations:
+    - >-
+      Some writes are naturally upsert-shaped: Create Contact is documented as usable to
+      "ensure that the user has been created", and Set Custom Attributes for a User "adds or
+      updates".
+    - Bulk SCORM assignment create/delete endpoints exist, reducing per-item retry volume.
+pagination:
+  style: offset
+  parameters:
+    page: Zero-indexed page number, used with `limit`.
+    limit: Results per page.
+  legacy_parameters:
+    per_page: >-
+      Documented on some Academy endpoints; the Employee Learning Cloud read endpoints use
+      `limit`/`page`.
+  response_fields: none — collections are returned as bare JSON arrays or as a data array with no cursor or total
+  guidance: >-
+    Always set `limit`; the Get All Users parameter description warns that failure to limit
+    can get the request blocked by rate limiting. Pages beyond the result set return an empty array.
+  cursors: false
+filtering:
+  note: >-
+    Read endpoints expose ad-hoc query filters rather than a general filter grammar — e.g.
+    `email`, `includeDeleted` on Get All Users; name/email/email domain/status/custom
+    registration field filters on Get All Contacts, which combine with AND and always sort
+    by email ascending.
+  date_ranges: >-
+    Several endpoints take startTime/endTime (guide, path and SCORM assignments in a date
+    range; awarded certifications; registrations by_date_range).
+field_expansion:
+  supported: false
+  note: >-
+    No `expand`/`include`/sparse-fieldset parameter. A few endpoints ship a fatter twin
+    instead — Get All Users vs Get All Users (Including Attributes).
+metadata:
+  custom_attributes: >-
+    First-class. Users carry customAttributes[] ({id, apiName, value}) managed through
+    /api/v1/attributes/user/{UserID}; Academy contacts carry custom registration fields and
+    academy object attributes.
+timestamps:
+  primary_format: UNIX epoch milliseconds (integer)
+  example: 1488145254000
+  secondary_format: ISO 8601 on some endpoints
+  note: >-
+    "Some endpoints use the ISO8601 date format. Please check each endpoint that you use for
+    the specific formats of input and response. We are in the process of updating the API to
+    make ISO8601 timestamps accepted by all inputs." Mixed formats are a live migration, not
+    a stable contract.
+  source: https://developers.workramp.com/reference/timestamps
+request_tracing:
+  request_id_header: none documented
+  note: No correlation/request-id header is documented or declared in the contract.
+versioning:
+  scheme: uri-path
+  current: v1
+  path_prefix: /api/v1
+  scim_prefix: /scim/v2
+  header_versioning: false
+  note: >-
+    The path has been /api/v1 since the changelog began in 2022; there is no v2, no version
+    header, and no dated version train. See lifecycle/workramp-lifecycle.yml.
+error_envelope:
+  shapes:
+    - '{"error": "<message>"}'
+    - '{"type": "<slug>", "message": "<message>", "errors": [...]}'
+  rfc9457: false
+  detail: errors/workramp-problem-types.yml
+rate_limit_signaling:
+  headers: none
+  status: 429
+  body: '{"error": "Rate limited. See info at <docs url>"}'
+  published_limits: 13,000 calls/hour burst; 3,000 calls/hour sustained
+  detail: rate-limits/workramp-rate-limits.yml
+events:
+  webhooks: true
+  delivery: 'POST of the event payload to a subscriber-provided endpoint'
+  detail: asyncapi/workramp-webhooks.yml
+bulk:
+  endpoints:
+    - POST /api/v1/scorm_assignments/bulk_create
+    - POST /api/v1/scorm_assignments/bulk_delete
+    - POST /api/v1/academies/{academy_id}/segments/{segment_id}/add_users
+    - DELETE /api/v1/academies/{academy_id}/segments/{segment_id}/remove_users
+  note: Bulk is per-resource, not a general batch endpoint.
+method_conventions:
+  note: >-
+    Updates are inconsistent: the API uses POST for several updates (Update User, Update
+    Group, Update Assignment, Update Path Assignment) and PATCH for others (Update Contact,
+    Update SCORM Assignment, Update Webhook Subscription, SCIM Groups), and PUT only on
+    /api/v1/academies/{academy_id}/email_domains and SCIM Users. Clients cannot assume a
+    verb from the operation name.

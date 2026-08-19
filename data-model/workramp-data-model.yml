@@ -1,0 +1,211 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/workramp-api-settings-openapi.yml, openapi/workramp-json-api-openapi.yml
+docs: https://developers.workramp.com/reference/user-object
+note: >-
+  Derived from path structure, path parameters and id-bearing fields in the two harvested
+  OpenAPI documents, plus the published object reference pages. Neither definition uses
+  components.schemas — every body is an inline schema — so there is no reusable model in the
+  contract and this graph is reconstructed from naming, not from $ref links.
+tenancy:
+  root: Enterprise
+  note: >-
+    Everything hangs off an enterprise (the API key's tenant, surfaced as enterpriseId).
+    Within it the model forks into two product halves that do not share a URL namespace.
+domains:
+  - name: Employee Learning Cloud (Learn:Up)
+    prefix: /api/v1/<resource>
+    entities: [User, Group, Guide, Path, Challenge, SCORM, Resource, Event, EventSession, ItemFolder, Library, WebhookSubscription]
+  - name: Academy (customer/partner learning)
+    prefix: /api/v1/academies/{academy_id}/<resource>
+    entities: [Academy, Contact, Segment, Training, Path, Certification, Registration, Collection, Event, EventSession, AcademyObjectAttribute, EmailDomain, WebhookSubscription]
+    note: 50 of 117 distinct paths are nested under {academy_id}, making Academy the single heaviest parent in the model.
+  - name: Provisioning
+    prefix: /scim/v2/<resource>
+    entities: [ScimUser, ScimGroup]
+entities:
+  - name: User
+    domain: employee
+    id: user_id (also UserID, userId)
+    collection: /api/v1/users
+    docs: https://developers.workramp.com/reference/user-object
+    fields_observed: [id, name, email, isAdmin, isDeleted, isPermanentlyDeleted, createdAt, updatedAt, groups, customAttributes, userIdentifiers, managers, externalId]
+  - name: Group
+    domain: employee
+    id: GroupID / group_id
+    collection: /api/v1/groups
+  - name: CustomUserAttribute
+    domain: employee
+    id: apiName
+    collection: /api/v1/attributes/user/{UserID}
+  - name: Guide
+    domain: employee
+    aka: Course
+    id: GuideID / guideId / courseId
+    collection: /api/v1/guides
+  - name: GuideAssignment
+    domain: employee
+    id: GuideAssignmentID / courseUserAssignmentId
+    collection: /api/v1/guides/{GuideID}/assignments
+  - name: Path
+    domain: employee
+    aka: Training Series
+    id: path_id / trainingSeriesId
+    collection: /api/v1/paths
+  - name: PathAssignment
+    domain: employee
+    id: assignment_id / trainingSeriesUserAssignmentId
+    collection: /api/v1/paths/{path_id}/assignments
+  - name: Challenge
+    domain: employee
+    id: challenge_id / challengeId
+    collection: /api/v1/challenge/{challenge_id}
+  - name: ChallengeAssignment
+    domain: employee
+    id: challengeUserAssignmentId
+  - name: Scorm
+    domain: employee
+    id: scorm_id
+    collection: /api/v1/scorms
+  - name: ScormAssignment
+    domain: employee
+    id: assignment_id
+    collection: /api/v1/scorm_assignments/{assignment_id}
+  - name: Resource
+    domain: employee
+    collection: /api/v1//resources
+    note: 'Path is served with a double slash in the contract as published.'
+  - name: Event
+    domain: shared
+    id: event_id / EventID / trainingClassId
+    collection: /api/v1/events
+  - name: EventSession
+    domain: shared
+    id: session_id / event_session_id
+    collection: /api/v1/events/{EventID}/session
+    fields_observed: [start_time, end_time, zoomMeetingId]
+  - name: EventSessionAttendee
+    domain: shared
+    id: trainingClassSessionAttendeeId
+    collection: /api/v1/academies/{academy_id}/event_sessions/{event_session_id}/attendees
+  - name: ItemFolder
+    domain: employee
+    id: item_folder_id
+    collection: /api/v1/item_folders
+    fields_observed: [parent_item_folder_id]
+  - name: Library
+    domain: employee
+    aka: University
+    id: library_id
+    collection: /api/v1/universities
+  - name: ContentCatalog
+    domain: employee
+    collection: /api/v1/content_catalog
+  - name: Academy
+    domain: academy
+    id: academy_id
+    docs: https://developers.workramp.com/reference/academy-id
+  - name: Contact
+    domain: academy
+    id: contact_id
+    collection: /api/v1/academies/{academy_id}/users
+    note: Academy Contacts are a separate identity space from Employee Users.
+  - name: Segment
+    domain: academy
+    id: segment_id
+    note: Dynamic group of Academy contacts.
+  - name: Training
+    domain: academy
+    id: training_id
+    collection: /api/v1/academies/{academy_id}/trainings
+  - name: Certification
+    domain: academy
+    id: certification_id / cert_id
+    collection: /api/v1/academies/{academy_id}/certifications
+  - name: AwardedCertification
+    domain: academy
+    collection: /api/v1/academies/{academy_id}/awarded_certifications
+  - name: Registration
+    domain: academy
+    id: registration_id
+    collection: /api/v1/academies/{academy_id}/registrations
+  - name: Collection
+    domain: academy
+    id: collection_id
+    collection: /api/v1/academies/{academy_id}/collections
+  - name: AcademyObjectAttribute
+    domain: academy
+    collection: /api/v1/academies/{academy_id}/academy_object_attributes
+  - name: EmailDomain
+    domain: academy
+    collection: /api/v1/academies/{academy_id}/email_domains
+  - name: WebhookSubscription
+    domain: both
+    id: webhook_subscription_id / subscription_id
+    collection: /api/v1/webhook_subscriptions and /api/v1/academies/{academy_id}/webhook_subscriptions
+  - name: ResellerCustomer
+    domain: white-label
+    collection: /api/v1/reseller_customers
+    docs: https://developers.workramp.com/reference/white-label-customers
+  - name: ScimUser
+    domain: provisioning
+    collection: /scim/v2/Users
+  - name: ScimGroup
+    domain: provisioning
+    collection: /scim/v2/Groups
+relationships:
+  - {from: Enterprise, to: User, type: has_many, via: enterpriseId}
+  - {from: Enterprise, to: Academy, type: has_many, via: academy_id}
+  - {from: Enterprise, to: ResellerCustomer, type: has_many, via: '/api/v1/reseller_customers'}
+  - {from: User, to: Group, type: has_many, via: 'groups[]'}
+  - {from: Group, to: User, type: has_many, via: '/api/v1/groups/{GroupID}/users'}
+  - {from: User, to: CustomUserAttribute, type: has_many, via: 'customAttributes[]'}
+  - {from: User, to: User, type: has_many, via: 'managers[] (self-reference)'}
+  - {from: User, to: GuideAssignment, type: has_many, via: userId}
+  - {from: User, to: PathAssignment, type: has_many, via: userId}
+  - {from: User, to: ScormAssignment, type: has_many, via: userId}
+  - {from: User, to: ChallengeAssignment, type: has_many, via: userId}
+  - {from: User, to: Certification, type: has_many, via: '/api/v1/users/{user_id}/certifications'}
+  - {from: GuideAssignment, to: Guide, type: belongs_to, via: guideId}
+  - {from: GuideAssignment, to: User, type: belongs_to, via: userId}
+  - {from: GuideAssignment, to: User, type: belongs_to, via: 'assignerId (assigning admin)'}
+  - {from: PathAssignment, to: Path, type: belongs_to, via: trainingSeriesId}
+  - {from: PathAssignment, to: User, type: belongs_to, via: userId}
+  - {from: ScormAssignment, to: Scorm, type: belongs_to, via: scorm_id}
+  - {from: ChallengeAssignment, to: Challenge, type: belongs_to, via: challengeId}
+  - {from: Path, to: Guide, type: has_many, via: 'modules (numModules on the assignment)'}
+  - {from: ItemFolder, to: ItemFolder, type: has_many, via: parent_item_folder_id}
+  - {from: ItemFolder, to: Guide, type: has_many, via: contentId}
+  - {from: Library, to: ItemFolder, type: has_many, via: folder_id}
+  - {from: Event, to: EventSession, type: has_many, via: session_id}
+  - {from: EventSession, to: EventSessionAttendee, type: has_many, via: trainingClassSessionAttendeeId}
+  - {from: EventSessionAttendee, to: User, type: belongs_to, via: userId}
+  - {from: Academy, to: Contact, type: has_many, via: contact_id}
+  - {from: Academy, to: Segment, type: has_many, via: segment_id}
+  - {from: Academy, to: Training, type: has_many, via: training_id}
+  - {from: Academy, to: Path, type: has_many, via: path_id}
+  - {from: Academy, to: Certification, type: has_many, via: certification_id}
+  - {from: Academy, to: Collection, type: has_many, via: collection_id}
+  - {from: Academy, to: Registration, type: has_many, via: registration_id}
+  - {from: Academy, to: EmailDomain, type: has_many, via: '/email_domains'}
+  - {from: Academy, to: AcademyObjectAttribute, type: has_many, via: '/academy_object_attributes'}
+  - {from: Academy, to: WebhookSubscription, type: has_many, via: subscription_id}
+  - {from: Segment, to: Contact, type: has_many, via: 'add_users / remove_users'}
+  - {from: Contact, to: Registration, type: has_many, via: '/contacts/{contact_id}/registrations'}
+  - {from: Contact, to: Path, type: has_many, via: '/contacts/{contact_id}/paths'}
+  - {from: Contact, to: AwardedCertification, type: has_many, via: '/contacts/{contact_id}/certifications'}
+  - {from: Registration, to: Training, type: belongs_to, via: training_id}
+  - {from: WebhookSubscription, to: Event, type: subscribes_to, via: 'eventTypes[]'}
+identifiers:
+  style: mixed
+  note: >-
+    The API mixes integer ids (Users, Groups — e.g. user id 1) with UUID/ULID-style strings
+    (assignments, guides, paths, challenges — e.g. 0191fc31-c100-75ce-a928-26ceada9e14f). It
+    also mixes casing conventions in path parameters ({user_id} and {UserID}, {GuideID} and
+    {guideId}), which is a real interoperability hazard for generated clients.
+  prefixes: none
+render: null
+gaps:
+  - No components.schemas in either definition; nothing is reusable or $ref-able.
+  - Employee Users and Academy Contacts are distinct identity spaces with no documented join key.
+  - Same concept, three names — Guide/Course, Path/Training Series, Library/University.

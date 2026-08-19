@@ -1,0 +1,138 @@
+# WorkRamp API Documentation
+
+> WorkRamp API: The Most Effective Way To Train Your Teams
+
+## API Reference
+- [Confirm Learn:Up & Academy API](https://developers.workramp.com/reference/getting-started.md)
+- [Timestamps](https://developers.workramp.com/reference/timestamps.md)
+- [HTTP Bearer Token](https://developers.workramp.com/reference/basic-auth.md)
+- [User Object](https://developers.workramp.com/reference/user-object.md): Users include your company's employees and any internal contractors
+- [Get All Users](https://developers.workramp.com/reference/get-all-users-in-enterprise.md): Gets all users within the enterprise.  See also: <a href="/reference/get-all-users-attributes">Get All Users (Including Attributes)</a>
+- [Create User](https://developers.workramp.com/reference/create-user.md): Create a user within the enterprise
+- [Update User](https://developers.workramp.com/reference/update-user-1.md): Updates a user's attributes
+- [Delete User](https://developers.workramp.com/reference/delete-user.md): Delete an existing user
+- [Get all Groups](https://developers.workramp.com/reference/get-all-groups.md): Get all groups within the enterprise
+- [Create Group](https://developers.workramp.com/reference/create-group.md): Create a group in the enterprise
+- [Update Group](https://developers.workramp.com/reference/update-group.md): Update a group within the enterprise
+- [Assign a User to a Group](https://developers.workramp.com/reference/assign-a-user-to-a-group-1.md): Get all groups within the enterprise
+- [Get all User Assignments](https://developers.workramp.com/reference/get-all-user-assignments.md): For provided user_id, returns all Course, Training Series (Paths), Challenge, and SCORM assignments.
+- [Get All Users (Including Attributes)](https://developers.workramp.com/reference/get-all-users-attributes.md): This returns a list of all users, including built-in and custom attributes.  See also: <a href="/reference/get-all-users-in-enterprise">Get All Users</a>
+- [List a User's Custom Attributes](https://developers.workramp.com/reference/list-custom-user-attributes.md): List a user's custom attributes
+- [Set Custom Attributes for a User](https://developers.workramp.com/reference/add-custom-user-attributes.md): Adds or updates custom attributes for a user
+- [Delete a Custom Attribute from a User](https://developers.workramp.com/reference/delete-custom-user-attributes.md): Deletes one or more custom attribute values from a single user
+- [Get All Guides](https://developers.workramp.com/reference/get-all-guides.md)
+- [Assignment Object](https://developers.workramp.com/reference/assignment-object.md): An assignment is the relationship between a User and a Guide.
+- [Get All Guide Assignments in Date Range](https://developers.workramp.com/reference/get-guide-assignments-in-date-range.md)
+- [Get All Assignments/Guide (Deprecated)](https://developers.workramp.com/reference/get-all-assignments-for-a-guide.md): Get all assignment for a specified guide
+- [Create Assignment](https://developers.workramp.com/reference/create-assignment-2.md): Create an assignment for a given user
+- [Update Assignment](https://developers.workramp.com/reference/update-assignment.md): Update an assignment for a given user
+- [Delete Assignment](https://developers.workramp.com/reference/delete-assignment.md): Update an assignment for a user
+- [Get All Unique Guide Assignment Changes](https://developers.workramp.com/reference/get-all-unique-guide-assignment-changes.md)
+- [Get All Assignments for a Path](https://developers.workramp.com/reference/get-all-assignments-for-a-path.md): Get all assignments for a path
+- [Get All Path Assignments in Date Range](https://developers.workramp.com/reference/get-path-assignments-in-date-range.md)
+- [Get Path Assignment by ID](https://developers.workramp.com/reference/get-path-assignment.md): Get a specific path user assignment
+- [Create Path Assignment](https://developers.workramp.com/reference/create-path-assignment.md): Create an assignment for a given user
+- [Update Path Assignment](https://developers.workramp.com/reference/update-assignment-1.md): Update a specific assignment
+- [Delete Path Assignment](https://developers.workramp.com/reference/delete-assignment-1.md): Delete a specific assignment
+- [Get All Events](https://developers.workramp.com/reference/get-all-events.md): Get all events in an enterprise
+- [Get Event Session](https://developers.workramp.com/reference/get-event-session.md): Get a specific session in an event
+- [Create Event](https://developers.workramp.com/reference/create-event.md): Create an event (parent event for all sessions)
+- [Create Event Session](https://developers.workramp.com/reference/create-event-session.md): Create a session within an event
+- [Invite Users to Event Session](https://developers.workramp.com/reference/invite-user-to-event-session.md): Create an event registration for an array of users
+- [Get All Resources](https://developers.workramp.com/reference/get-all-resources.md): Get all resources in an enterprise
+- [SCIM: Create User](https://developers.workramp.com/reference/scim-create-user.md)
+- [Get All Libraries](https://developers.workramp.com/reference/libraries-get-all.md): Get all libraries
+- [Get Library](https://developers.workramp.com/reference/libraries-get-single.md): Get a specific library
+- [Edit Library](https://developers.workramp.com/reference/libraries-edit.md): Edit a specific library
+- [Get All Item Folders](https://developers.workramp.com/reference/item-folders-get-all.md): Get all item folders with their children (sub-folders)
+- [Create Item Folder](https://developers.workramp.com/reference/item-folders-create.md): Create a new item folder
+- [Edit Item Folder](https://developers.workramp.com/reference/item-folders-edit.md): Edit a single item folder
+- [Delete Item Folder](https://developers.workramp.com/reference/item-folders-delete.md): Delete a single item folder
+- [Get All SCORM Courses](https://developers.workramp.com/reference/get-all-scorms.md): Gets all SCORM in an enterprise
+- [Get All SCORM Assignments in Date Range](https://developers.workramp.com/reference/get-scorm-assignments-in-date-range.md)
+- [Get All Assignments for a SCORM Course](https://developers.workramp.com/reference/get-scorm-assignments.md): Gets all user assignments for a specific SCORM.  Note: Only Employee Learning Cloud assignments are returned - Academy assignments have a separate endpoint.
+- [Copy SCORM](https://developers.workramp.com/reference/scorm-copy.md): Copy a SCORM to another item folder
+- [Update SCORM Assignment](https://developers.workramp.com/reference/scorm-assignment-update.md): Update a single SCORM assignment
+- [Delete SCORM Assignment](https://developers.workramp.com/reference/scorm-assignment-delete.md): Delete a single SCORM assignment
+- [Bulk Create SCORM Assignments](https://developers.workramp.com/reference/scorm-assignment-create-bulk.md): Create one or more SCORM assignments
+- [Bulk Delete SCORM Assignments](https://developers.workramp.com/reference/scorm-assignment-delete-bulk.md): Delete one or more SCORM assignments
+- [Get all Users for a Challenge](https://developers.workramp.com/reference/get-challenge-assignments.md): Get all the users assigned to a specific challenge
+- [Get Content Catalog](https://developers.workramp.com/reference/get-content-catalog.md): Get your content catalog (a collection of all content in your WorkRamp instance)
+- [Introduction to Webhooks](https://developers.workramp.com/reference/elc-webhooks-intro.md)
+- [Challenge Assignment](https://developers.workramp.com/reference/elc-webhooks-challenge-assignment.md): `assignmentCreated.challenge`/`assignmentCompleted.challenge`/`assignmentProgress.challenge` / `assignmentDeleted.challenge` / `assignmentDeleted.challenge` webhook events
+- [Course/Guide Assignment](https://developers.workramp.com/reference/elc-webhooks-guide-assignment.md): `assignmentCreated.guide`/`assignmentCompleted.guide`/`assignmentProgress.guide` / `assignmentDeleted.guide`  webhook events
+- [Path/Training Series Assignment](https://developers.workramp.com/reference/elc-webhooks-training-series-assignment.md): `assignmentCreated.path`/`assignmentCompleted.path`/ `assignmentDeleted.path` webhook events
+- [Resource Assignment](https://developers.workramp.com/reference/elc-webhooks-resource-assignment.md): `assignmentCreated.resource`/`assignmentCompleted.resource` / `assignmentDeleted.resource` webhook events
+- [SCORM Assignment](https://developers.workramp.com/reference/elc-webhooks-scorm-assignment.md): `assignmentCreated.scorm`/`assignmentCompleted.scorm`/`assignmentProgress.scorm` / `assignmentDeleted.scorm` webhook events
+- [Event Session Attendee](https://developers.workramp.com/reference/elc-webhooks-event-attendee.md): `eventSession.attendee.created`/`eventSession.attendee.deleted`/`eventSession.attendee.statusChanged` webhook events
+- [The User object](https://developers.workramp.com/reference/user-object-1.md)
+- [Get All Webhook Subscriptions](https://developers.workramp.com/reference/elc-webhooks-get-all.md): Get all Webhook Subscriptions.
+- [Get Webhook Subscription](https://developers.workramp.com/reference/elc-webhooks-get.md): Get a specific Webhook Subscription.
+- [Create Webhook Subscription](https://developers.workramp.com/reference/elc-webhooks-create.md): Create a Webhook Subscription.
+- [Update Webhook Subscription](https://developers.workramp.com/reference/elc-webhooks-update.md): Update a Webhook Subscription.
+- [Delete Webhook Subscription](https://developers.workramp.com/reference/elc-webhooks-delete.md): Delete a Webhook Subscription.
+- [White Label Customers](https://developers.workramp.com/reference/white-label-customers.md): Retrieve all customer enterprises associated with your enterprise
+- [Locate your Academy ID](https://developers.workramp.com/reference/academy-id.md): How to find your Academy ID in WorkRamp
+- [Get All Contacts](https://developers.workramp.com/reference/get-academy-customer-users.md): Get all Contacts in an Academy. Results can be filtered by name, email, email domain, status, and custom registration fields. All filters combine with AND. By default, both Active and Deactivated Contacts are returned, including Contacts with a pending invitation. Results are always sorted by email, ascending.
+- [Get Contact](https://developers.workramp.com/reference/get-user.md): Get a specific Contact in an Academy
+- [Invite Contacts](https://developers.workramp.com/reference/invite-users.md): Invite Contacts to an Academy
+- [Create Contact](https://developers.workramp.com/reference/create-contact.md): Creates a new contact in your Academy. You can create a contact with a password, or, if you use SSO or another login mechanism, you can just use this to ensure that the user has been created, for instance, if you want to add them to a segment before they first visit the site.
+- [Update Contact](https://developers.workramp.com/reference/update-academy-user.md): Updates any of a Academy Contact's default or custom attributes using a JSON dictionary
+- [Delete Contact](https://developers.workramp.com/reference/delete-academy-user.md): Soft-delete/deactivate an Academy Contact
+- [Add Contacts to Segment](https://developers.workramp.com/reference/add-users-to-segment.md): Add Contacts to an Academy Segment
+- [Remove Contacts from Segment](https://developers.workramp.com/reference/remove-users-from-segment.md): Remove Contacts from Academy Segment
+- [Assign Segments](https://developers.workramp.com/reference/assign-segments.md): Add Contacts to an Academy Segment
+- [What are Trainings, Registrations and Enrollments?](https://developers.workramp.com/reference/what-are-trainings-and-registrations.md)
+- [By Contact](https://developers.workramp.com/reference/by-contact.md)
+- [Get All Registrations for a Contact](https://developers.workramp.com/reference/get-all-registrations-for-a-contact.md): Get all Guide/Resource/SCORM registrations for a contact
+- [Get all Paths for a Contact](https://developers.workramp.com/reference/get-all-paths-for-a-contact.md)
+- [Get All Awarded Certifications For a Contact](https://developers.workramp.com/reference/get-all-awarded-certifications-for-a-user.md)
+- [Get All Certifications for a Contact](https://developers.workramp.com/reference/get-all-certifications-for-a-contact.md): This includes all Cert enrollments. If you only want ones where the user completed and passed all the requirements and was awarded the certificate, please see **Get All Awarded Certifications For a Contact**.
+- [Assign Trainings](https://developers.workramp.com/reference/assign-trainings.md): Assign trainings to Academy Contacts (Guides, Resources, SCORM)
+- [Assign Certificates](https://developers.workramp.com/reference/assign-certificates.md): Assign certificates to Academy Contacts
+- [Assign Paths](https://developers.workramp.com/reference/assign-paths.md): Assign paths to Academy Contacts
+- [Get Registration by Contact ID & Registration ID](https://developers.workramp.com/reference/get-all-registrations-for-a-user-1.md): Fetch a specific Academy registration by ID for a given Contact ID. NOTE: If you have the Registration ID, you don't need this. You could just use the **Get Registration by ID** endpoint.
+- [By Learning Object](https://developers.workramp.com/reference/by-learning-object.md)
+- [Get All Registrations for a Training](https://developers.workramp.com/reference/get-all-registrations-for-a-training.md)
+- [Get All Enrollments for a Certification](https://developers.workramp.com/reference/get-certification.md)
+- [Get All Enrollments for a Path](https://developers.workramp.com/reference/get-all-enrollments-for-a-path.md)
+- [Bulk Endpoints](https://developers.workramp.com/reference/bulk-endpoints.md)
+- [Get All Registrations](https://developers.workramp.com/reference/get-all-registrations.md)
+- [Get All Awarded Certifications](https://developers.workramp.com/reference/get-all-awarded-certifications.md)
+- [Get All Completed Path Enrollments](https://developers.workramp.com/reference/get-all-paths-1.md)
+- [Delete Registration (Unassign)](https://developers.workramp.com/reference/delete-registration-unassign.md): Soft-delete/unassign a registration for an academy training module
+- [Deprecated Get All Registrations for a Contact](https://developers.workramp.com/reference/get-all-registrations-for-a-user.md): Fetch all Academy registrations for a given Contact id. Please consider moving to the non-deprecated endpoint: **Get All Registrations for a Contact**
+- [Update Registration (Mark Complete)](https://developers.workramp.com/reference/update-registration.md)
+- [Get Registration by ID](https://developers.workramp.com/reference/get-registration.md)
+- [What are Trainings?](https://developers.workramp.com/reference/what-are-trainings.md)
+- [Get All Trainings](https://developers.workramp.com/reference/get-all-trainings.md)
+- [Get Training](https://developers.workramp.com/reference/get-training.md): This endpoint is for getting the details of a particular Guide, Resource, or SCORM course when you know its ID.
+- [Search for Trainings](https://developers.workramp.com/reference/search-for-trainings.md)
+- [Get All Offered Paths](https://developers.workramp.com/reference/get-all-paths-academy.md): This endpoint is for getting all the paths available to learners in your academy.
+- [Get All Offered Certifications](https://developers.workramp.com/reference/get-all-certifications-2.md): This endpoint is for getting all the certifications offered in your academy. If you are looking to get information about learners -- their awarded certifications, see **Get All Awarded Certifications For a Contact** or **Get All Awarded Certifications**.
+- [Get All Offered Collections](https://developers.workramp.com/reference/get-all-offered-collections.md): This endpoint is for getting all the Collections offered in your academy.
+- [Get Collection](https://developers.workramp.com/reference/get-collection.md): This endpoint is for getting detailed information for a specific Collection in your Academy. The response will include information about each piece of content within the Collection.
+- [Get Path](https://developers.workramp.com/reference/get-path.md): This endpoint is for getting detailed information for a specific Path in your Academy. The response will include information about each piece of content within the Path.
+- [Get Certification](https://developers.workramp.com/reference/get-certification-1.md): This endpoint is for getting detailed information for a specific Certification in your Academy. The response will include information about each piece of content within the Certification.
+- [Get All Events](https://developers.workramp.com/reference/get-all-academy-events.md)
+- [Get Sessions For Event](https://developers.workramp.com/reference/get-all-event-sessions.md)
+- [Get Attendees For Event](https://developers.workramp.com/reference/get-attendees-for-event.md)
+- [Get Attendees for Event Session](https://developers.workramp.com/reference/get-attendees-for-event-session.md)
+- [Update Allowed Email Domains](https://developers.workramp.com/reference/update-allowed-email-domains.md): Updates the list of allowed email domains that users can use to register. This endpoint overwrites the list, if you need to add or remove individual domains use the POST or DELETE endpoints. Send an empty list to remove all existing domains.
+- [Remove Allowed Email Domain](https://developers.workramp.com/reference/remove-allowed-email-domain.md): Remove email domains from the existing list that only allows registration from specific email address domains
+- [Get Allowed Email Domains](https://developers.workramp.com/reference/get-allowed-email-domains.md): Returns the list of allowed email domains that users can use to register in the Academy.
+- [Add Allowed Email Domain](https://developers.workramp.com/reference/add-allowed-email-domain.md): Adds email domains to existing list to only allow registration from specific email address domains
+- [Introduction to Webhooks](https://developers.workramp.com/reference/introduction-to-webhooks.md)
+- [Webhook Subscription](https://developers.workramp.com/reference/webhook-subscription.md)
+
+## Changelog
+- [Enhancements to Events](https://developers.workramp.com/changelog/enhancements-to-events.md)
+- [Enhancements to Academy Assign Endpoints](https://developers.workramp.com/changelog/enhancements-to-academy-assign-endpoints.md)
+- [New API endpoint for updating custom attributes on an Academy Contact](https://developers.workramp.com/changelog/asdf.md)
+- [Get All SCORMs for Enterprise](https://developers.workramp.com/changelog/get-all-scorms-for-enterprise.md)
+- [Enhancements to Events and Event Sessions](https://developers.workramp.com/changelog/enhancements-to-events-and-event-sessions.md)
+- [Academy Webhook Subscriptions](https://developers.workramp.com/changelog/academy-webhook-subscriptions.md)
+- [Improvements to User related APIs](https://developers.workramp.com/changelog/improvements-to-user-related-apis.md)
+- [Academy Segment APIs](https://developers.workramp.com/changelog/academy-segment-apis.md)
+- [Added Resources Endpoint](https://developers.workramp.com/changelog/added-resources-endpoint.md)
+- [Added Endpoint for Challenge Assignments](https://developers.workramp.com/changelog/added-endpoint-for-challenge-assignments.md)

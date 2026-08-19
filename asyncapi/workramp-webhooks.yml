@@ -1,0 +1,153 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.workramp.com/reference/elc-webhooks-intro
+spec_type: none
+asyncapi_published: false
+note: >-
+  WorkRamp publishes no AsyncAPI, CloudEvents or event-schema document. It does publish a
+  real, documented webhook surface with a named event catalog, per-event payload field
+  tables and self-service subscription management endpoints, so this artifact captures the
+  webhook catalog verbatim from the docs and from the two harvested OpenAPI documents. No
+  event was invented.
+docs:
+  intro: https://developers.workramp.com/reference/elc-webhooks-intro
+  user_object: https://developers.workramp.com/reference/user-object-1
+transport:
+  protocol: https
+  delivery: >-
+    WorkRamp POSTs the event payload to a subscriber-provided endpoint when the event
+    occurs. Subscription URLs must be HTTPS.
+  content_type: application/json
+  signature: none documented
+  secret: none documented
+  retries: not documented
+  ordering: not documented
+  replay: not documented
+subscription_management:
+  employee_learning_cloud:
+    list: GET /api/v1/webhook_subscriptions
+    get: GET /api/v1/webhook_subscriptions/{webhook_subscription_id}
+    create: POST /api/v1/webhook_subscriptions
+    update: PATCH /api/v1/webhook_subscriptions/{webhook_subscription_id}
+    delete: DELETE /api/v1/webhook_subscriptions/{webhook_subscription_id}
+    create_body: {name: string, url: 'https endpoint', eventTypes: [string]}
+    source: openapi/workramp-json-api-openapi.yml
+  academy:
+    list: GET /api/v1/academies/{academy_id}/webhook_subscriptions
+    get: GET /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}
+    create: POST /api/v1/academies/{academy_id}/webhook_subscriptions
+    update: PATCH /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}
+    delete: DELETE /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}
+    create_body: {webhookName: string, url: 'https endpoint', eventTypes: [string]}
+    source: openapi/workramp-json-api-openapi.yml
+common_payload:
+  fields:
+    - {name: eventType, type: string, description: type of the event}
+    - {name: timestamp, type: integer, description: UNIX epoch milliseconds when the event occurred}
+    - {name: user, type: object, description: 'the user this event is for (id, name, email, isAdmin, isDeleted, isPermanentlyDeleted, createdAt, updatedAt, groups[], customAttributes[], userIdentifiers[], managers[])'}
+  note: Every event carries these three fields; the resource and its assignment object are added per event family.
+event_count: 20
+events:
+  - name: assignmentCreated.challenge
+    family: challenge-assignment
+    description: A Challenge assignment has been created for a user.
+    payload: [eventType, timestamp, user, challenge, challengeAssignment]
+    docs: https://developers.workramp.com/reference/elc-webhooks-challenge-assignment
+  - name: assignmentCompleted.challenge
+    family: challenge-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-challenge-assignment
+  - name: assignmentProgress.challenge
+    family: challenge-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-challenge-assignment
+  - name: assignmentDeleted.challenge
+    family: challenge-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-challenge-assignment
+  - name: assignmentCreated.guide
+    family: guide-assignment
+    description: A Course/Guide assignment has been created for a user.
+    payload: [eventType, timestamp, user, guide, guideAssignment]
+    docs: https://developers.workramp.com/reference/elc-webhooks-guide-assignment
+  - name: assignmentCompleted.guide
+    family: guide-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-guide-assignment
+  - name: assignmentProgress.guide
+    family: guide-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-guide-assignment
+  - name: assignmentDeleted.guide
+    family: guide-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-guide-assignment
+  - name: assignmentCreated.path
+    family: path-assignment
+    description: A Path / Training Series assignment has been created for a user.
+    payload: [eventType, timestamp, user, path, pathAssignment, assignmentCompletionUserReportUrl]
+    docs: https://developers.workramp.com/reference/elc-webhooks-training-series-assignment
+  - name: assignmentCompleted.path
+    family: path-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-training-series-assignment
+  - name: assignmentDeleted.path
+    family: path-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-training-series-assignment
+  - name: assignmentCreated.resource
+    family: resource-assignment
+    payload: [eventType, timestamp, user, resource, resourceAssignment]
+    docs: https://developers.workramp.com/reference/elc-webhooks-resource-assignment
+  - name: assignmentCompleted.resource
+    family: resource-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-resource-assignment
+  - name: assignmentDeleted.resource
+    family: resource-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-resource-assignment
+  - name: assignmentCreated.scorm
+    family: scorm-assignment
+    payload: [eventType, timestamp, user, scorm, scormAssignment]
+    docs: https://developers.workramp.com/reference/elc-webhooks-scorm-assignment
+  - name: assignmentCompleted.scorm
+    family: scorm-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-scorm-assignment
+  - name: assignmentProgress.scorm
+    family: scorm-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-scorm-assignment
+  - name: assignmentDeleted.scorm
+    family: scorm-assignment
+    docs: https://developers.workramp.com/reference/elc-webhooks-scorm-assignment
+  - name: eventSession.attendee.created
+    family: event-session-attendee
+    docs: https://developers.workramp.com/reference/elc-webhooks-event-attendee
+  - name: eventSession.attendee.statusChanged
+    family: event-session-attendee
+    docs: https://developers.workramp.com/reference/elc-webhooks-event-attendee
+  - name: eventSession.attendee.deleted
+    family: event-session-attendee
+    docs: https://developers.workramp.com/reference/elc-webhooks-event-attendee
+  - name: userCreated
+    family: user
+    description: A user has been created.
+    payload: [eventType, timestamp, user]
+    docs: https://developers.workramp.com/reference/elc-webhooks-intro
+  - name: userDeleted
+    family: user
+    description: A user has been deleted.
+    payload: [eventType, timestamp, user]
+    docs: https://developers.workramp.com/reference/elc-webhooks-intro
+payload_objects:
+  challengeAssignment:
+    fields: [id, challengeId, calculatedGrade, completionPercentage, numDaysOverdue, status, isCompleted, isCompletedOnTime, isFullyGraded, isOverdue, isPartiallyGraded, passed, completedAt, createdAt, dueDate, firstViewedAt, lastViewedAt, reviewersDueDate, updatedAt]
+    status_enum: [not_started, in_progress, overdue, needs_grading, completed, failed]
+  pathAssignment:
+    fields: [id, assignedFrom, assignerId, completionPercentage, numModules, numModulesCompleted, numModulesFailed, numModulesGraded, overallGrade, status, timeSpent, isArchived, isBulkCompleting, isCompleted, isFailed, isPassed, isSubmittedOnTime, completedAt, createdAt, dueDate, expiresAt]
+    status_enum: [assigned, not_started, in_progress, overdue, needs_grading, completed, failed]
+  resourceAssignment:
+    fields: [id, isCompleted, completedAt, createdAt, updatedAt]
+  guide:
+    fields: [id, displayTitle, timeEstimateSeconds]
+  path:
+    fields: [id, displayTitle, totalTimeEstimate]
+  challenge:
+    fields: [id, displayTitle]
+  resource:
+    fields: [id, displayTitle]
+gaps:
+  - No AsyncAPI or machine-readable event schema — the catalog is prose tables only.
+  - No signature, HMAC secret or verification scheme is documented for inbound deliveries.
+  - No retry policy, delivery guarantee, ordering guarantee or replay endpoint documented.
+  - No webhook test/ping endpoint.

@@ -1,0 +1,88 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/workramp-api-settings-openapi.yml, openapi/workramp-json-api-openapi.yml
+docs: https://developers.workramp.com/reference/getting-started
+note: >-
+  Standards assertions derived from the harvested OpenAPI documents and the published docs,
+  plus the compliance programme published on the Confirm trust center. Every `conforms: true`
+  carries the evidence it was read from.
+standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: >-
+      Both definitions declare openapi 3.1.0. They are server-rendered by the provider's
+      ReadMe portal rather than offered as a download — the raw
+      /branches/1.0/apis/*.json endpoints return 403 to anonymous callers.
+  - id: scim-2.0
+    conforms: partial
+    evidence: >-
+      /scim/v2/Users, /scim/v2/Users/{id}, /scim/v2/Groups and /scim/v2/Groups/{id} are
+      implemented with SCIM path and verb shapes (GET/POST/PUT on Users, GET/POST/PATCH/DELETE
+      on Groups). No /scim/v2/ServiceProviderConfig, /Schemas or /ResourceTypes discovery
+      endpoint is published, and the provider's own validator flags that the Groups POST
+      `members` array has no items schema — so it is a SCIM-shaped provisioning surface, not
+      a discoverable SCIM 2.0 service provider.
+  - id: scorm
+    conforms: true
+    evidence: >-
+      First-class SCORM course and SCORM assignment resources (/api/v1/scorms,
+      /api/v1/scorm_assignments/*, bulk create/delete, SCORM webhook events). SCORM is the
+      learning-content packaging standard the platform administers.
+  - id: oauth2
+    conforms: false
+    evidence: No oauth2 securityScheme in either definition and no OAuth documented; auth is a static admin-scoped API key.
+  - id: oidc
+    conforms: false
+    evidence: No /.well-known/openid-configuration on any host (404 — see well-known/workramp-well-known.yml).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors are proprietary JSON ({"error":...} or {"type","message"}); no application/problem+json anywhere.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on app.workramp.com, developers.workramp.com and www.confirm.com.
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No Sunset or Deprecation header support; deprecated endpoints are marked in page titles only.
+  - id: rfc6749-bearer-token
+    conforms: partial
+    evidence: >-
+      Credentials travel as `Authorization: Bearer <key>` (RFC 6750 shape) but the credential
+      is a static API key, not an OAuth 2.0 access token — the contract itself declares the
+      scheme as apiKey-in-header with x-bearer-format bearer.
+  - id: json-api
+    conforms: false
+    evidence: Plain JSON; no JSON:API media type, no top-level data/errors envelope contract.
+  - id: asyncapi
+    conforms: false
+    evidence: Webhook catalog is documented in prose only; no AsyncAPI document. See asyncapi/workramp-webhooks.yml.
+  - id: idempotency-key
+    conforms: false
+    evidence: No idempotency key header or parameter in any of the 137 operations.
+  - id: rfc9110-pagination
+    conforms: partial
+    evidence: Offset pagination via `page` + `limit`; no Link headers, no cursors, no total counts.
+  - id: iso8601-timestamps
+    conforms: partial
+    evidence: >-
+      Primary format is UNIX epoch milliseconds; the provider states some endpoints use ISO
+      8601 and that migrating all inputs to accept ISO 8601 is in progress.
+  - id: tls-1.2-plus
+    conforms: true
+    evidence: >-
+      "All communication between our servers and your browser is secured using the Transport
+      Layer Security (TLS) standard", TLS 1.2 and above — https://www.confirm.com/policies/security.
+      Live probe of app.workramp.com negotiates TLSv1.3.
+compliance_programme:
+  published: true
+  url: https://trust.confirm.com/
+  certifications:
+    - {name: 'ISO/IEC 27001:2022', detail: 'certificate 188806', url: 'https://info.confirm.com/hubfs/ISO27001%20Certificate%20-%20Learning%20Pool.pdf'}
+    - {name: 'SOC 2 Type 2', detail: 'report on request'}
+    - {name: 'Cyber Essentials', detail: '2026/27', url: 'https://info.confirm.com/hubfs/Cyber%20Essentials%202026_27.pdf'}
+    - {name: GDPR}
+    - {name: CCPA}
+  detail: security/workramp-trust-center.yml
+summary:
+  conforms: 3
+  partial: 4
+  does_not_conform: 8

@@ -1,0 +1,74 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  Registry searches of npm, PyPI, RubyGems, crates.io and the GitHub API, plus the
+  WorkRamp / Confirm developer documentation.
+package_count: 0
+official_package_count: 0
+packages: []
+note: >-
+  WorkRamp (Confirm Learn:Up & Academy) publishes NO first-party client libraries in any
+  language. This is a verified absence, not an unchecked field — no SDKs pointer is emitted
+  in apis.yml. The getting-started page's only tooling recommendation is to "download and
+  use the free Postman application", which is a third-party HTTP client, not a WorkRamp SDK.
+searched:
+  - registry: npm
+    query: https://registry.npmjs.org/-/v1/search?text=workramp
+    result: 0 packages
+    checked: '2026-08-13'
+  - registry: pypi
+    query: https://pypi.org/pypi/workramp/json
+    result: 404
+    checked: '2026-08-13'
+  - registry: rubygems
+    query: https://rubygems.org/api/v1/gems/workramp.json
+    result: 404
+    checked: '2026-08-13'
+  - registry: github
+    query: https://api.github.com/orgs/workramp/repos
+    result: >-
+      The workramp GitHub organization exists (id 49545180) but publishes zero public
+      repositories, so there is no source-code surface either.
+    checked: '2026-08-13'
+  - registry: docs
+    query: https://developers.workramp.com/llms.txt
+    result: No SDK, client-library or code-sample page appears in the 138-entry documentation index.
+    checked: '2026-08-13'
+third_party:
+  note: >-
+    Recorded for completeness only. None of these are first-party and none carry an
+    official:true flag or an apis.yml pointer.
+  entries:
+    - name: msdanyg/workramp-mcp
+      kind: community MCP server
+      url: https://github.com/msdanyg/workramp-mcp
+      registry: github
+      official: false
+      version: null
+      published: null
+      note: 'Self-described "MCP server for the WorkRamp LMS API — 30 tools"; unaffiliated, not published to npm.'
+    - name: bengoodmanlp/workramp-mcp-oauth
+      kind: community design pack
+      url: https://github.com/bengoodmanlp/workramp-mcp-oauth
+      registry: github
+      official: false
+      version: null
+      published: null
+    - name: Pathlight/tap-workramp
+      kind: community Singer tap
+      url: https://github.com/Pathlight/tap-workramp
+      registry: github
+      official: false
+      version: null
+      published: null
+      note: Not published to PyPI.
+    - name: Zapier MCP - WorkRamp
+      kind: hosted third-party MCP bridge
+      url: https://zapier.com/mcp/workramp
+      registry: null
+      official: false
+      version: null
+      published: null
+      note: >-
+        Zapier generates a per-user MCP endpoint over its own WorkRamp integration. It is
+        Zapier's product, not WorkRamp's, and is not counted as a WorkRamp MCP server.

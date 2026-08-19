@@ -1,0 +1,89 @@
+generated: '2026-08-13'
+method: searched
+source: openapi/workramp-api-settings-openapi.yml, openapi/workramp-json-api-openapi.yml
+docs: https://developers.workramp.com/reference/basic-auth
+key_management_docs: https://help.workramp.com/en/articles/9574489-api-key-management
+summary:
+  types:
+    - apiKey
+  api_key_in:
+    - header
+  oauth2_flows: []
+  oauth: false
+  openid_connect: false
+  mtls: false
+schemes:
+  - name: sec0
+    type: apiKey
+    in: header
+    parameter: Authorization
+    format: 'Bearer <api_key>'
+    sources:
+      - openapi/workramp-api-settings-openapi.yml
+      - openapi/workramp-json-api-openapi.yml
+    note: >-
+      Declared in the contract as apiKey-in-header with x-bearer-format "bearer", i.e. the
+      key is sent as `Authorization: Bearer <key>` even though it is a static API key and
+      not an OAuth token.
+example: |
+  curl https://app.workramp.com/api/v1/users \
+    -H "Authorization: Bearer YOUR_API_KEY_HERE"
+key_model:
+  issuance: >-
+    Any admin generates keys on the in-app Integrations page -> API
+    (https://<subdomain>.app.workramp.com/admin/integrations/access-token). A description
+    documenting the key's intended use is required at creation.
+  ownership: >-
+    Every key belongs to a specific user, who must be an admin. Actions taken with the key
+    are attributed to that user — assign a training with a key and the assigner is the key
+    owner.
+  scopes: none
+  permission_model: >-
+    Inherited from the owning admin user. There is no scope, role or least-privilege
+    surface: the docs state plainly that "anyone with your API token is able to read any
+    information, including private user information, and to make any changes in your
+    organization's Learn:Up account."
+  cardinality: unlimited keys per admin or service account
+  service_accounts: >-
+    Recommended pattern — create a dedicated non-human admin ("Automation Account") to own
+    integration keys, because a key stops working when its owning user is deactivated.
+  visibility: >-
+    Shown once at creation. Once the modal is dismissed the key cannot be viewed or copied
+    again in WorkRamp.
+  rotation: Keys can be refreshed (regenerated) or deleted from the admin key table at any time.
+  revocation: Immediate on delete; an automated email goes to the key owner on create, refresh or delete.
+  expiry: none published
+  prefix: none published
+  scoping_across_clouds: One key works for both the Employee Learning Cloud and the Customer Learning Cloud.
+provisioning:
+  scim:
+    version: '2.0'
+    endpoints:
+      - /scim/v2/Users
+      - /scim/v2/Users/{id}
+      - /scim/v2/Groups
+      - /scim/v2/Groups/{id}
+    source: openapi/workramp-api-settings-openapi.yml
+    auth: same Authorization bearer API key as the REST API
+  sso:
+    supported: true
+    note: >-
+      SSO/SCIM identities surface on the user object as userIdentifiers with namespace
+      "sso_scim"; the API also exposes /api/v1/instant_auth and
+      /api/v1/academies/{academy_id}/instant_auth_request for signing a known user straight
+      into a session.
+access_gate:
+  public: false
+  statement: >-
+    "This is a private API. Contact support@workramp.com to see if you are eligible, and
+    request access." An enterprise account provisioned for Learn:Up is a prerequisite.
+  source: https://developers.workramp.com/reference/getting-started
+regions:
+  - host: https://app.workramp.com
+    default: true
+  - host: https://app.eu.workramp.com
+    note: EU customers substitute this host in all API URLs; the auth model is identical.
+gaps:
+  - No OAuth 2.0 or OpenID Connect for third-party app authorization — only long-lived admin-scoped API keys.
+  - No scopes, no least-privilege key restriction, no key expiry.
+  - Key compromise is a full-tenant compromise; the docs say so explicitly.

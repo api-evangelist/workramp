@@ -1,0 +1,26 @@
+generated: '2026-08-13'
+method: generated
+source: openapi/workramp-api-settings-openapi.yml, openapi/workramp-json-api-openapi.yml
+note: >-
+  WorkRamp publishes no AGENTS.md and no provider-authored agent skills — the documentation
+  index at developers.workramp.com/llms.txt contains no agent, MCP or skill page. These four
+  are generated from the harvested OpenAPI documents and the captured conventions/errors/
+  rate-limit artifacts. Every operationId referenced was verified to exist verbatim in the
+  spec.
+skills:
+  - file: workramp-onboard-employee-and-assign-learning.md
+    name: Onboard an employee and assign learning
+    api: openapi/workramp-json-api-openapi.yml
+    operations: [create-user, get-all-users-in-enterprise, create-group, assign-a-user-to-a-group-1, add-custom-user-attributes, create-path-assignment, create-assignment-2, get-all-user-assignments]
+  - file: workramp-enroll-academy-contact-in-certification.md
+    name: Enroll an Academy contact in a certification
+    api: openapi/workramp-json-api-openapi.yml
+    operations: [get-academy-customer-users, create-contact, invite-users, update-academy-user, add-users-to-segment, get-all-certifications-2, assign-certificates, assign-paths, get-all-registrations]
+  - file: workramp-subscribe-to-assignment-webhooks.md
+    name: Subscribe to assignment webhooks and reconcile completions
+    api: openapi/workramp-json-api-openapi.yml
+    operations: [elc-webhooks-get-all, elc-webhooks-create, elc-webhooks-get, elc-webhooks-update, elc-webhooks-delete, get-guide-assignments-in-date-range, get-path-assignments-in-date-range, get-scorm-assignments-in-date-range]
+  - file: workramp-scim-provisioning-and-deprovisioning.md
+    name: Provision and deprovision users with SCIM
+    api: openapi/workramp-api-settings-openapi.yml
+    operations: [scim-create-user, scim-get-all-users, scim-get-user, scim-update-user, scim-get-all-groups, scim-create-group, scim-get-group, scim-patch-group, scim-delete-group, get-all-users-in-enterprise, delete-user]

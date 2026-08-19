@@ -1,0 +1,67 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on every WorkRamp / Confirm host in apis.yml
+note: >-
+  Every /.well-known/ path probed returned 404 or a soft-200. The marketing host
+  www.workramp.com now 301s the entire site (including every /.well-known/* path)
+  to https://www.confirm.com/scale-up/products/learn-up following the WorkRamp ->
+  Confirm "Learn:Up" rebrand, so a 200 there is the marketing SPA catch-all, not a
+  document. No WellKnown or SecurityTxt pointer is emitted from this probe — this
+  file records a verified ABSENCE.
+hosts:
+  - host: https://app.workramp.com
+    role: API base host
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://developers.workramp.com
+    role: developer portal (ReadMe)
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+  - host: https://www.workramp.com
+    role: legacy marketing host (now redirects to confirm.com)
+    documents:
+      - path: /.well-known/security.txt
+        status: 301
+        redirects_to: https://www.confirm.com/scale-up/products/learn-up
+        final_status: 200
+        soft_404: true
+        note: SPA catch-all returns the same 150KB marketing HTML for every path; not a document.
+      - path: /.well-known/agent-card.json
+        status: 301
+        soft_404: true
+      - path: /.well-known/agent.json
+        status: 301
+        soft_404: true
+  - host: https://www.confirm.com
+    role: current corporate/marketing host
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /llms.txt
+        status: 404
+summary:
+  documents_found: 0
+  security_txt: false
+  openid_configuration: false
+  oauth_authorization_server: false
+  api_catalog: false
+  agent_card: false
+  pointer_emitted: false

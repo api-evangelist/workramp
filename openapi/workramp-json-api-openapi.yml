@@ -1,0 +1,4841 @@
+openapi: 3.1.0
+info:
+  title: json-api
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+security:
+- sec0: []
+paths:
+  /api/v1/users:
+    post:
+      summary: Create User
+      description: Create a user within the enterprise
+      operationId: create-user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                managers:
+                  type: array
+                  description: Array of user ids to associate as a manager
+                  items:
+                    type: integer
+                    format: int32
+                groups:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                isAdmin:
+                  type: boolean
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 5065,\n  \"name\": \"Jane Doe\",\n  \"email\": \"ted+apitester1234@workramp.com\"\
+                    ,\n  \"isAdmin\": false,\n  \"isDeleted\": false,\n  \"createdAt\": 1488144236206.5808,\n\
+                    \  \"updatedAt\": 1488144236206.5808,\n  \"mentors\": [\n    {\n      \"id\": 69,\n\
+                    \      \"name\": \"Ted Blosser\",\n      \"email\": \"ted@workramp.com\",\n      \"\
+                    isAdmin\": true,\n      \"createdAt\": 1429851794143.246,\n      \"updatedAt\": 1487379136689.895\n\
+                    \    }\n  ],\n  \"groups\": [\n    {\n      \"id\": 185,\n      \"enterpriseId\":\
+                    \ 23,\n      \"name\": \"NA Interns\",\n      \"createdAt\": 1463354276004.189,\n\
+                    \      \"updatedAt\": 1463354276004.189\n    },\n    {\n      \"id\": 186,\n     \
+                    \ \"enterpriseId\": 23,\n      \"name\": \"Risk Interns\",\n      \"createdAt\": 1463354276027.895,\n\
+                    \      \"updatedAt\": 1463354276027.895\n    }\n  ]\n}\n"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 5065
+                    default: 0
+                  name:
+                    type: string
+                    example: Jane Doe
+                  email:
+                    type: string
+                    example: ted+apitester1234@workramp.com
+                  isAdmin:
+                    type: boolean
+                    example: false
+                    default: true
+                  isDeleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  mentors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 69
+                          default: 0
+                        name:
+                          type: string
+                          example: Ted Blosser
+                        email:
+                          type: string
+                          example: ted@workramp.com
+                        isAdmin:
+                          type: boolean
+                          example: true
+                          default: true
+                        createdAt:
+                          type: number
+                          example: 1429851794143.246
+                          default: 0
+                        updatedAt:
+                          type: number
+                          example: 1487379136689.895
+                          default: 0
+                  groups:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 185
+                          default: 0
+                        enterpriseId:
+                          type: integer
+                          example: 23
+                          default: 0
+                        name:
+                          type: string
+                          example: NA Interns
+                        createdAt:
+                          type: number
+                          example: 1463354276004.189
+                          default: 0
+                        updatedAt:
+                          type: number
+                          example: 1463354276004.189
+                          default: 0
+      deprecated: false
+  /api/v1/users/{user_id}:
+    post:
+      summary: Update User
+      description: Updates a user's attributes
+      operationId: update-user-1
+      parameters:
+      - name: user_id
+        in: path
+        description: ID of user to update
+        schema:
+          type: integer
+          format: int32
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: '[Optional]'
+                name:
+                  type: string
+                  description: '[Optional]'
+                isAdmin:
+                  type: boolean
+                  description: '[Optional]'
+                isDeleted:
+                  type: boolean
+                  description: '[Optional]'
+                managerEmails:
+                  type: array
+                  description: '[Optional] Array of existing manager emails.'
+                  items:
+                    type: string
+                overwriteManagerEmails:
+                  type: boolean
+                  description: '[Optional] If set to true, user''s managers will be exactly what `managerEmails`
+                    is set to. Having an empty array for `mangerEmails` while this is true will delete
+                    all managers of the user.'
+                custom_attributes:
+                  type: object
+                  description: '[Optional] An object that represents all custom attributes the user should
+                    have. This will OVERWRITE the existing custom attributes and be set exactly as the
+                    object that is passed in.'
+                  properties:
+                    key:
+                      type: string
+                      description: API key for this custom attribute
+                    value:
+                      type: string
+                      description: Value to set this custom attribute to
+                update_custom_attributes:
+                  type: object
+                  description: '[Optional] Create/update custom attributes for this user without deleting
+                    the existing values first. Use this INSTEAD OF custom_attributes!'
+                  properties:
+                    key:
+                      type: string
+                      description: API key for this custom attribute
+                    value:
+                      type: string
+                      description: Value to set this custom attribute to
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 5065,\n  \"name\": \"Jane Doe\",\n  \"email\": \"ted+apitester1234@workramp.com\"\
+                    ,\n  \"isAdmin\": false,\n  \"isDeleted\": false,\n  \"isPermanentlyDeleted\": false,\n\
+                    \  \"createdAt\": 1488144236206.5808,\n  \"updatedAt\": 1488144236206.5808,\n  \"\
+                    mentors\": [\n    {\n      \"id\": 7,\n      \"name\": \"John Doe\",\n      \"email\"\
+                    : \"jdoe@workramp.com\",\n      \"isAdmin\": false,\n      \"isDeleted\": false,\n\
+                    \      \"isPermanentlyDeleted\": false,\n      \"createdAt\": 1564692110394,\n   \
+                    \   \"updatedAt\": 1589355546681\n    },\n    {\n      \"id\": 4,\n      \"name\"\
+                    : \"John Smith\",\n      \"email\": \"jsmith@workramp.com\",\n      \"isAdmin\": false,\n\
+                    \      \"isDeleted\": false,\n      \"isPermanentlyDeleted\": false,\n      \"createdAt\"\
+                    : 1564692048130,\n      \"updatedAt\": 1589359593434\n    }\n  ],\n  \"mentorsViaGroups\"\
+                    : []\n}\n"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 5065
+                    default: 0
+                  name:
+                    type: string
+                    example: Jane Doe
+                  email:
+                    type: string
+                    example: ted+apitester1234@workramp.com
+                  isAdmin:
+                    type: boolean
+                    example: false
+                    default: true
+                  isDeleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  isPermanentlyDeleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  mentors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 7
+                          default: 0
+                        name:
+                          type: string
+                          example: John Doe
+                        email:
+                          type: string
+                          example: jdoe@workramp.com
+                        isAdmin:
+                          type: boolean
+                          example: false
+                          default: true
+                        isDeleted:
+                          type: boolean
+                          example: false
+                          default: true
+                        isPermanentlyDeleted:
+                          type: boolean
+                          example: false
+                          default: true
+                        createdAt:
+                          type: integer
+                          example: 1564692110394
+                          default: 0
+                        updatedAt:
+                          type: integer
+                          example: 1589355546681
+                          default: 0
+                  mentorsViaGroups:
+                    type: array
+      deprecated: false
+  /api/v1/groups:
+    post:
+      summary: Create Group
+      description: Create a group in the enterprise
+      operationId: create-group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 123,\n  \"enterpriseId\": 123,\n  \"name\": \"Marketing\",\n  \"\
+                    originalName\": \"Marketing\",\n  \"hasManagers\": false,\n  \"fromSso\": false,\n\
+                    \  \"groupAutomationsCount\": 0,\n  \"activeGroupAutomationsCount\": 0,\n  \"description\"\
+                    : \"Optional Group description\",\n  \"createdAt\": 1592977736126,\n  \"updatedAt\"\
+                    : 1592977736126\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                    default: 0
+                  enterpriseId:
+                    type: integer
+                    example: 123
+                    default: 0
+                  name:
+                    type: string
+                    example: Marketing
+                  originalName:
+                    type: string
+                    example: Marketing
+                  hasManagers:
+                    type: boolean
+                    example: false
+                    default: true
+                  fromSso:
+                    type: boolean
+                    example: false
+                    default: true
+                  groupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  activeGroupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  description:
+                    type: string
+                    example: Optional Group description
+                  createdAt:
+                    type: integer
+                    example: 1592977736126
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1592977736126
+                    default: 0
+      deprecated: false
+  /api/v1/groups/{GroupID}:
+    post:
+      summary: Update Group
+      description: Update a group within the enterprise
+      operationId: update-group
+      parameters:
+      - name: GroupID
+        in: path
+        description: ID of group to be modified
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 283,\n  \"name\": \"Marketing US\",\n  \"createdAt\": 1866832522351.831,\n\
+                    \  \"updatedAt\": 1866832522351.834,\n  \"id\": 123,\n  \"enterpriseId\": 123,\n \
+                    \ \"name\": \"Marketing US\",\n  \"originalName\": \"Marketing US\",\n  \"hasManagers\"\
+                    : false,\n  \"fromSso\": false,\n  \"groupAutomationsCount\": 0,\n  \"activeGroupAutomationsCount\"\
+                    : 0,\n  \"description\": \"Marketing US Description\",\n  \"createdAt\": 1592978265537,\n\
+                    \  \"updatedAt\": 1592978395038\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                    default: 0
+                  name:
+                    type: string
+                    example: Marketing US
+                  createdAt:
+                    type: integer
+                    example: 1592978265537
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1592978395038
+                    default: 0
+                  enterpriseId:
+                    type: integer
+                    example: 123
+                    default: 0
+                  originalName:
+                    type: string
+                    example: Marketing US
+                  hasManagers:
+                    type: boolean
+                    example: false
+                    default: true
+                  fromSso:
+                    type: boolean
+                    example: false
+                    default: true
+                  groupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  activeGroupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  description:
+                    type: string
+                    example: Marketing US Description
+      deprecated: false
+  /api/v1/groups/{GroupID}/users:
+    post:
+      summary: Assign a User to a Group
+      description: Get all groups within the enterprise
+      operationId: assign-a-user-to-a-group-1
+      parameters:
+      - name: GroupID
+        in: path
+        description: The group id to add user to
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: integer
+                  description: id of the user you want to assign to a group
+                  format: int32
+                startDate:
+                  type: string
+                  description: Unix time in milliseconds representing the start date of the user. This
+                    date is used to calculate the due date when assigning guides/series through group
+                    automations
+                  default: Optional
+                  format: date-time
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: 'true
+
+                    '
+              schema:
+                type: boolean
+                example: true
+                default: true
+      deprecated: false
+  /api/v1/instant_auth:
+    post:
+      summary: Instant Auth
+      description: Create instant login URLs for your employees
+      operationId: elc-instant-auth
+      parameters:
+      - name: Content-Type
+        in: header
+        description: application/json
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  description: Email address of the user
+                redirect_to:
+                  type: string
+                  description: A relative WorkRamp URL to redirect the user to after login
+                name:
+                  type: string
+                  description: Full name of the user
+                isAdmin:
+                  type: boolean
+                  description: Is the user an admin?
+                  default: false
+                isManager:
+                  type: boolean
+                  description: Is the user a manager?
+                  default: false
+                customAttributes:
+                  type: object
+                  description: A mapping of api_name->value for custom attributes to set for the user
+                  properties:
+                    key:
+                      type: string
+                      description: API key for this custom attribute
+                    value:
+                      type: string
+                      description: Value to set this custom attribute to
+                groups:
+                  type: array
+                  description: IDs of groups that the user should be added to
+                  items:
+                    type: integer
+                    format: int32
+                managers:
+                  type: array
+                  description: IDs of managers that the user should be managed by
+                  items:
+                    type: integer
+                    format: int32
+                managerEmails:
+                  type: array
+                  description: Email addresses of managers that the user should be managed by (managers
+                    takes precedence)
+                  items:
+                    type: string
+                managerNames:
+                  type: array
+                  description: Names of managers that the user should be managed by (managers and manager_emails
+                    take precedence)
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"url\": \"https://random-example.app.workramp.com/instant-login/1234567890abcdef\"\
+                    \n}"
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://random-example.app.workramp.com/instant-login/1234567890abcdef
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/attributes/user/{UserID}:
+    post:
+      summary: Set Custom Attributes for a User
+      description: Adds or updates custom attributes for a user
+      operationId: add-custom-user-attributes
+      parameters:
+      - name: UserID
+        in: path
+        description: ID to set attributes for
+        schema:
+          type: integer
+          format: int32
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attributes:
+                  type: string
+                  description: Key `attributes` is required and is a dictionary of your attribute 'api
+                    names' → value
+                  default: '{}'
+                  format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: 'true'
+              schema:
+                type: boolean
+                example: true
+                default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Bad Date Format:
+                  value: '{"type":"bad_request","message":"Date format not accepted, please try a different
+                    format."}'
+                User not found:
+                  value: '"user with id 12345 not found"'
+                Nonexistent Attribute:
+                  value: '{ "errors": "''example'' is not a custom attribute on ''user'' of id ''12345''"'
+              schema:
+                oneOf:
+                - title: Bad Date Format
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      example: bad_request
+                    message:
+                      type: string
+                      example: Date format not accepted, please try a different format.
+                - title: User not found
+                  type: string
+                  example: user with id 12345 not found
+      deprecated: false
+    delete:
+      summary: Delete a Custom Attribute from a User
+      description: Deletes one or more custom attribute values from a single user
+      operationId: delete-custom-user-attributes
+      parameters:
+      - name: UserID
+        in: path
+        description: The user id to clear the attributes for
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attributes:
+                  type: array
+                  description: An array of custom attributes (their API names) to delete.
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: 'true'
+              schema:
+                type: boolean
+                example: true
+                default: true
+      deprecated: false
+  /api/v1/assignments/guide:
+    get:
+      summary: Get All Guide Assignments in Date Range
+      description: ''
+      operationId: get-guide-assignments-in-date-range
+      parameters:
+      - name: start_time
+        in: query
+        description: The minimum created/updated timestamp. This should be an ISO 8601 date/time.
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: The maximum created/updated timestamp. This should be an ISO8601 date/time.
+        schema:
+          type: string
+      - name: due_date
+        in: query
+        description: ISO8601 date or datetime to filter on assignment due date
+        schema:
+          type: string
+      - name: guide_id
+        in: query
+        description: A specific guide to limit the results to. - If `guide_id` is not provided it will
+          return _all_ Guide assignments created or updated within the date range.
+        schema:
+          type: string
+      - name: include_deleted
+        in: query
+        description: Optional - if you want to also retrieve assignments which have been deleted, pass
+          true. Use the is_deleted field in the response to detect these.
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: Page of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of results to return per page (1-200)
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    page: 1
+                    per_page: 4
+                    has_more: true
+                    item_count: 4
+                    url: /api/v1/assignments/guide
+                    data:
+                      assignments:
+                      - user:
+                          id: 197
+                          name: Lydia Rodarte-Quayle
+                          email: admin@example.com
+                          is_admin: true
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544548827
+                          updated_at: 1756425850000
+                          groups:
+                          - id: 19
+                            name: Excellent Veterinary Doctors
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Teaching 520
+                          id: 01910fa7-f395-7e65-8e29-01eb2b62db13
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544553802
+                          due_date: 1722976553000
+                          esignatures: []
+                          id: 01910fa7-ff4a-765b-ae6d-01352b956ed2
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: 5
+                          updated_at: 1741385699378
+                      - user:
+                          id: 202
+                          name: Gustavo Fring
+                          email: gustavo.fring5@example.com
+                          is_admin: false
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544548855
+                          updated_at: 1722544549245
+                          groups:
+                          - id: 19
+                            name: Excellent Veterinary Doctors
+                          - id: 21
+                            name: Thoughtful Bookkeepers
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Teaching 520
+                          id: 01910fa7-f395-7e65-8e29-01eb2b62db13
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544554189
+                          due_date: 1722976553000
+                          esignatures: []
+                          id: 01910fa8-00cd-7283-8318-b01caf48bdf0
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: 5
+                          updated_at: 1741385699333
+                      - user:
+                          id: 197
+                          name: Lydia Rodarte-Quayle
+                          email: admin@example.com
+                          is_admin: true
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544548827
+                          updated_at: 1756425850000
+                          groups:
+                          - id: 19
+                            name: Excellent Veterinary Doctors
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Creative Arts 370
+                          id: 01910fa7-f3c4-7ad2-848b-35fb1baf493d
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544554382
+                          due_date: 1722630954000
+                          esignatures: []
+                          id: 01910fa8-018e-7781-8f5a-d66a4febae90
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: 5
+                          updated_at: 1741385699406
+                      - user:
+                          id: 238
+                          name: Declan
+                          email: declan41@example.com
+                          is_admin: false
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544549013
+                          updated_at: 1722544549631
+                          groups:
+                          - id: 20
+                            name: Old Fashioned Attorneys
+                          - id: 22
+                            name: Puzzled Opticians
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Creative Arts 370
+                          id: 01910fa7-f3c4-7ad2-848b-35fb1baf493d
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544554516
+                          due_date: 1722630954000
+                          esignatures: []
+                          id: 01910fa8-0214-7075-b273-5478f1956d71
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: null
+                          updated_at: 1741385699447
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    example: true
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 29
+                    default: 0
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/assignments/guide
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            guide:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: 0194fb51-cc67-7c03-b14e-fd744ab2ce2a
+                                displayTitle:
+                                  type: string
+                                  example: Test Guide
+                            guideAssignment:
+                              type: object
+                              properties: {}
+                            user:
+                              type: object
+                              properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/guides/{GuideID}/assignments:
+    post:
+      summary: Create Assignment
+      description: Create an assignment for a given user
+      operationId: create-assignment-2
+      parameters:
+      - name: GuideID
+        in: path
+        description: ID of the guide to assign
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: integer
+                  format: int32
+                dueDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept
+                    number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: date
+                email:
+                  type: string
+                  description: Optionally pass in an email in case you don't know the userId
+                dueAtEndOfDay:
+                  type: boolean
+                  default: 'true'
+                  description: Specifies whether you want to have the due date set to 11:59:99 of the
+                    day chosen.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"80afd844-fc64-11e6-8eb3-02dcdaae3a92\",\n  \"userId\": 1144,\n\
+                    \  \"title\": \"Guide 1 Title\",\n  \"courseId\": \"e585fd3e-509d-11e6-9bd0-06d818a6b395\"\
+                    ,\n  \"trainingSeriesUserAssignmentId\": null,\n  \"dueDate\": 1487900059000,\n  \"\
+                    numViewedTasks\": 0,\n  \"numCompletedTasks\": 0,\n  \"numCompletedTestQuestions\"\
+                    : 0,\n  \"numGradedTestQuestions\": 0,\n  \"numCorrectTestQuestions\": 0,\n  \"score\"\
+                    : null,\n  \"isArchived\": null,\n  \"isCompleted\": false,\n  \"createdAt\": 1488141926731.2966,\n\
+                    \  \"updatedAt\": 1488141926731.2966,\n  \"completedAt\": null\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 80afd844-fc64-11e6-8eb3-02dcdaae3a92
+                  userId:
+                    type: integer
+                    example: 1144
+                    default: 0
+                  title:
+                    type: string
+                    example: Guide 1 Title
+                  courseId:
+                    type: string
+                    example: e585fd3e-509d-11e6-9bd0-06d818a6b395
+                  trainingSeriesUserAssignmentId: {}
+                  dueDate:
+                    type: integer
+                    example: 1487900059000
+                    default: 0
+                  numViewedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numGradedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCorrectTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  score: {}
+                  isArchived: {}
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  completedAt: {}
+      deprecated: false
+  /api/v1/guide_assignments/{GuideAssignmentID}:
+    post:
+      summary: Update Assignment
+      description: Update an assignment for a given user
+      operationId: update-assignment
+      parameters:
+      - name: GuideAssignmentID
+        in: path
+        description: The Guide Assignment ID (a GUID)
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dueDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept
+                    number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: date-time
+                isCompleted:
+                  type: boolean
+                completedDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept
+                    number of milliseconds since 1970-01-01 00:00:00 UTC.- Providing a "completedDate"
+                    does NOT complete a user's assignment.
+                  format: date-time
+                score:
+                  type: number
+                  description: A percentage with value from 0-100. Providing a "score" does NOT complete
+                    a user's assignment.
+                  format: float
+                dueAtEndOfDay:
+                  type: boolean
+                  default: 'true'
+                  description: Specifies whether you want to have the due date set to 23:59:99 of the
+                    day chosen.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"80afd844-fc64-11e6-8eb3-02dcdaae3a92\",\n  \"userId\": 1144,\n\
+                    \  \"title\": \"Guide 1 Title\",\n  \"courseId\": \"e585fd3e-509d-11e6-9bd0-06d818a6b395\"\
+                    ,\n  \"trainingSeriesUserAssignmentId\": null,\n  \"dueDate\": 1487900059000,\n  \"\
+                    numViewedTasks\": 0,\n  \"numCompletedTasks\": 0,\n  \"numCompletedTestQuestions\"\
+                    : 0,\n  \"numGradedTestQuestions\": 0,\n  \"numCorrectTestQuestions\": 0,\n  \"score\"\
+                    : 80,\n  \"isArchived\": null,\n  \"isCompleted\": false,\n  \"createdAt\": 1488141926731.2966,\n\
+                    \  \"updatedAt\": 1488141926731.2966,\n  \"completedAt\": 1609416000000\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 80afd844-fc64-11e6-8eb3-02dcdaae3a92
+                  userId:
+                    type: integer
+                    example: 1144
+                    default: 0
+                  title:
+                    type: string
+                    example: Guide 1 Title
+                  courseId:
+                    type: string
+                    example: e585fd3e-509d-11e6-9bd0-06d818a6b395
+                  trainingSeriesUserAssignmentId: {}
+                  dueDate:
+                    type: integer
+                    example: 1487900059000
+                    default: 0
+                  numViewedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numGradedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCorrectTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  score:
+                    type: integer
+                    example: 80
+                    default: 0
+                  isArchived: {}
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  completedAt:
+                    type: integer
+                    example: 1609416000000
+                    default: 0
+      deprecated: false
+  /api/v1/assignments/path:
+    get:
+      summary: Get All Path Assignments in Date Range
+      description: ''
+      operationId: get-path-assignments-in-date-range
+      parameters:
+      - name: start_time
+        in: query
+        description: The minimum created/updated timestamp. This should be an ISO 8601 date/time.
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: The maximum created/updated timestamp. This should be an ISO8601 date/time.
+        schema:
+          type: string
+      - name: due_date
+        in: query
+        description: ISO8601 date or datetime to filter on assignment due date
+        schema:
+          type: string
+      - name: path_id
+        in: query
+        description: A specific path to limit the results to.  If `path_id` is not provided it will return
+          _all_ Path assignments created or updated within the date range.
+        schema:
+          type: string
+      - name: include_deleted
+        in: query
+        description: Optional - if you want to also retrieve assignments which have been deleted, pass
+          true. Use the is_deleted field in the response to detect these.
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: Page of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of results to return per page (1-200)
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"has_more\": true,\n    \"item_count\": 29,\n    \"page\": 1,\n    \"\
+                    per_page\": 20,\n    \"url\": \"/api/v1/assignments/path\",\n    \"data\": {\n   \
+                    \     \"assignments\": [\n            {\n                \"path\": {\n           \
+                    \         \"id\": \"0194fb51-cc67-7c03-b14e-fd744ab2ce2a\",\n                    \"\
+                    displayTitle\": \"Test Path\"\n                },\n                \"pathAssignment\"\
+                    : {},\n                \"user\": {}\n            }\n        ]\n    }\n}\n"
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    example: true
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 29
+                    default: 0
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/assignments/path
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            path:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: 0194fb51-cc67-7c03-b14e-fd744ab2ce2a
+                                displayTitle:
+                                  type: string
+                                  example: Test Path
+                            pathAssignment:
+                              type: object
+                              properties: {}
+                            user:
+                              type: object
+                              properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/path_assignments/{assignment_id}:
+    get:
+      summary: Get Path Assignment by ID
+      description: Get a specific path user assignment
+      operationId: get-path-assignment
+      parameters:
+      - name: assignment_id
+        in: path
+        description: ID of the path assignment to retrieve
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"805bfffa-9da6-11ed-b0ee-aa41bb3ba07e\",\n  \"userId\": 1,\n \
+                    \ \"title\": \"3rd generation\",\n  \"trainingSeriesId\": \"802569c2-9da6-11ed-b0ee-aa41bb3ba07e\"\
+                    ,\n  \"assignerId\": 1,\n  \"overallGrade\": null,\n  \"isCompleted\": false,\n  \"\
+                    dueDate\": 1675275796000,\n  \"createdAt\": 1674757396199,\n  \"updatedAt\": 1723154574722,\n\
+                    \  \"createdThrough\": null,\n  \"numModules\": 5,\n  \"modulesCompleted\": 2,\n \
+                    \ \"completionPercentage\": 40,\n  \"completedAt\": null,\n  \"tags\": [],\n  \"timeSpent\"\
+                    : null,\n  \"status\": \"overdue\",\n  \"isCompletedOnTime\": null,\n  \"passed\"\
+                    : false,\n  \"passingGradeRequired\": null,\n  \"isOverdue\": true,\n  \"numDaysOverdue\"\
+                    : 658,\n  \"firstAccessedAt\": 1674757396199,\n  \"lastAccessedAt\": 1723154574722\n\
+                    }\n"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 805bfffa-9da6-11ed-b0ee-aa41bb3ba07e
+                  userId:
+                    type: integer
+                    example: 1
+                    default: 0
+                  title:
+                    type: string
+                    example: 3rd generation
+                  trainingSeriesId:
+                    type: string
+                    example: 802569c2-9da6-11ed-b0ee-aa41bb3ba07e
+                  assignerId:
+                    type: integer
+                    example: 1
+                    default: 0
+                  overallGrade: {}
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  dueDate:
+                    type: integer
+                    example: 1675275796000
+                    default: 0
+                  createdAt:
+                    type: integer
+                    example: 1674757396199
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1723154574722
+                    default: 0
+                  createdThrough: {}
+                  numModules:
+                    type: integer
+                    example: 5
+                    default: 0
+                  modulesCompleted:
+                    type: integer
+                    example: 2
+                    default: 0
+                  completionPercentage:
+                    type: integer
+                    example: 40
+                    default: 0
+                  completedAt: {}
+                  tags:
+                    type: array
+                  timeSpent: {}
+                  status:
+                    type: string
+                    example: overdue
+                  isCompletedOnTime: {}
+                  passed:
+                    type: boolean
+                    example: false
+                    default: true
+                  passingGradeRequired: {}
+                  isOverdue:
+                    type: boolean
+                    example: true
+                    default: true
+                  numDaysOverdue:
+                    type: integer
+                    example: 658
+                    default: 0
+                  firstAccessedAt:
+                    type: integer
+                    example: 1674757396199
+                    default: 0
+                  lastAccessedAt:
+                    type: integer
+                    example: 1723154574722
+                    default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+    post:
+      summary: Update Path Assignment
+      description: Update a specific assignment
+      operationId: update-assignment-1
+      parameters:
+      - name: assignment_id
+        in: path
+        description: ID of the assignment to be updated
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dueDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept
+                    number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: date-time
+                isDeleted:
+                  type: boolean
+                dueAtEndOfDay:
+                  type: boolean
+                  description: Specifies whether you want to have the due date set to 23:59:99 of the
+                    day chosen.
+                  default: 'true'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"80afd844-fc64-11e6-8eb3-02dcdaae3a92\",\n    \"userId\": 133132,\n\
+                    \    \"trainingSeriesId\": \"40afd844-fc64-21e6-8eb3-02dcdaae3a92\",\n    \"assignerId\"\
+                    : 133432,\n    \"dueDate\": 1487900059000,\n    \"isCompleted\": false,\n    \"createdAt\"\
+                    : 1536735724285,\n    \"updatedAt\": 1536735724285,\n  \t\"createdThrough\": null,\n\
+                    \    \"numModules\": 4,\n    \"modulesCompleted\": 2\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 80afd844-fc64-11e6-8eb3-02dcdaae3a92
+                  userId:
+                    type: integer
+                    example: 133132
+                    default: 0
+                  trainingSeriesId:
+                    type: string
+                    example: 40afd844-fc64-21e6-8eb3-02dcdaae3a92
+                  assignerId:
+                    type: integer
+                    example: 133432
+                    default: 0
+                  dueDate:
+                    type: integer
+                    example: 1487900059000
+                    default: 0
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: integer
+                    example: 1536735724285
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1536735724285
+                    default: 0
+                  createdThrough: {}
+                  numModules:
+                    type: integer
+                    example: 4
+                    default: 0
+                  modulesCompleted:
+                    type: integer
+                    example: 2
+                    default: 0
+      deprecated: false
+  /api/v1/paths/{path_id}/assignments:
+    post:
+      summary: Create Path Assignment
+      description: Create an assignment for a given user
+      operationId: create-path-assignment
+      parameters:
+      - name: path_id
+        in: path
+        description: ID of the path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: integer
+                  description: ID of user to be assigned the Path
+                  format: int32
+                dueDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept
+                    number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: date-time
+                createdThrough:
+                  type: string
+                  description: An optional string that helps tag or identify this path assignment. You
+                    will be able to filter any logs by this tag.
+                email:
+                  type: string
+                  description: Optionally pass in an email in case you don't know the userId
+                dueAtEndOfDay:
+                  type: boolean
+                  description: Specifies whether you want to have the due date set to 23:59:99 of the
+                    day chosen.
+                  default: 'true'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"d11a0a34-b659-12e8-91fe-06cfa4e7b2f4\",\n    \"userId\": 2003132,\n\
+                    \    \"trainingSeriesId\": \"40afd844-fc64-21e6-8eb3-02dcdaae3a92\",\n    \"assignerId\"\
+                    : 133432,\n    \"dueDate\": 1487900059000,\n    \"isCompleted\": false,\n    \"createdAt\"\
+                    : 1536735724285,\n    \"updatedAt\": 1536735724285,\n  \t\"createdThrough\": null,\n\
+                    \    \"numModules\": 4,\n    \"modulesCompleted\": 2\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: d11a0a34-b659-12e8-91fe-06cfa4e7b2f4
+                  userId:
+                    type: integer
+                    example: 2003132
+                    default: 0
+                  trainingSeriesId:
+                    type: string
+                    example: 40afd844-fc64-21e6-8eb3-02dcdaae3a92
+                  assignerId:
+                    type: integer
+                    example: 133432
+                    default: 0
+                  dueDate:
+                    type: integer
+                    example: 1487900059000
+                    default: 0
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: integer
+                    example: 1536735724285
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1536735724285
+                    default: 0
+                  createdThrough: {}
+                  numModules:
+                    type: integer
+                    example: 4
+                    default: 0
+                  modulesCompleted:
+                    type: integer
+                    example: 2
+                    default: 0
+      deprecated: false
+  /api/v1/events:
+    get:
+      summary: Get All Events
+      description: Get all events in an enterprise
+      operationId: get-all-events
+      parameters:
+      - name: session_start_date
+        in: query
+        required: false
+        description: ISO8601 DateTime (e.g. `2025-12-31T223:59:59Z`. If provided, we will include only
+          events that have sessions after the specified time, and the sessions lists will include only
+          those matching sessions.
+        schema:
+          type: string
+          format: date-time
+          default: ''
+      - name: session_end_date
+        in: query
+        required: false
+        description: ISO8601 DateTime (e.g. `2025-12-31T223:59:59Z`. If provided, we will include only
+          events that have sessions before the specified time, and the sessions lists will include only
+          those matching sessions.
+        schema:
+          type: string
+          format: date-time
+          default: ''
+      - name: exclude_groups
+        in: query
+        required: false
+        description: pass 'true' if you would like to leave off group information from users.
+        schema:
+          type: boolean
+          default: ''
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"status_code\": 200,\n    \"events\": [\n        {\n            \"id\"\
+                    : \"2d7a78b8-a197-11ec-baa5-3ea79e46732a\",\n            \"name\": \"Commission Farming\"\
+                    ,\n            \"type\": \"single\",\n            \"sessions\": [\n              \
+                    \  {\n                    \"id\": \"2d809e0a-a197-11ec-baa5-3ea79e46732a\",\n    \
+                    \                \"title\": \"Session #1\",\n                    \"learners\": [\n\
+                    \                        {\n                            \"user_id\": 79,\n       \
+                    \                     \"name\": \"Miss Cecille Waters\",\n                       \
+                    \     \"email\": \"adena8@workramp.com\",\n                            \"groups\"\
+                    : [\n                                \"Movies, Kids & Games\"\n                  \
+                    \          ],\n                            \"registration_status\": \"registered\"\
+                    ,\n                            \"registration_date\": \"2022-07-19T19:48:02.554Z\"\
+                    ,\n                          \t\"attended_event\": null,\n                       \
+                    \   \t\"invitation_date\": \"2022-07-01T17:15:49.771Z\",\n                       \
+                    \     \"declined_date\": null,\n                            \"is_archived\": true\n\
+                    \                        }\n                    ]\n                },\n          \
+                    \      {\n                    \"id\": \"2d81aa52-a197-11ec-baa5-3ea79e46732a\",\n\
+                    \                    \"title\": \"Session #2\",\n                    \"learners\"\
+                    : []\n                },\n                {\n                    \"id\": \"2d8277a2-a197-11ec-baa5-3ea79e46732a\"\
+                    ,\n                    \"title\": \"Session #3\",\n                    \"learners\"\
+                    : []\n                },\n                {\n                    \"id\": \"5cbdf55a-0786-11ed-bac8-3ea79e467329\"\
+                    ,\n                    \"title\": \"Session #4\",\n                    \"learners\"\
+                    : [\n                        {\n                            \"user_id\": 71,\n   \
+                    \                         \"name\": \"Theo Harber\",\n                           \
+                    \ \"email\": \"juliann0@workramp.com\",\n                            \"groups\": [\n\
+                    \                                \"Home\"\n                            ],\n      \
+                    \                      \"registration_status\": \"attended\",\n                  \
+                    \          \"registration_date\": \"2022-07-19T17:15:49.771Z\",\n                \
+                    \            \"attended_event\": true,\n\t                          \"invitation_date\"\
+                    : \"2022-07-01T17:15:49.771Z\",\n                            \"declined_date\": null,\n\
+                    \                            \"is_archived\": false\n                        },\n\
+                    \                        {\n                            \"user_id\": 115,\n      \
+                    \                      \"name\": \"Manual Lindgren\",\n                          \
+                    \  \"email\": \"cheree44@workramp.com\",\n                            \"groups\":\
+                    \ [\n                                \"Home, Tools & Baby\"\n                    \
+                    \        ],\n                            \"registration_status\": \"invited\",\n \
+                    \                           \"registration_date\": null,\n                       \
+                    \     \"attended_event\": null,\n                            \"invitation_date\":\
+                    \ \"2023-07-01T17:15:49.771Z\",\n                            \"declined_date\": null,\n\
+                    \                            \"is_archived\": true                          \n   \
+                    \                     }\n                    ]\n                },\n             \
+                    \   {\n                    \"id\": \"32a95356-07e8-11ed-b1b1-3ea79e467329\",\n   \
+                    \                 \"title\": \"Session #5\",\n                    \"learners\": []\n\
+                    \                }\n            ]\n        },\n        ...\n    ]\n}"
+      deprecated: false
+    post:
+      summary: Create Event
+      description: Create an event (parent event for all sessions)
+      operationId: create-event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the Event you want to create
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"6a5a747e-1175-11ed-90c8-3ea79e467329\",\n    \"type\": \"training_class\"\
+                    \n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 6a5a747e-1175-11ed-90c8-3ea79e467329
+                  type:
+                    type: string
+                    example: training_class
+      deprecated: false
+  /api/v1/events/{EventID}/session:
+    post:
+      summary: Create Event Session
+      description: Create a session within an event
+      operationId: create-event-session
+      parameters:
+      - name: EventID
+        in: path
+        description: ID of event in which to create a session
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - base_url
+              - title
+              properties:
+                base_url:
+                  type: string
+                  description: Your base url for your domain. ie. https://app.workramp.com/api/... your
+                    base_url would be app.workramp.com
+                title:
+                  type: string
+                  description: Name of the event session you want to create
+                start_time:
+                  type: string
+                  description: Date & time you want the event to start. Note that this is an ISO8601 Timestamp
+                    and not an integer. e.g. `2022-07-30T05:31:30.363Z`
+                  format: date-time
+                end_time:
+                  type: string
+                  description: Date & time you want the event to end. Note that this is an ISO8601 Timestamp
+                    and not an integer
+                  format: date-time
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"03001a56-1178-11ed-90c8-3ea79e467329\",\n    \"trainingClassId\"\
+                    : \"6a5a747e-1175-11ed-90c8-3ea79e467329\",\n    \"title\": \"Session API #4\",\n\
+                    \    \"start\": 1659159090363,\n    \"end\": 1659166290363,\n    \"zoomMeetingId\"\
+                    : \"85292117715\",\n    \"zoomMeetingStartUrl\": \"https://us06web.zoom.us/s/85292117715?zak=eyJ0eXAiOiJKV1QiLCJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsImFsZyI6IkhTMjU2In0.eyJhdWQiOiJjbGllbnRzbSIsInVpZCI6InRYVzBRUUt4VGlPQnBiTkRzMUF1WEEiLCJpc3MiOiJ3ZWIiLCJzayI6IjAiLCJzdHkiOjk5LCJ3Y2QiOiJ1czA2IiwiY2x0IjowLCJtbnVtIjoiODUyOTIxMTc3MTUiLCJleHAiOjE2NjcxMjAyNjYsImlhdCI6MTY1OTM0NDI2NiwiYWlkIjoidnhtOU9kLTRTZEd0T2hqa2ZKOHdYUSIsImNpZCI6IiJ9.jS4v3vT_PGjQLDRoM-4ooZyUbjo_r-UqM4rdPIJNQRA\"\
+                    ,\n    \"zoomMeetingJoinUrl\": \"https://us06web.zoom.us/j/85292117715\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 03001a56-1178-11ed-90c8-3ea79e467329
+                  trainingClassId:
+                    type: string
+                    example: 6a5a747e-1175-11ed-90c8-3ea79e467329
+                  title:
+                    type: string
+                    example: 'Session API #4'
+                  start:
+                    type: integer
+                    example: 1659159090363
+                    default: 0
+                  end:
+                    type: integer
+                    example: 1659166290363
+                    default: 0
+                  zoomMeetingId:
+                    type: string
+                    example: '85292117715'
+                  zoomMeetingStartUrl:
+                    type: string
+                    example: https://us06web.zoom.us/s/85292117715?zak=eyJ0eXAiOiJKV1QiLCJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsImFsZyI6IkhTMjU2In0.eyJhdWQiOiJjbGllbnRzbSIsInVpZCI6InRYVzBRUUt4VGlPQnBiTkRzMUF1WEEiLCJpc3MiOiJ3ZWIiLCJzayI6IjAiLCJzdHkiOjk5LCJ3Y2QiOiJ1czA2IiwiY2x0IjowLCJtbnVtIjoiODUyOTIxMTc3MTUiLCJleHAiOjE2NjcxMjAyNjYsImlhdCI6MTY1OTM0NDI2NiwiYWlkIjoidnhtOU9kLTRTZEd0T2hqa2ZKOHdYUSIsImNpZCI6IiJ9.jS4v3vT_PGjQLDRoM-4ooZyUbjo_r-UqM4rdPIJNQRA
+                  zoomMeetingJoinUrl:
+                    type: string
+                    example: https://us06web.zoom.us/j/85292117715
+      deprecated: false
+  /api/v1/events/{event_id}/session/{session_id}/invite:
+    post:
+      summary: Invite Users to Event Session
+      description: Create an event registration for an array of users
+      operationId: invite-user-to-event-session
+      parameters:
+      - name: event_id
+        in: path
+        description: Event ID
+        schema:
+          type: string
+        required: true
+      - name: session_id
+        in: path
+        description: Event Session ID
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userIds:
+                  type: array
+                  description: Array of User IDs
+                  items:
+                    type: integer
+                    format: int32
+                groupIds:
+                  type: array
+                  description: Array of Group IDs
+                  items:
+                    type: integer
+                    format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"status_code\": 200,\n    \"message\": \"Successfully registered all\
+                    \ users and group ids\"\n}"
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                    default: 0
+                  message:
+                    type: string
+                    example: Successfully registered all users and group ids
+      deprecated: false
+  /api/v1/assignments/scorm:
+    get:
+      summary: Get All SCORM Assignments in Date Range
+      description: ''
+      operationId: get-scorm-assignments-in-date-range
+      parameters:
+      - name: start_time
+        in: query
+        description: The minimum created/updated timestamp. This should be an ISO 8601 date/time.
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: The maximum created/updated timestamp. This should be an ISO8601 date/time.
+        schema:
+          type: string
+      - name: due_date
+        in: query
+        description: ISO8601 date or datetime to filter on assignment due date
+        schema:
+          type: string
+      - name: scorm_id
+        in: query
+        description: A specific SCORM to limit the results to. -  If `scorm_id` is not provided it will
+          return _all_ SCORM assignments created or updated within the date range.
+        schema:
+          type: string
+      - name: include_deleted
+        in: query
+        description: Optional - if you want to also retrieve assignments which have been deleted, pass
+          true. Use the is_deleted field in the response to detect these.
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: Page of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of results to return per page (1-200)
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"has_more\": true,\n    \"item_count\": 29,\n    \"page\": 1,\n    \"\
+                    per_page\": 20,\n    \"url\": \"/api/v1/assignments/scorm\",\n    \"data\": {\n  \
+                    \      \"assignments\": [\n            {\n                \"scorm\": {\n         \
+                    \           \"id\": \"0194fb51-cc67-7c03-b14e-fd744ab2ce2a\",\n                  \
+                    \  \"displayTitle\": \"Test SCORM\"\n                },\n                \"scormAssignment\"\
+                    : {},\n                \"user\": {}\n            }\n        ]\n    }\n}\n"
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    example: true
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 29
+                    default: 0
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/assignments/scorm
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            scorm:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: 0194fb51-cc67-7c03-b14e-fd744ab2ce2a
+                                displayTitle:
+                                  type: string
+                                  example: Test SCORM
+                            scormAssignment:
+                              type: object
+                              properties: {}
+                            user:
+                              type: object
+                              properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/webhook_subscriptions:
+    get:
+      summary: Get All Webhook Subscriptions
+      description: Get all Webhook Subscriptions.
+      operationId: elc-webhooks-get-all
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  {\n    \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n    \"eventTypes\"\
+                    : [\n      \"assignmentCompleted\",\n      \"assignmentCreated\"\n    ],\n    \"name\"\
+                    : \"My Assignment Webhook\",\n    \"url\": \"https://webhook.example.com/assignment\"\
+                    \n  },\n  {\n    \"id\": \"019201f3-363a-7fd9-b3e7-f3ea2cfd51c1\",\n    \"eventTypes\"\
+                    : [\n      \"userCreated\",\n      \"userDeleted\"\n    ],\n    \"name\": \"My User\
+                    \ Webhook\",\n    \"url\": \"https://webhook.example.com/user\"\n  }\n]"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                    eventTypes:
+                      type: array
+                      items:
+                        type: string
+                        example: assignmentCompleted
+                    name:
+                      type: string
+                      example: My Assignment Webhook
+                    url:
+                      type: string
+                      example: https://webhook.example.com/assignment
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+      deprecated: false
+    post:
+      summary: Create Webhook Subscription
+      description: Create a Webhook Subscription.
+      operationId: elc-webhooks-create
+      parameters:
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - url
+              - eventTypes
+              properties:
+                name:
+                  type: string
+                  description: The name of the webhook subscription
+                url:
+                  type: string
+                  description: The URL that will receive POSTed webhook data. HTTPS only.
+                eventTypes:
+                  type: array
+                  description: Event types, see ELC Webhooks Intro for a list
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n  \"eventTypes\": [\n\
+                    \    \"assignmentCompleted\",\n    \"assignmentCreated\"\n  ],\n  \"name\": \"My Assignment\
+                    \ Webhook\",\n  \"url\": \"https://webhook.example.com/assignment\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: assignmentCompleted
+                  name:
+                    type: string
+                    example: My Assignment Webhook
+                  url:
+                    type: string
+                    example: https://webhook.example.com/assignment
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+      deprecated: false
+  /api/v1/webhook_subscriptions/{webhook_subscription_id}:
+    get:
+      summary: Get Webhook Subscription
+      description: Get a specific Webhook Subscription.
+      operationId: elc-webhooks-get
+      parameters:
+      - name: webhook_subscription_id
+        in: path
+        description: ID of the Webhook Subscription
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n  \"eventTypes\": [\n\
+                    \    \"assignmentCompleted\",\n    \"assignmentCreated\"\n  ],\n  \"name\": \"My Assignment\
+                    \ Webhook\",\n  \"url\": \"https://webhook.example.com/assignment\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: assignmentCompleted
+                  name:
+                    type: string
+                    example: My Assignment Webhook
+                  url:
+                    type: string
+                    example: https://webhook.example.com/assignment
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"not_found\",\n  \"message\": \"Error. Not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: not_found
+                  message:
+                    type: string
+                    example: Error. Not found.
+      deprecated: false
+    patch:
+      summary: Update Webhook Subscription
+      description: Update a Webhook Subscription.
+      operationId: elc-webhooks-update
+      parameters:
+      - name: webhook_subscription_id
+        in: path
+        description: ID of the Webhook Subscription
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the webhook subscription
+                url:
+                  type: string
+                  description: The URL that will receive POSTed webhook data. HTTPS only.
+                eventTypes:
+                  type: array
+                  description: Event types, see ELC Webhooks Intro for a list
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n  \"eventTypes\": [\n\
+                    \    \"assignmentCompleted\",\n    \"assignmentCreated\"\n  ],\n  \"name\": \"My Assignment\
+                    \ Webhook\",\n  \"url\": \"https://webhook.example.com/assignment\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: assignmentCompleted
+                  name:
+                    type: string
+                    example: My Assignment Webhook
+                  url:
+                    type: string
+                    example: https://webhook.example.com/assignment
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"not_found\",\n  \"message\": \"Error. Not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: not_found
+                  message:
+                    type: string
+                    example: Error. Not found.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+      deprecated: false
+    delete:
+      summary: Delete Webhook Subscription
+      description: Delete a Webhook Subscription.
+      operationId: elc-webhooks-delete
+      parameters:
+      - name: webhook_subscription_id
+        in: path
+        description: ID of the Webhook Subscription
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: ''
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+      deprecated: false
+  /api/v1/reseller_customers:
+    get:
+      summary: White Label Customers
+      description: Retrieve all customer enterprises associated with your enterprise
+      operationId: white-label-customers
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"page\": 1,\n  \"per_page\": 20,\n  \"has_more\": false,\n  \"item_count\"\
+                    : 1,\n  \"url\": \"/api/v1/reseller_customers\",\n  \"data\": {\n    \"customers\"\
+                    : [\n      {\n        \"created_at\": 1749509412282,\n        \"disable_all_emails\"\
+                    : true,\n        \"enterprise_base_url\": \"https://woof.foo.bar\",\n        \"enterprise_id\"\
+                    : 2,\n        \"enterprise_name\": \"TEST ENTERPRISE 2\",\n        \"id\": 1,\n  \
+                    \      \"updated_at\": 1749509412282\n      }\n    ]\n  }\n}\n"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 1
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/reseller_customers
+                  data:
+                    type: object
+                    properties:
+                      customers:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            created_at:
+                              type: integer
+                              example: 1749509412282
+                              default: 0
+                            disable_all_emails:
+                              type: boolean
+                              example: true
+                              default: true
+                            enterprise_base_url:
+                              type: string
+                              example: https://woof.foo.bar
+                            enterprise_id:
+                              type: integer
+                              example: 2
+                              default: 0
+                            enterprise_name:
+                              type: string
+                              example: TEST ENTERPRISE 2
+                            id:
+                              type: integer
+                              example: 1
+                              default: 0
+                            updated_at:
+                              type: integer
+                              example: 1749509412282
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/users:
+    post:
+      summary: Create Contact
+      description: Creates a new contact in your Academy. You can create a contact with a password, or,
+        if you use SSO or another login mechanism, you can just use this to ensure that the user has been
+        created, for instance, if you want to add them to a segment before they first visit the site.
+      operationId: create-contact
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - name
+              properties:
+                email:
+                  type: string
+                  description: The email address of the Contact
+                name:
+                  type: string
+                  description: The name of the Contact
+                password:
+                  type: string
+                  description: (Optional) If you'd like the contact to sign in with a password. Not needed
+                    when using SSO, magic links, or another login mechanism.
+                custom_registration_fields:
+                  type: string
+                  description: 'JSON dictionary where keys are the "API Name" of your registration field
+                    to set, and the values are the values to set. e.g. `{"favorite_color": "blue"}`'
+                  default: '{}'
+                  format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"url\": \"/api/v1/academies/c8be6efc-c511-11ee-8dca-000000000001/users\"\
+                    ,\n  \"data\": {\n    \"user\": {\n      \"id\": \"01902776-8464-76c5-a173-293333b17baa\"\
+                    ,\n      \"email\": \"john@doe.com\",\n      \"segments\": [],\n      \"display_name\"\
+                    : \"John Doe\",\n      \"first_name\": \"John\",\n      \"last_name\": \"Doe\",\n\
+                    \      \"created_at\": \"2024-06-17 18:29:56 UTC\",\n      \"custom_registration_field_values\"\
+                    : [\n      \t{\n      \t\t\"academy_registration_field_id\": \"field-id-1234\",\n\
+                    \      \t\t\"name\": \"department\",\n      \t\t\"value\": \"Sales\"\n    \t\t}\n\
+                    \      ],\n      \"status\": \"Active\"\n    }\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: /api/v1/academies/c8be6efc-c511-11ee-8dca-000000000001/users
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: 01902776-8464-76c5-a173-293333b17baa
+                          email:
+                            type: string
+                            example: john@doe.com
+                          segments:
+                            type: array
+                          display_name:
+                            type: string
+                            example: John Doe
+                          first_name:
+                            type: string
+                            example: John
+                          last_name:
+                            type: string
+                            example: Doe
+                          created_at:
+                            type: string
+                            example: 2024-06-17 18:29:56 UTC
+                          custom_registration_field_values:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                academy_registration_field_id:
+                                  type: string
+                                  example: field-id-1234
+                                name:
+                                  type: string
+                                  example: department
+                                value:
+                                  type: string
+                                  example: Sales
+                          status:
+                            type: string
+                            example: Active
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid custom parameters:\
+                    \ badField1, badField2\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: 'Invalid custom parameters: badField1, badField2'
+      deprecated: false
+  /api/v1/academies/{academy_id}/users/{contact_id}:
+    patch:
+      summary: Update Contact
+      description: Updates any of a Academy Contact's default or custom attributes using a JSON dictionary
+      operationId: update-academy-user
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always send JSON format
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RAW_BODY:
+                  type: object
+                  description: Send as JSON
+                  properties:
+                    name:
+                      type: string
+                      description: new full name for the contact
+                    email:
+                      type: string
+                      description: new email for the contact
+                    password:
+                      type: string
+                      description: new password to set for the contact
+                    custom_registration_fields:
+                      type: string
+                      description: 'JSON dictionary where keys are the "API Name" of your registration
+                        field to set, and the values are the values to set. e.g. `{"favorite_color": "blue"}`'
+                      format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"abcdef-1234\",\n  \"created_at\": 1689013085,\n  \"custom_registration_field_values\"\
+                    : [\n    {\n      \"academy_registration_field_id\": \"field-id-1234\",\n      \"\
+                    name\": \"department\",\n      \"value\": \"Sales\"\n    }\n  ],\n  \"display_name\"\
+                    : \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"first_name\": \"John\"\
+                    ,\n  \"last_name\": \"Doe\",\n  \"segments\": [],\n  \"status\": \"Active\"      \n\
+                    }"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: abcdef-1234
+                  created_at:
+                    type: integer
+                    example: 1689013085
+                    default: 0
+                  custom_registration_field_values:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        academy_registration_field_id:
+                          type: string
+                          example: field-id-1234
+                        name:
+                          type: string
+                          example: department
+                        value:
+                          type: string
+                          example: Sales
+                  display_name:
+                    type: string
+                    example: John Doe
+                  email:
+                    type: string
+                    example: johndoe@example.com
+                  first_name:
+                    type: string
+                    example: John
+                  last_name:
+                    type: string
+                    example: Doe
+                  segments:
+                    type: array
+                  status:
+                    type: string
+                    example: Active
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid custom parameters:\
+                    \ badField1, badField2\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: 'Invalid custom parameters: badField1, badField2'
+      deprecated: false
+  /api/v1/academies/{academy_id}/segments/{segment_id}/add_users:
+    post:
+      summary: Add Contacts to Segment
+      description: Add Contacts to an Academy Segment
+      operationId: add-users-to-segment
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: segment_id
+        in: path
+        description: The id of the segment
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userEmails
+              properties:
+                userEmails:
+                  type: array
+                  description: 'Array of Contact emails you''d like to add to the segment. **NOTE: Contact
+                    must be registered in order to be placed in a segment**'
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"numAddedToGroup\": 1,\n    \"numConvertedToManual\": 0,\n    \"numAlreadyInGroup\"\
+                    : 0,\n    \"numDeletedUser\": 0,\n    \"numUnregisteredUser\": 0\n}"
+              schema:
+                type: object
+                properties:
+                  numAddedToGroup:
+                    type: integer
+                    example: 1
+                    default: 0
+                  numConvertedToManual:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numAlreadyInGroup:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numDeletedUser:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numUnregisteredUser:
+                    type: integer
+                    example: 0
+                    default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/instant_auth_request:
+    post:
+      summary: Instant Auth
+      description: Using a JWT, generate an instant login url for your Academy
+      operationId: instant-auth
+      parameters:
+      - name: academy_id
+        in: path
+        description: The UUID of your Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: application/json
+        schema:
+          type: string
+          default: application/json
+      - name: Accept
+        in: header
+        description: application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RAW_BODY:
+                  type: string
+                  description: JSON payload, with the key "jwt" and value being the JWT token itself,
+                    signed with your secret key.
+                  default: '{"jwt": "..."}'
+                  format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"absoluteLoginUrl\": \"https://your.academy.com/superlonghexencodedjwt?return_to=\n\
+                    }"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '401':
+          description: '401'
+          content:
+            text/plain:
+              examples:
+                Result:
+                  value: ''
+      deprecated: false
+  /api/v1/academies/{academy_id}/contacts/{contact_id}/registrations:
+    get:
+      summary: Get All Registrations for a Contact
+      description: Get all Guide/Resource/SCORM registrations for a contact
+      operationId: get-all-registrations-for-a-contact
+      parameters:
+      - name: page
+        in: query
+        description: Results page to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Results per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 20,\n    \"has_more\": false,\n    \"\
+                    item_count\": 3,\n    \"url\": \"/api/v1/academies/ce94a26c-8ef0-11ee-afe2-aa41bb3ba07f/contacts/cec36bec-8ef0-11ee-afe2-aa41bb3ba07f/registrations\"\
+                    ,\n    \"data\": {\n        \"contact\": {\n            \"academy_segments\": [],\n\
+                    \            \"created_at\": 1701287540727,\n            \"display_name\": \"Prof.\
+                    \ Mertie Welch\",\n            \"email\": \"marlena@shields-schiller.example\",\n\
+                    \            \"first_name\": \"Prof.\",\n            \"id\": \"cec36bec-8ef0-11ee-afe2-aa41bb3ba07f\"\
+                    ,\n            \"is_pending\": false,\n            \"last_name\": \"Welch\"\n    \
+                    \    },\n        \"registrations\": [\n            {\n                \"completed_at\"\
+                    : 1701179472411,\n                \"completion_percentage\": 100,\n              \
+                    \  \"created_at\": 1701287541001,\n                \"due_at\": 1701087318562,\n  \
+                    \              \"due_date\": 1701087318562,\n              \t\"grading_status\": \"\
+                    completed\",\n                \"id\": \"ceed40d4-8ef0-11ee-afe2-aa41bb3ba07f\",\n\
+                    \                \"is_completed\": true,\n                \"pass_status\": \"completed\"\
+                    ,\n                \"score\": 100,\n                \"time_spent\": 8,\n         \
+                    \       \"content\": {\n                    \"academy_overview_description\": null,\n\
+                    \                    \"card_banner\": null,\n                    \"created_at\": 1701287540862,\n\
+                    \                    \"id\": \"ced8136c-8ef0-11ee-afe2-aa41bb3ba07f\",\n         \
+                    \           \"type\": \"guide\",\n                    \"title\": \"Medicine\"\n  \
+                    \              }\n            },\n            {\n                \"completed_at\"\
+                    : 1700825798490,\n                \"completion_percentage\": 100,\n              \
+                    \  \"created_at\": 1701287541083,\n                \"due_at\": 1701226104708,\n  \
+                    \              \"due_date\": 1701226104708,\n              \t\"grading_status\": \"\
+                    completed\",\n                \"id\": \"cef9ca34-8ef0-11ee-afe2-aa41bb3ba07f\",\n\
+                    \                \"is_completed\": true,\n                \"pass_status\": \"completed\"\
+                    ,\n                \"score\": 100,\n                \"time_spent\": 18,\n        \
+                    \        \"content\": {\n                    \"academy_overview_description\": null,\n\
+                    \                    \"card_banner\": null,\n                    \"created_at\": 1701287540939,\n\
+                    \                    \"id\": \"cee3d9ae-8ef0-11ee-afe2-aa41bb3ba07f\",\n         \
+                    \           \"type\": \"scorm\",\n                    \"title\": \"Law 578\"\n   \
+                    \             }\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/ce94a26c-8ef0-11ee-afe2-aa41bb3ba07f/contacts/cec36bec-8ef0-11ee-afe2-aa41bb3ba07f/registrations
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        type: object
+                        properties:
+                          academy_segments:
+                            type: array
+                          created_at:
+                            type: integer
+                            example: 1701287540727
+                            default: 0
+                          display_name:
+                            type: string
+                            example: Prof. Mertie Welch
+                          email:
+                            type: string
+                            example: marlena@shields-schiller.example
+                          first_name:
+                            type: string
+                            example: Prof.
+                          id:
+                            type: string
+                            example: cec36bec-8ef0-11ee-afe2-aa41bb3ba07f
+                          is_pending:
+                            type: boolean
+                            example: false
+                            default: true
+                          last_name:
+                            type: string
+                            example: Welch
+                      registrations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            completed_at:
+                              type: integer
+                              example: 1701179472411
+                              default: 0
+                            completion_percentage:
+                              type: integer
+                              example: 100
+                              default: 0
+                            created_at:
+                              type: integer
+                              example: 1701287541001
+                              default: 0
+                            due_at:
+                              type: integer
+                              example: 1701087318562
+                              default: 0
+                            due_date:
+                              type: integer
+                              example: 1701087318562
+                              default: 0
+                            grading_status:
+                              type: string
+                              example: completed
+                            id:
+                              type: string
+                              example: ceed40d4-8ef0-11ee-afe2-aa41bb3ba07f
+                            is_completed:
+                              type: boolean
+                              example: true
+                              default: true
+                            pass_status:
+                              type: string
+                              example: completed
+                            score:
+                              type: integer
+                              example: 100
+                              default: 0
+                            time_spent:
+                              type: integer
+                              example: 8
+                              default: 0
+                            content:
+                              type: object
+                              properties:
+                                academy_overview_description: {}
+                                card_banner: {}
+                                created_at:
+                                  type: integer
+                                  example: 1701287540862
+                                  default: 0
+                                id:
+                                  type: string
+                                  example: ced8136c-8ef0-11ee-afe2-aa41bb3ba07f
+                                type:
+                                  type: string
+                                  example: guide
+                                title:
+                                  type: string
+                                  example: Medicine
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/contacts/{contact_id}/paths:
+    get:
+      summary: Get all Paths for a Contact
+      description: ''
+      operationId: get-all-paths-for-a-contact
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: Results page to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Results per page
+        schema:
+          type: string
+          default: '20'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 20,\n    \"has_more\": false,\n    \"\
+                    item_count\": 3,\n    \"url\": \"/api/v1/academies/a42aa798-8eef-11ee-ba5c-aa41bb3ba07f/contacts/a47919f0-8eef-11ee-ba5c-aa41bb3ba07f/paths\"\
+                    ,\n    \"data\": {\n        \"contact\": {\n            \"academy_segments\": [],\n\
+                    \            \"created_at\": 1701287040279,\n            \"display_name\": \"Seth\
+                    \ Cremin\",\n            \"email\": \"modesto@mayer.test\",\n            \"first_name\"\
+                    : \"Seth\",\n            \"id\": \"a47919f0-8eef-11ee-ba5c-aa41bb3ba07f\",\n     \
+                    \       \"is_pending\": false,\n            \"last_name\": \"Cremin\"\n        },\n\
+                    \        \"path_enrollments\": [\n            {\n                \"awarded\": false,\n\
+                    \                \"awarded_at\": null,\n                \"can_recertify\": false,\n\
+                    \                \"completed\": true,\n                \"completed_at\": 1701287040361,\n\
+                    \                \"created_at\": 1701287040361,\n                \"due_at\": 1701779364929,\n\
+                    \                \"expired\": false,\n                \"expires_at\": 1701721015669,\n\
+                    \                \"has_learner_seen_award\": false,\n                \"has_learner_seen_completed_and_requires_grading\"\
+                    : false,\n                \"id\": \"a485a6de-8eef-11ee-ba5c-aa41bb3ba07f\",\n    \
+                    \            \"is_completed_and_requires_grading\": false,\n                \"is_started\"\
+                    : true,\n                \"last_accessed_at\": 1700824371476,\n                \"\
+                    path\": {\n                    \"created_at\": 1701287040262,\n                  \
+                    \  \"description\": null,\n                    \"id\": \"a4768c6c-8eef-11ee-ba5c-aa41bb3ba07f\"\
+                    ,\n                    \"name\": \"Marks, Pouros and Kuhic\"\n                },\n\
+                    \                \"progress_percentage\": 100,\n                \"public_url\": null,\n\
+                    \                \"short_id\": null,\n                \"time_spent_cache\": 543,\n\
+                    \                \"updated_at\": 1701287048376\n            },\n            {\n  \
+                    \              \"awarded\": false,\n                \"awarded_at\": null,\n      \
+                    \          \"can_recertify\": false,\n                \"completed\": false,\n    \
+                    \            \"completed_at\": 1701287040384,\n                \"created_at\": 1701287040384,\n\
+                    \                \"due_at\": 1701587831186,\n                \"expired\": false,\n\
+                    \                \"expires_at\": 1701294767639,\n                \"has_learner_seen_award\"\
+                    : false,\n                \"has_learner_seen_completed_and_requires_grading\": false,\n\
+                    \                \"id\": \"a4892e6c-8eef-11ee-ba5c-aa41bb3ba07f\",\n             \
+                    \   \"is_completed_and_requires_grading\": false,\n                \"is_started\"\
+                    : true,\n                \"last_accessed_at\": 1701284614020,\n                \"\
+                    path\": {\n                    \"created_at\": 1701287040270,\n                  \
+                    \  \"description\": null,\n                    \"id\": \"a477c4a6-8eef-11ee-ba5c-aa41bb3ba07f\"\
+                    ,\n                    \"name\": \"Schimmel Inc\"\n                },\n          \
+                    \      \"progress_percentage\": 50,\n                \"public_url\": null,\n     \
+                    \           \"short_id\": null,\n                \"time_spent_cache\": 654,\n    \
+                    \            \"updated_at\": 1701287048429\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/a42aa798-8eef-11ee-ba5c-aa41bb3ba07f/contacts/a47919f0-8eef-11ee-ba5c-aa41bb3ba07f/paths
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        type: object
+                        properties:
+                          academy_segments:
+                            type: array
+                          created_at:
+                            type: integer
+                            example: 1701287040279
+                            default: 0
+                          display_name:
+                            type: string
+                            example: Seth Cremin
+                          email:
+                            type: string
+                            example: modesto@mayer.test
+                          first_name:
+                            type: string
+                            example: Seth
+                          id:
+                            type: string
+                            example: a47919f0-8eef-11ee-ba5c-aa41bb3ba07f
+                          is_pending:
+                            type: boolean
+                            example: false
+                            default: true
+                          last_name:
+                            type: string
+                            example: Cremin
+                      path_enrollments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            awarded:
+                              type: boolean
+                              example: false
+                              default: true
+                            awarded_at: {}
+                            can_recertify:
+                              type: boolean
+                              example: false
+                              default: true
+                            completed:
+                              type: boolean
+                              example: true
+                              default: true
+                            completed_at:
+                              type: integer
+                              example: 1701287040361
+                              default: 0
+                            created_at:
+                              type: integer
+                              example: 1701287040361
+                              default: 0
+                            due_at:
+                              type: integer
+                              example: 1701779364929
+                              default: 0
+                            expired:
+                              type: boolean
+                              example: false
+                              default: true
+                            expires_at:
+                              type: integer
+                              example: 1701721015669
+                              default: 0
+                            has_learner_seen_award:
+                              type: boolean
+                              example: false
+                              default: true
+                            has_learner_seen_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            id:
+                              type: string
+                              example: a485a6de-8eef-11ee-ba5c-aa41bb3ba07f
+                            is_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            is_started:
+                              type: boolean
+                              example: true
+                              default: true
+                            last_accessed_at:
+                              type: integer
+                              example: 1700824371476
+                              default: 0
+                            path:
+                              type: object
+                              properties:
+                                created_at:
+                                  type: integer
+                                  example: 1701287040262
+                                  default: 0
+                                description: {}
+                                id:
+                                  type: string
+                                  example: a4768c6c-8eef-11ee-ba5c-aa41bb3ba07f
+                                name:
+                                  type: string
+                                  example: Marks, Pouros and Kuhic
+                            progress_percentage:
+                              type: integer
+                              example: 100
+                              default: 0
+                            public_url: {}
+                            short_id: {}
+                            time_spent_cache:
+                              type: integer
+                              example: 543
+                              default: 0
+                            updated_at:
+                              type: integer
+                              example: 1701287048376
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/contacts/{contact_id}/certifications:
+    get:
+      summary: Get All Certifications for a Contact
+      description: This includes all Cert enrollments. If you only want ones where the user completed
+        and passed all the requirements and was awarded the certificate, please see **Get All Awarded
+        Certifications For a Contact**.
+      operationId: get-all-certifications-for-a-contact
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: Results page to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Results per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 20,\n    \"has_more\": false,\n    \"\
+                    item_count\": 2,\n    \"url\": \"/api/v1/academies/178e485c-88a1-11ee-8ac9-aa41bb3ba07f/contacts/ace086ba-8eee-11ee-ac93-aa41bb3ba07f/certifications\"\
+                    ,\n    \"data\": {\n        \"contact\": {\n            \"academy_segments\": [],\n\
+                    \            \"created_at\": 1701286624882,\n            \"display_name\": \"Kristofer\
+                    \ Metz\",\n            \"email\": \"damien@hettinger-erdman.example\",\n         \
+                    \   \"first_name\": \"Kristofer\",\n            \"id\": \"ace086ba-8eee-11ee-ac93-aa41bb3ba07f\"\
+                    ,\n            \"is_pending\": false,\n            \"last_name\": \"Metz\"\n     \
+                    \   },\n        \"certification_enrollments\": [\n            {\n                \"\
+                    awarded\": true,\n                \"awarded_at\": 1701286624957,\n               \
+                    \ \"can_recertify\": false,\n                \"certification\": {\n              \
+                    \      \"awarded_by_name\": \"Rachelle Ratke Ret.\",\n                    \"awarded_by_title\"\
+                    : \"Global Accounting Liaison\",\n                    \"created_at\": 1701286624867,\n\
+                    \                    \"description\": null,\n                    \"id\": \"acde3e28-8eee-11ee-ac93-aa41bb3ba07f\"\
+                    ,\n                    \"name\": \"Kris-Towne\"\n                },\n            \
+                    \    \"completed\": false,\n                \"completed_at\": null,\n            \
+                    \    \"created_at\": 1701286624951,\n                \"due_at\": 1701733386124,\n\
+                    \                \"expired\": false,\n                \"expires_at\": 1701511527629,\n\
+                    \                \"has_learner_seen_award\": false,\n                \"has_learner_seen_completed_and_requires_grading\"\
+                    : false,\n                \"id\": \"aceb2eda-8eee-11ee-ac93-aa41bb3ba07f\",\n    \
+                    \            \"is_completed_and_requires_grading\": false,\n                \"is_started\"\
+                    : true,\n                \"last_accessed_at\": 1700792876875,\n                \"\
+                    linked_in_add_to_profile_clicked_at\": 1701286624927,\n                \"progress_percentage\"\
+                    : 100,\n                \"public_url\": \"/certificate/wYk19Vc2Bw\",\n           \
+                    \     \"short_id\": \"wYk19Vc2Bw\",\n                \"time_spent_cache\": 543,\n\
+                    \                \"updated_at\": 1701286630439\n            },\n            {\n  \
+                    \              \"awarded\": false,\n                \"awarded_at\": 1700738628478,\n\
+                    \                \"can_recertify\": false,\n                \"certification\": {\n\
+                    \                    \"awarded_by_name\": \"Janessa Bosco MD\",\n                \
+                    \    \"awarded_by_title\": \"Regional Sales Planner\",\n                    \"created_at\"\
+                    : 1701286624873,\n                    \"description\": null,\n                   \
+                    \ \"id\": \"acdf4624-8eee-11ee-ac93-aa41bb3ba07f\",\n                    \"name\"\
+                    : \"Bashirian, Gibson and Harris\"\n                },\n                \"completed\"\
+                    : false,\n                \"completed_at\": null,\n                \"created_at\"\
+                    : 1701286624983,\n                \"due_at\": 1701437532444,\n                \"expired\"\
+                    : false,\n                \"expires_at\": 1701521790282,\n                \"has_learner_seen_award\"\
+                    : false,\n                \"has_learner_seen_completed_and_requires_grading\": false,\n\
+                    \                \"id\": \"acf01224-8eee-11ee-ac93-aa41bb3ba07f\",\n             \
+                    \   \"is_completed_and_requires_grading\": false,\n                \"is_started\"\
+                    : true,\n                \"last_accessed_at\": 1701223032446,\n                \"\
+                    linked_in_add_to_profile_clicked_at\": 1701286624981,\n                \"progress_percentage\"\
+                    : 50,\n                \"public_url\": null,\n                \"short_id\": null,\n\
+                    \                \"time_spent_cache\": 654,\n                \"updated_at\": 1701286630555\n\
+                    \            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 2
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/178e485c-88a1-11ee-8ac9-aa41bb3ba07f/contacts/ace086ba-8eee-11ee-ac93-aa41bb3ba07f/certifications
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        type: object
+                        properties:
+                          academy_segments:
+                            type: array
+                          created_at:
+                            type: integer
+                            example: 1701286624882
+                            default: 0
+                          display_name:
+                            type: string
+                            example: Kristofer Metz
+                          email:
+                            type: string
+                            example: damien@hettinger-erdman.example
+                          first_name:
+                            type: string
+                            example: Kristofer
+                          id:
+                            type: string
+                            example: ace086ba-8eee-11ee-ac93-aa41bb3ba07f
+                          is_pending:
+                            type: boolean
+                            example: false
+                            default: true
+                          last_name:
+                            type: string
+                            example: Metz
+                      certification_enrollments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            awarded:
+                              type: boolean
+                              example: true
+                              default: true
+                            awarded_at:
+                              type: integer
+                              example: 1701286624957
+                              default: 0
+                            can_recertify:
+                              type: boolean
+                              example: false
+                              default: true
+                            certification:
+                              type: object
+                              properties:
+                                awarded_by_name:
+                                  type: string
+                                  example: Rachelle Ratke Ret.
+                                awarded_by_title:
+                                  type: string
+                                  example: Global Accounting Liaison
+                                created_at:
+                                  type: integer
+                                  example: 1701286624867
+                                  default: 0
+                                description: {}
+                                id:
+                                  type: string
+                                  example: acde3e28-8eee-11ee-ac93-aa41bb3ba07f
+                                name:
+                                  type: string
+                                  example: Kris-Towne
+                            completed:
+                              type: boolean
+                              example: false
+                              default: true
+                            completed_at: {}
+                            created_at:
+                              type: integer
+                              example: 1701286624951
+                              default: 0
+                            due_at:
+                              type: integer
+                              example: 1701733386124
+                              default: 0
+                            expired:
+                              type: boolean
+                              example: false
+                              default: true
+                            expires_at:
+                              type: integer
+                              example: 1701511527629
+                              default: 0
+                            has_learner_seen_award:
+                              type: boolean
+                              example: false
+                              default: true
+                            has_learner_seen_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            id:
+                              type: string
+                              example: aceb2eda-8eee-11ee-ac93-aa41bb3ba07f
+                            is_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            is_started:
+                              type: boolean
+                              example: true
+                              default: true
+                            last_accessed_at:
+                              type: integer
+                              example: 1700792876875
+                              default: 0
+                            linked_in_add_to_profile_clicked_at:
+                              type: integer
+                              example: 1701286624927
+                              default: 0
+                            progress_percentage:
+                              type: integer
+                              example: 100
+                              default: 0
+                            public_url:
+                              type: string
+                              example: /certificate/wYk19Vc2Bw
+                            short_id:
+                              type: string
+                              example: wYk19Vc2Bw
+                            time_spent_cache:
+                              type: integer
+                              example: 543
+                              default: 0
+                            updated_at:
+                              type: integer
+                              example: 1701286630439
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/trainings/{training_id}/invite:
+    post:
+      summary: Assign Trainings
+      description: Assign trainings to Academy Contacts (Guides, Resources, SCORM)
+      operationId: assign-trainings
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: training_id
+        in: path
+        description: The id of the training
+        schema:
+          type: string
+        required: true
+      - name: Content-type
+        in: header
+        description: Always use application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userEmails:
+                  type: array
+                  description: Array of Contact emails you'd like to invite to the training.
+                  items:
+                    type: string
+                trainingType:
+                  type: string
+                  description: 'Can be one of the following: "guide", "resource", "scorm".'
+                dueAt:
+                  type: integer
+                  description: Number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"errors\": [],\n    \"assignments\": [\n        {\n            \"id\"\
+                    : \"1d7b3ae0-0efe-11ed-9885-3ea79e467329\",\n            \"completedAt\": null,\n\
+                    \            \"completionPercentage\": null,\n            \"contentId\": \"ffc2ff46-0e95-11ed-bc8c-3ea79e467329\"\
+                    ,\n            \"contentType\": \"scorm\",\n            \"createdAt\": 1659072009744,\n\
+                    \            \"passStatusMetadata\": {\n                \"didPass\": false,\n    \
+                    \            \"didFail\": false,\n                \"doesRequireGrading\": false,\n\
+                    \                \"isInProgress\": false\n            },\n            \"score\": null,\n\
+                    \            \"timeSpent\": null,\n            \"updatedAt\": 1659072009744,\n   \
+                    \         \"userId\": \"40cfc380-0ed1-11ed-9885-3ea79e467329\",\n            \"userType\"\
+                    : \"external\"\n        }\n    ],\n    \"trainingInvitations\": []\n}"
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                  assignments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 1d7b3ae0-0efe-11ed-9885-3ea79e467329
+                        completedAt: {}
+                        completionPercentage: {}
+                        contentId:
+                          type: string
+                          example: ffc2ff46-0e95-11ed-bc8c-3ea79e467329
+                        contentType:
+                          type: string
+                          example: scorm
+                        createdAt:
+                          type: integer
+                          example: 1659072009744
+                          default: 0
+                        passStatusMetadata:
+                          type: object
+                          properties:
+                            didPass:
+                              type: boolean
+                              example: false
+                              default: true
+                            didFail:
+                              type: boolean
+                              example: false
+                              default: true
+                            doesRequireGrading:
+                              type: boolean
+                              example: false
+                              default: true
+                            isInProgress:
+                              type: boolean
+                              example: false
+                              default: true
+                        score: {}
+                        timeSpent: {}
+                        updatedAt:
+                          type: integer
+                          example: 1659072009744
+                          default: 0
+                        userId:
+                          type: string
+                          example: 40cfc380-0ed1-11ed-9885-3ea79e467329
+                        userType:
+                          type: string
+                          example: external
+                  trainingInvitations:
+                    type: array
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/email_domains:
+    put:
+      summary: Update Allowed Email Domains
+      description: Updates the list of allowed email domains that users can use to register. This endpoint
+        overwrites the list, if you need to add or remove individual domains use the POST or DELETE endpoints.
+        Send an empty list to remove all existing domains.
+      operationId: update-allowed-email-domains
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email_domains
+              properties:
+                email_domains:
+                  type: array
+                  description: The list of allowed domains that users can use to register.
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\"\
+                    : true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n\
+                    }"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid parameters\",\n\
+                    \  \"errors\": {\n    \"email_domains\": [\n      \"is missing\"\n    ]\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: Invalid parameters
+                  errors:
+                    type: object
+                    properties:
+                      email_domains:
+                        type: array
+                        items:
+                          type: string
+                          example: is missing
+      deprecated: false
+    delete:
+      summary: Remove Allowed Email Domain
+      description: Remove email domains from the existing list that only allows registration from specific
+        email address domains
+      operationId: remove-allowed-email-domain
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email_domains
+              properties:
+                email_domains:
+                  type: array
+                  description: A list of email domains to remove from the existing list of allowed domains
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\"\
+                    : true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n\
+                    }"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid parameters\",\n\
+                    \  \"errors\": {\n    \"email_domains\": [\n      \"is missing\"\n    ]\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: Invalid parameters
+                  errors:
+                    type: object
+                    properties:
+                      email_domains:
+                        type: array
+                        items:
+                          type: string
+                          example: is missing
+      deprecated: false
+    get:
+      summary: Get Allowed Email Domains
+      description: Returns the list of allowed email domains that users can use to register in the Academy.
+      operationId: get-allowed-email-domains
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\"\
+                    : true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n\
+                    }"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+      deprecated: false
+    post:
+      summary: Add Allowed Email Domain
+      description: Adds email domains to existing list to only allow registration from specific email
+        address domains
+      operationId: add-allowed-email-domain
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email_domains
+              properties:
+                email_domains:
+                  type: array
+                  description: A list of email domains to add to the existing list of allowed domains
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\"\
+                    : true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n\
+                    }"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid parameters\",\n\
+                    \  \"errors\": {\n    \"email_domains\": [\n      \"is missing\"\n    ]\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: Invalid parameters
+                  errors:
+                    type: object
+                    properties:
+                      email_domains:
+                        type: array
+                        items:
+                          type: string
+                          example: is missing
+      deprecated: false
+  /api/v1/academies/{academy_id}/webhook_subscriptions:
+    post:
+      summary: Create Webhook Subscription
+      description: ''
+      operationId: create-webhook-subscription
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - webhookName
+              - url
+              - eventTypes
+              properties:
+                webhookName:
+                  type: string
+                  description: Descriptive name
+                url:
+                  type: string
+                  description: HTTPS endpoint
+                eventTypes:
+                  type: array
+                  description: Valid event types
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"webhookID\": \"id-string-here\",\n  \"webhookName\": \"Fancy Webhook\"\
+                    ,\n  \"url\": \"https://example.com/workramp-webhook-endpoint\",\n  \"eventTypes\"\
+                    : [\n    \"userRegistration\"\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  webhookID:
+                    type: string
+                    example: id-string-here
+                  webhookName:
+                    type: string
+                    example: Fancy Webhook
+                  url:
+                    type: string
+                    example: https://example.com/workramp-webhook-endpoint
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: userRegistration
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}:
+    patch:
+      summary: Edit Webhook Subscription
+      description: ''
+      operationId: edit-webhook-subscription
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: subscription_id
+        in: path
+        description: The id of the webhook subscription
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                webhookName:
+                  type: string
+                  description: Descriptive name
+                url:
+                  type: string
+                  description: HTTPS endpoint
+                eventTypes:
+                  type: array
+                  description: Valid event types
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"webhookID\": \"id-string-here\",\n  \"webhookName\": \"Fancy Webhook\"\
+                    ,\n  \"url\": \"https://example.com/workramp-webhook-endpoint\",\n  \"eventTypes\"\
+                    : [\n    \"userRegistration\"\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  webhookID:
+                    type: string
+                    example: id-string-here
+                  webhookName:
+                    type: string
+                    example: Fancy Webhook
+                  url:
+                    type: string
+                    example: https://example.com/workramp-webhook-endpoint
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: userRegistration
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+  /api/v1/academies/{academy_id}/registrations/{registration_id}:
+    patch:
+      description: ''
+      operationId: patch_apiv1academies{academy_id}registrations{registration_id}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                Result:
+                  summary: Result
+                  value: ''
+                Result 1:
+                  summary: Result 1
+                  value:
+                    id: abcdef-123
+                    score: 100
+                    created_at: 1750348881516
+                    time_spent: null
+                    pass_status: passed
+                    is_completed: true
+                    completed_at: 1750348881000
+                    completion_percentage: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                Result 2:
+                  value:
+                    type: invalid_params
+                    message: is_completed must be the boolean true
+                  summary: Result 2
+                Result 3:
+                  value:
+                    type: invalid_params
+                    message: completed_at, if provided, must be a valid previous or current iso8601 timestamp
+                  summary: Result 3
+      parameters:
+      - name: academy_id
+        in: path
+        required: true
+        description: The id of the Academy
+        schema:
+          type: string
+          default: ''
+      - name: registration_id
+        in: path
+        required: true
+        description: The id of the Registration
+        schema:
+          type: string
+          default: ''
+      - name: Content-Type
+        in: header
+        required: false
+        description: Always send JSON format
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                is_completed:
+                  type: boolean
+                  description: Currently supports only the value - true
+                completed_at:
+                  type: string
+                  format: date-time
+                  description: Current or previous iso8601 timestamp. Defaults to current time if blank.
+                score:
+                  type: integer
+                  default: '100'
+                  description: Specify a score between 0-100.
+              type: object
+              required:
+              - is_completed
+      security:
+      - sec0: []
+      summary: Update Registration (Mark Complete)
+  /api/v1/item_folders:
+    get:
+      description: ''
+      operationId: get_new-endpoint
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value: ''
+                OK:
+                  summary: OK
+                  value:
+                  - id: 0197c6e2-00fd-7048-b6bc-ca34116fcad8
+                    name: Jogging 126
+                    order: 1
+                    createdAt: 1751388389629
+                    updatedAt: 1751388389629
+                  - id: 0197c6e2-00ef-7d0c-9a73-447d99645dc4
+                    name: Board Games 977
+                    order: 2
+                    createdAt: 1751388389614
+                    updatedAt: 1751388389614
+                    children:
+                    - id: 0197c6e2-0109-72fe-9e9c-288eb29d5597
+                      name: Basketball 844
+                      order: 1
+                      createdAt: 1751388389641
+                      updatedAt: 1751388389641
+                      children:
+                      - id: 0197c6e2-0114-770b-9690-088ac9734272
+                        name: Lar Ping 637
+                        order: 1
+                        createdAt: 1751388389652
+                        updatedAt: 1751388389652
+                New Example 2:
+                  summary: New Example 2
+                  value: ''
+      parameters: []
+      summary: Delete SCORM Assignments
+    post:
+      description: ''
+      operationId: post_apiv1item-folders
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                JSON:
+                  summary: JSON
+                  value:
+                    id: 0197c6e2-00ef-7d0c-9a73-447d99645dc4
+                    name: Board Games 977
+                    order: 2
+                    parentItemFolderId: null
+                    isHidden: false
+                    isLocked: false
+                    createdAt: 1751388389614
+                    updatedAt: 1751388389614
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: Name of the item folder
+                is_hidden:
+                  type: boolean
+                  description: Hidden state of the item folder
+                is_locked:
+                  type: boolean
+                  description: Locked state of the item folder
+                parent_item_folder_id:
+                  type: string
+                  description: ID of the parent item folder
+              type: object
+              required:
+              - name
+  /api/v1/item_folders/{item_folder_id}:
+    delete:
+      description: Delete a single item folder
+      responses:
+        '200':
+          description: ''
+      parameters:
+      - in: path
+        name: item_folder_id
+        schema:
+          type: string
+        required: true
+        description: ID of the item folder
+      operationId: delete_api-v1-item-folders-item-folder-id
+      summary: Delete Item Folder
+    patch:
+      description: Edit a single item folder
+      operationId: patch_apiv1item_folders{item_folder_id}
+      responses:
+        '200':
+          description: ''
+      parameters:
+      - in: path
+        name: item_folder_id
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  default: ''
+                  description: Name of the item folder
+                ui_order:
+                  type: integer
+                  description: UI order of the item folder
+                is_hidden:
+                  type: boolean
+                  description: Hidden state of the item folder
+                is_locked:
+                  type: boolean
+                  description: Locked state of the item folder
+                permissions:
+                  type: object
+                  properties:
+                    groups:
+                      type: string
+                      description: 'Group ID keys => role values. Valid roles are:
+
+                        - full_editor
+
+                        - limited_editor
+
+                        - edit
+
+                        - assign
+
+                        - read'
+                    users:
+                      type: string
+                      description: 'User ID keys => role values. Valid roles are:
+
+                        - full_editor
+
+                        - limited_editor
+
+                        - edit
+
+                        - assign
+
+                        - read'
+                  description: User/group permissions
+              type: object
+      summary: Edit Item Folder
+  /api/v1/copy_content:
+    post:
+      description: ''
+      operationId: post_apiv1copy_content
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                JSON:
+                  summary: JSON
+                  value:
+                    createdAt: 1753737105
+                    description: A very interesting course about ducks
+                    displayTitle: Ducks 101
+                    folderId: 019852e1-7151-7d59-976f-b5781379b648
+                    id: 019852e1-29a3-7d9d-a3b9-8cb099b881d4
+                    sourceId: 019852e1-4bea-70a3-b120-060c7b11cd6a
+                    updatedAt: 1753737105
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                content_type:
+                  type: string
+                  description: Should be "scorm"
+                content_id:
+                  type: string
+                  description: ID of the SCORM to copy
+                item_folder_id:
+                  type: string
+                  description: ID of the Item Folder to copy to
+              type: object
+              required:
+              - content_type
+              - content_id
+              - item_folder_id
+  /api/v1/item-folders:
+    get:
+      description: ''
+      operationId: get_new-endpoint
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value: ''
+                OK:
+                  summary: OK
+                  value:
+                  - id: 0197c6e2-00fd-7048-b6bc-ca34116fcad8
+                    name: Jogging 126
+                    order: 1
+                    createdAt: 1751388389629
+                    updatedAt: 1751388389629
+                  - id: 0197c6e2-00ef-7d0c-9a73-447d99645dc4
+                    name: Board Games 977
+                    order: 2
+                    createdAt: 1751388389614
+                    updatedAt: 1751388389614
+                    children:
+                    - id: 0197c6e2-0109-72fe-9e9c-288eb29d5597
+                      name: Basketball 844
+                      order: 1
+                      createdAt: 1751388389641
+                      updatedAt: 1751388389641
+                      children:
+                      - id: 0197c6e2-0114-770b-9690-088ac9734272
+                        name: Lar Ping 637
+                        order: 1
+                        createdAt: 1751388389652
+                        updatedAt: 1751388389652
+                New Example 2:
+                  summary: New Example 2
+                  value: ''
+      parameters: []
+    post:
+      description: ''
+      operationId: post_apiv1item-folders
+      responses:
+        '200':
+          description: ''
+      parameters: []
+  /new-endpoint:
+    get:
+      description: ''
+      operationId: ''
+      responses:
+        '200':
+          description: ''
+      parameters: []
+  /api/v1/scorm_assignments/bulk_create:
+    post:
+      description: Create one or more SCORM assignments
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    success:
+                    - user_id: 1234567891
+                      assignment_id: assignment-id-1
+                    - user_id: 1234567892
+                      assignment_id: assignment-id-2
+                    error:
+                    - error: assignment_exists
+                      user_id: 1234567893
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                          example: 1234567891
+                          default: 0
+                        assignment_id:
+                          type: string
+                          example: assignment-id-1
+                      required:
+                      - user_id
+                      - assignment_id
+                  error:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          type: string
+                          example: assignment_exists
+                        user_id:
+                          type: integer
+                          example: 1234567893
+                          default: 0
+                      required:
+                      - error
+                      - user_id
+                required:
+                - success
+                - error
+      parameters: []
+      summary: Bulk Create SCORM Assignments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scorm_id:
+                  type: string
+                  description: ID of the SCORM
+                group_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of groups to be assigned this content
+                user_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of users to be assigned this content
+                user_emails:
+                  type: array
+                  description: Emails of users to be assigned this content
+                  items:
+                    type: string
+                assigning_user_id:
+                  type: number
+                  description: ID of the user that is assigning the content
+                due_date:
+                  type: string
+                  description: Due date for this assignment
+              required:
+              - scorm_id
+      operationId: post_api-v1-scorm-assignments-bulk-create
+  /api/v1/scorm_assignments/bulk_delete:
+    post:
+      description: Delete one or more SCORM assignments
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    success:
+                    - user_id: 1234567891
+                      assignment_id: assignment-id-1
+                    - user_id: 1234567892
+                      assignment_id: assignment-id-2
+                    error:
+                    - error: did_not_exist
+                      assignment_id: assignment-id-3
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                          example: 1234567891
+                          default: 0
+                          description: ID of the user
+                        assignment_id:
+                          type: string
+                          example: assignment-id-1
+                          description: ID of the SCORM assignment
+                  error:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          type: string
+                          example: did_not_exist
+                          description: Error type
+                        assignment_id:
+                          type: string
+                          example: assignment-id-3
+                          description: SCORM assignment ID
+                      required:
+                      - error
+                      - assignment_id
+                required:
+                - success
+                - error
+      parameters: []
+      summary: Bulk Delete SCORM Assignments
+      operationId: post_api-v1-scorm-assignments-bulk-delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scorm_id:
+                  type: string
+                  description: ID of the SCORM
+                assignment_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: IDs of the assignments to delete
+              required:
+              - scorm_id
+              - assignment_ids
+  /api/v1/scorm_assigmments/{assignment_id}:
+    delete:
+      description: Delete a single SCORM assignment
+      responses:
+        '200':
+          description: ''
+        '204':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                No Content:
+                  summary: No Content
+                  value: ''
+          description: No Content
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+        required: true
+        description: ID of the SCORM assignment
+      summary: Delete SCORM Assignment
+      operationId: delete_api-v1-scorm-assigmments-assignment-id
+  /api/v1/scorm_assignments/{assignment_id}:
+    patch:
+      description: Update a single SCORM assignment
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    assignerUserId: null
+                    completionPercentage: 0
+                    dueAt: null
+                    dueDate: null
+                    id: assignment-id-1
+                    isCompleted: false
+                    score: 0
+                    tags: []
+                    topLevelContentId: scorm-content-id-1
+                    trainingSeriesUserAssignmentIds: []
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+        required: true
+      operationId: patch_api-v1-scorm-assignments-assignment-id
+      summary: Update SCORM Assignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_date:
+                  type: string
+                  description: Due date for the assignment
+  /api/v1/universities:
+    get:
+      description: Get all libraries
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    has_more: false
+                    item_count: 3
+                    page: 1
+                    per_page: 20
+                    url: /api/v1/universities
+                    data:
+                      universities:
+                      - id: 019e279c-529d-770a-a1de-27d615d3389d
+                        created_at: 1778781016733
+                        description: null
+                        group_ids:
+                        - 3
+                        - 4
+                        - 5
+                        is_deleted: false
+                        is_private: false
+                        is_published: true
+                        item_folder_id: 019e279c-51f5-75fb-8068-56e083c1e622
+                        name: University 1
+                        sort_order: updated-desc
+                        type: university
+                        udemy: false
+                        ui_order: 1
+                        updated_at: 1778781016733
+                        user_ids:
+                        - 11
+                        - 12
+                        - 13
+                      - id: 019e279c-52b5-78f0-9ca1-2ef0033479a9
+                        created_at: 1778781016757
+                        description: null
+                        group_ids: []
+                        is_deleted: false
+                        is_private: true
+                        is_published: false
+                        item_folder_id: 019e279c-51f5-75fb-8068-56e083c1e622
+                        name: University 2
+                        sort_order: updated-desc
+                        type: university
+                        udemy: false
+                        ui_order: 1
+                        updated_at: 1778781016757
+                        user_ids: []
+      parameters: []
+      operationId: get_api-v1-universities
+      summary: Get All Libraries
+  /api/v1/universities/{library_id}:
+    get:
+      description: Get a specific library
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    id: 019e279c-529d-770a-a1de-27d615d3389d
+                    created_at: 1778781016733
+                    description: null
+                    group_ids:
+                    - 3
+                    - 4
+                    - 5
+                    is_deleted: false
+                    is_private: false
+                    is_published: true
+                    item_folder_id: 019e279c-51f5-75fb-8068-56e083c1e622
+                    name: University 1
+                    sort_order: updated-desc
+                    type: university
+                    udemy: false
+                    ui_order: 1
+                    updated_at: 1778781016733
+                    user_ids:
+                    - 11
+                    - 12
+                    - 13
+      parameters:
+      - in: path
+        name: library_id
+        schema:
+          type: string
+        required: true
+        description: ID of the library
+      operationId: get_api-v1-universities-library-id
+      summary: Get Library
+  /universities/{library_id}:
+    patch:
+      description: Edit a specific library
+      responses:
+        '200':
+          description: ''
+      parameters:
+      - in: path
+        name: library_id
+        schema:
+          type: string
+        required: true
+        description: ID of the library
+      summary: Edit Library
+      operationId: patch_universities-library-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_public:
+                  type: boolean
+                  description: Is the library public?
+                permissions:
+                  type: object
+                  properties:
+                    users:
+                      type: array
+                      items:
+                        type: integer
+                      description: IDs of users with access to this library
+                    groups:
+                      type: array
+                      items:
+                        type: integer
+                      description: IDs of groups with access to this library
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

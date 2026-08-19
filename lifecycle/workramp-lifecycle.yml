@@ -1,0 +1,94 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.workramp.com/reference/getting-started
+versioning:
+  scheme: uri-path
+  current: v1
+  path_prefix: /api/v1
+  scim_prefix: /scim/v2
+  header_versioning: false
+  date_versioning: false
+  docs: https://developers.workramp.com/reference/getting-started
+  note: >-
+    The API has been at /api/v1 for the entire life of the public changelog (2022-05 to
+    2024-02) and there is no v2, no version header and no version negotiation. WorkRamp's
+    ReadMe project labels its documentation "v1.0".
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    No deprecation policy, no notice window, no Sunset/Deprecation header support. WorkRamp
+    marks individual endpoints "(Deprecated)" in the page title and leaves them live and
+    undated; the OpenAPI documents set `deprecated: true` on zero of 137 operations, so a
+    machine reading the contract cannot see the deprecations at all. The one parameter
+    replacement on record (collaborators -> managers on Create User, 2022-10-11) shipped
+    with no sunset date.
+deprecated_operations:
+  - page: https://developers.workramp.com/reference/get-all-assignments-for-a-guide
+    title: Get All Assignments/Guide (Deprecated)
+    marked_in: page title only
+    marked_in_openapi: false
+    replacement: not stated
+    sunset_date: null
+  - page: https://developers.workramp.com/reference/get-all-registrations-for-a-user
+    title: Deprecated Get All Registrations for a Contact
+    marked_in: page title only
+    marked_in_openapi: false
+    replacement: Get All Registrations for a Contact
+    sunset_date: null
+status_page:
+  url: https://workramp.statuspage.io/
+  provider: Atlassian Statuspage
+  page_name: Confirm LearnUp and Academy
+  page_id: b3ngd7hfpj2b
+  machine_readable: https://workramp.statuspage.io/api/v2/status.json
+  observed:
+    fetched: '2026-08-13'
+    http_status: 200
+    indicator: none
+    description: All Systems Operational
+    page_updated_at: '2026-08-10T06:55:59.630+01:00'
+  note: >-
+    The status page has already been renamed to "Confirm LearnUp and Academy" and remains on
+    the workramp.statuspage.io hostname. status.confirm.com returns 401 and is not a public
+    alternative.
+sla:
+  url: https://www.confirm.com/policies/tol-service-level-agreement
+  name: TOL Service Level Agreement
+  uptime_target: not published on the public page
+  note: >-
+    Published by the parent brand (Confirm) rather than on the developer portal; there is no
+    API-specific SLA and no error-budget or latency commitment in the developer docs.
+support:
+  email: support@workramp.com
+  help_center: https://help.workramp.com/en/
+  api_help_collection: https://help.workramp.com/en/collections/2493185-api
+access_lifecycle:
+  public_api: false
+  gate: >-
+    "This is a private API. Contact support@workramp.com to see if you are eligible, and
+    request access." An enterprise account provisioned for Learn:Up is required first.
+  source: https://developers.workramp.com/reference/getting-started
+product_lifecycle:
+  rebrand:
+    from: WorkRamp
+    to: Confirm — "Learn:Up" (employee LMS) and "Academy" (customer/partner training)
+    parent: Learning Pool rebranded as Confirm; WorkRamp, Confirm HR, AI Sims and Elucidat were consolidated under it
+    evidence:
+      - {url: 'https://www.workramp.com/', http_status: 200, note: '301s to https://www.confirm.com/scale-up/products/learn-up'}
+      - {url: 'https://developers.workramp.com/reference/getting-started', http_status: 200, note: 'page H1 is now "Confirm Learn:Up & Academy API"'}
+      - {url: 'https://workramp.statuspage.io/api/v2/status.json', http_status: 200, note: 'page name is now "Confirm LearnUp and Academy"'}
+    api_impact: >-
+      None yet at the wire level — the API host is still app.workramp.com, the portal is
+      still developers.workramp.com, and support is still support@workramp.com. Only the
+      marketing domain moved. No migration notice has been published to the changelog.
+regions:
+  - {name: Global, host: 'https://app.workramp.com', default: true}
+  - {name: Europe, host: 'https://app.eu.workramp.com', note: 'EU customers substitute this host in all API URLs'}
+changelog:
+  url: https://developers.workramp.com/changelog
+  detail: changelog/workramp-changelog.yml
+  last_entry: '2024-02-22'

@@ -1,0 +1,80 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.workramp.com/reference/
+note: >-
+  WorkRamp does not publish a downloadable OpenAPI file. Its developer portal is
+  ReadMe, and every /reference/<operation> page server-renders a complete OpenAPI
+  3.1.0 document for its parent API definition inside the page's ssr-props payload.
+  These two files are those documents, taken verbatim from the provider-served HTML
+  across 100 reference pages and de-duplicated (the most complete rendering of each
+  definition was used as the base; no operation was authored, edited or inferred).
+  The ReadMe project exposes exactly two API definitions -- api-settings.json and
+  json-api.json -- and both are reproduced here under those names.
+ownership:
+  verdict: pass
+  servers: https://app.workramp.com
+  matches_apis_yml_baseURL: true
+  security_scheme: 'apiKey in header: Authorization (bearer)'
+  statement: >-
+    Both documents declare servers[] https://app.workramp.com, which is exactly the
+    baseURL in apis.yml, and they were fetched from WorkRamp's own developer portal
+    at developers.workramp.com. WorkRamp is now sold as Confirm's "Learn:Up" and
+    "Academy" products, but the API itself is still served from app.workramp.com and
+    documented at developers.workramp.com, so the workramp.com host is correct.
+definitions:
+  - file: workramp-api-settings-openapi.yml
+    readme_filename: api-settings.json
+    readme_uri: /branches/1.0/apis/api-settings.json
+    readme_legacy_id: 62b20d6e9958650073a64311
+    readme_updated_at: '2026-07-17T13:24:10.313Z'
+    paths: 73
+    operations: 81
+    covers: >-
+      Read/GET surface across users, groups, guides, paths, SCORM, challenges,
+      certifications, events, registrations, the content catalog, academy contacts
+      and academy objects -- plus the SCIM 2.0 /scim/v2/Users and /scim/v2/Groups
+      provisioning endpoints.
+  - file: workramp-json-api-openapi.yml
+    readme_filename: json-api.json
+    readme_uri: /branches/1.0/apis/json-api.json
+    readme_legacy_id: 640a708ab67a49000a4d039f
+    readme_updated_at: '2026-08-05T13:52:50.397Z'
+    paths: 44
+    operations: 56
+    covers: >-
+      Write surface: create/update/delete users, groups, custom attributes,
+      assignments (guide/path/SCORM), events and sessions, item folders, webhook
+      subscriptions, academy contacts, segments, email domains and instant auth.
+harvest:
+  reference_pages_fetched: 121
+  pages_carrying_an_embedded_document: 100
+  pages_with_no_document: 21
+  pages_with_no_document_note: >-
+    Conceptual pages (object references, webhook event pages, "Introduction to
+    Webhooks", timestamps, bulk-endpoints) carry prose only, not an OpenAPI payload.
+quality_observed:
+  note: >-
+    Recorded as-found. These are defects in the provider's published definition and
+    are NOT corrected here -- the files are verbatim.
+  untagged_operations: 137
+  operations_with_tags: 0
+  duplicate_operation_ids: 7
+  malformed_paths:
+    - '/api/v1/academies/{academy_id/academy_object_attributes'
+    - '/api/v1/academies/:academy id/paths_users'
+    - '/api/v1/academies/:academy_id/academy_object_attributes'
+    - '/api/v1/academies/${academy_id}/academy_object_attributes'
+    - '/api/v1/logs/guide_assignments?startTime={startTime}&endTime={endTime}'
+    - '/api/v1//resources'
+    - '/api/v1/users/:user_id/assignments/'
+    - '/new-endpoint'
+    - '/'
+  provider_reported_warnings: >-
+    ReadMe's own validation output, embedded in the same payload, reports the same
+    problems: ":user_id" path parameters with no matching {token}, missing startTime
+    and endTime path parameters, /scim/v2/Groups members array with no items schema,
+    and get_academy_object_attribute_values duplicated five times.
+  components_schemas: 0
+  note_schemas: >-
+    Neither definition uses components.schemas -- every request and response body is
+    an inline schema, so there is no reusable data model in the contract.

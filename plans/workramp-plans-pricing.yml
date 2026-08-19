@@ -1,56 +1,106 @@
 name: WorkRamp Plans and Pricing
-description: WorkRamp uses a quote-based pricing model with no published list prices.
-  Plans are divided into Employee Learning Cloud and Customer Learning Cloud, each
-  with Professional and Enterprise tiers. API access and advanced integrations are
-  available on Enterprise tiers. Contracts typically start around $20,000–$30,000
-  annually for professional tiers and scale to $50,000+ for enterprise deployments.
-url: https://www.workramp.com/workramp-pricing
+description: >-
+  WorkRamp is now sold as Confirm's Scale-Up product line — Learn:Up (the LMS, formerly
+  WorkRamp) and Academy (customer/partner training, formerly WorkRamp) — and pricing moved
+  from a quote-only page on workramp.com to a published per-seat price list on
+  confirm.com/scale-up/pricing. Learn:Up, Perform and Practice each carry a public
+  "starting from" per-user-per-month price billed annually and benchmarked on a 200-person
+  company. Academy, Create, Library and Custom remain quote-only. There is still no
+  published API-access tier and no per-call API pricing; API access is bundled with the
+  platform subscription.
+generated: '2026-08-13'
+method: searched
+source: https://www.confirm.com/scale-up/pricing
+url: https://www.confirm.com/scale-up/pricing
+legacy_url: https://www.workramp.com/workramp-pricing
+legacy_url_note: 301s to https://www.confirm.com/scale-up/pricing
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
+currency: USD
+secondary_currency: GBP
+billing_period: annual
+plan_count: 7
+benchmark: Published per-seat prices are quoted "based on a 200-person company".
 plans:
-  - name: Employee Learning Cloud - Enterprise
-    description: Advanced LMS capabilities for workforce learning at scale, including
-      AI-powered features, deeper analytics, integrations, and API access.
-    contact: https://www.workramp.com/workramp-pricing
-    pricingModel: custom-quote
+  - name: 'Learn:Up'
+    former_name: WorkRamp (Employee Learning Cloud)
+    description: >-
+      The LMS — deliver, track and prove learning across the team. This is the product the
+      documented WorkRamp API belongs to.
+    price: 9
+    price_gbp: 7
+    currency: USD
+    unit: per user per month
+    billing_period: annual
+    pricingModel: per-seat
     features:
-      - Advanced LMS capabilities
-      - AI-powered learning recommendations
-      - HRIS integrations
-      - Advanced analytics and reporting
-      - API access (REST and SCIM)
-      - Custom branding
-      - Certification management
-      - SCORM support
-      - Dedicated support
-  - name: Customer Learning Cloud - Professional
-    description: Core functionality for customer, partner, and channel training with
-      built-in content creation and branded academies.
-    contact: https://www.workramp.com/workramp-pricing
-    pricingModel: custom-quote
+      - Core LMS features
+      - AI Simulations
+      - Skills engine
+      - Personalized learning
+      - Analytics and reporting
+    quote_url: https://www.confirm.com/scale-up/pricing
+  - name: Perform
+    former_name: Confirm HR
+    description: Performance and capability visibility across the workforce.
+    price: 8
+    price_gbp: 7
+    currency: USD
+    unit: per user per month
+    billing_period: annual
+    pricingModel: per-seat
     features:
-      - Customer and partner training
-      - Built-in content authoring
-      - Branded academies
-      - Certification management
-      - Basic analytics
-  - name: Customer Learning Cloud - Enterprise
-    description: Advanced customer learning features including WorkRamp AI, deeper
-      analytics, customer integrations, expanded support, and full API access.
-    contact: https://www.workramp.com/workramp-pricing
-    pricingModel: custom-quote
+      - AI-drafted review summaries
+      - Pulse-check surveys
+      - Manager Coach for real-time guidance
+      - Analytics for instant, safe insights
+  - name: Practice
+    former_name: AI Sims
+    description: AI-powered roleplay simulations for high-stakes conversations.
+    price: 4
+    price_gbp: 3
+    currency: USD
+    unit: per user per month
+    billing_period: annual
+    pricingModel: per-seat
     features:
-      - WorkRamp AI
-      - Advanced analytics
-      - Customer integrations
-      - Full REST API access
-      - SCIM provisioning
-      - Webhooks
-      - Expanded support
-      - Custom branding
+      - AI-guided simulation builder
+      - Voice and text roleplay modes
+      - AI characters that push back
+      - Instant post-session feedback scores
+  - name: Academy
+    former_name: WorkRamp (Customer Learning Cloud)
+    description: >-
+      Branded customer and partner learning academies. The Academy half of the documented
+      API (every /api/v1/academies/... operation) belongs to this product.
+    price: null
+    pricingModel: custom-quote
+    contact: https://www.confirm.com/scale-up/pricing
+  - name: Create
+    former_name: Elucidat
+    description: Authoring for subject matter experts, with AI drafting and brand controls.
+    price: null
+    pricingModel: custom-quote
+    contact: https://www.confirm.com/scale-up/pricing
+  - name: Library
+    description: Off-the-shelf course library covering compliance, safety, leadership and skills.
+    price: null
+    pricingModel: custom-quote
+    contact: https://www.confirm.com/scale-up/pricing
+  - name: Custom
+    description: Bespoke learning programs built around the customer's brand, products and roles.
+    price: null
+    pricingModel: custom-quote
+    contact: https://www.confirm.com/scale-up/pricing
+api_access:
+  published_tier: null
+  note: >-
+    No tier on the published price list names API access. The API's own getting-started page
+    states "This is a private API. Contact support@workramp.com to see if you are eligible,
+    and request access," and requires an enterprise account provisioned for Learn:Up — so API
+    eligibility is a sales decision, not a plan line item.
+  source: https://developers.workramp.com/reference/getting-started
 notes:
-  - Pricing is not publicly listed; all plans require a custom quote via sales contact
-  - Annual contracts commonly start around $20,000–$30,000 for professional tiers
-  - Enterprise deployments typically scale to $50,000+ annually
-  - API access (REST and SCIM) is included with Enterprise plan tiers
-  - A free trial or demo can be requested via the pricing page
+  - Prices are "starting from" figures; the page routes every product to "Get a quote".
+  - Products are sold individually as well as bundled — "Get individual products whenever you need them".
+  - Confirm also sells a separate Frontline line; Scale-Up is the line that contains WorkRamp.

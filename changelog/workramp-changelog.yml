@@ -1,0 +1,163 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.workramp.com/changelog
+url: https://developers.workramp.com/changelog
+scheme: uri-path (v1); entries are dated, not versioned
+current_version: v1
+entry_count: 23
+first_entry: '2022-05-24'
+last_entry: '2024-02-22'
+staleness:
+  days_since_last_entry_at_capture: 903
+  note: >-
+    The changelog exists, is public and is dated, but it has not been updated since
+    2024-02-22 — while the API reference behind it IS actively maintained (the ReadMe
+    api-settings definition was updated 2026-07-17 and json-api on 2026-08-05, and the
+    getting-started page on 2026-08-10). A consumer reading the changelog would conclude the
+    API had been frozen for two and a half years, which the definitions contradict. There is
+    also no changelog entry for the WorkRamp -> Confirm Learn:Up rebrand that renamed the
+    API itself.
+breaking_change_policy: none published
+entries:
+  - date: '2024-02-22'
+    type: improved
+    title: Enhancements to Events
+    slug: enhancements-to-events
+    breaking: false
+    highlights: 'Get All Events includes additional fields on session objects: start_time, end_time.'
+  - date: '2023-10-27'
+    type: none
+    title: Enhancements to Academy Assign Endpoints
+    slug: enhancements-to-academy-assign-endpoints
+    breaking: false
+    highlights: Optional dueAt field added to Assign Trainings, Assign Certificates and Assign Paths.
+  - date: '2023-07-25'
+    type: none
+    title: New API endpoint for updating custom attributes on an Academy Contact
+    slug: asdf
+    breaking: false
+    highlights: New endpoint for updating custom attributes on an Academy Contact; custom attributes can also be passed to new contacts.
+    note: 'Published under the placeholder slug "asdf" — an authoring slip left live on the provider site.'
+  - date: '2023-07-11'
+    type: added
+    title: Get All SCORMs for Enterprise
+    slug: get-all-scorms-for-enterprise
+    breaking: false
+    highlights: New endpoint listing all SCORM in an enterprise.
+  - date: '2023-07-07'
+    type: none
+    title: Enhancements to Events and Event Sessions
+    slug: enhancements-to-events-and-event-sessions
+    breaking: false
+    highlights: 'Learner object gains registration_status, attended_event, invitation_date, declined_date.'
+  - date: '2023-02-24'
+    type: added
+    title: Academy Webhook Subscriptions
+    slug: academy-webhook-subscriptions
+    breaking: false
+    highlights: New endpoints for subscribing to Academy webhook events.
+  - date: '2023-01-05'
+    type: improved
+    title: Improvements to User related APIs
+    slug: improvements-to-user-related-apis
+    breaking: false
+    highlights: Get All Users can now search by user attributes; several user APIs reuse existing user data.
+  - date: '2022-12-15'
+    type: none
+    title: Academy Segment APIs
+    slug: academy-segment-apis
+    breaking: false
+    highlights: Added "Add Users to Segment" (clearer name for Assign Segments) and "Remove Users from Segment".
+  - date: '2022-12-06'
+    type: added
+    title: Added Resources Endpoint
+    slug: added-resources-endpoint
+    breaking: false
+    highlights: First Resources endpoint — list all resources in the instance.
+  - date: '2022-10-13'
+    type: added
+    title: Added Endpoint for Challenge Assignments
+    slug: added-endpoint-for-challenge-assignments
+    breaking: false
+    highlights: First Challenges endpoint — retrieve all assignments for a challenge with grading and completion data.
+  - date: '2022-10-13'
+    type: added
+    title: Fetch Assigned SCORM API
+    slug: fetch-assigned-scorm-api
+    breaking: false
+    highlights: Fetch assignments for a specified SCORM file, including basic user and completion data.
+  - date: '2022-10-11'
+    type: improved
+    title: Replaced Param for Create User
+    slug: deprecate-collaborator-and-replace-with-managers-for-create-user
+    breaking: true
+    highlights: >-
+      Create User replaces the `collaborators` parameter with `managers` (array). The only
+      parameter replacement recorded in the changelog; no sunset date or migration window
+      was published.
+  - date: '2022-08-17'
+    type: added
+    title: Invite & Assign Users Endpoints for Academies
+    slug: create-assign-users-for-academies
+    breaking: false
+  - date: '2022-08-17'
+    type: added
+    title: Content Catalog
+    slug: created-api-for-content-catalog
+    breaking: false
+    highlights: Retrieve all content in all folders for the instance.
+  - date: '2022-07-27'
+    type: added
+    title: Events API
+    slug: events-api
+    breaking: false
+    highlights: Fetch and create Events and Event Sessions.
+  - date: '2022-07-20'
+    type: added
+    title: Get All Users in a Group
+    slug: get-all-users-in-a-group
+    breaking: false
+  - date: '2022-07-20'
+    type: improved
+    title: Added ability to overwrite managers in Update User
+    slug: added-ability-to-overwrite-managers-in-update-user
+    breaking: false
+    highlights: New optional boolean overwriteManagerEmails on Update User.
+  - date: '2022-06-29'
+    type: improved
+    title: Added Custom Registration fields to Academy Endpoints
+    slug: added-custom-registration-fields-to-academy-endpoints
+    breaking: false
+  - date: '2022-06-29'
+    type: improved
+    title: Added Segments to Academy Endpoints
+    slug: added-segments-to-academy-endpoints
+    breaking: false
+  - date: '2022-06-21'
+    type: added
+    title: Welcome
+    slug: welcome-to-workramp
+    breaking: false
+    highlights: Changelog opened.
+  - date: '2022-06-07'
+    type: improved
+    title: Added date field to registration endpoints
+    slug: added-date-field-to-registration-endpoints
+    breaking: false
+    highlights: created_at added to two Academy registration endpoints.
+  - date: '2022-06-01'
+    type: improved
+    title: Updated Get All Awarded Certifications
+    slug: updated-get-all-awarded-certifications-w-date-params
+    breaking: false
+    highlights: Start/end date filter parameters added.
+  - date: '2022-05-24'
+    type: added
+    title: Get All Completed Paths Users
+    slug: get-all-completed-paths-users
+    breaking: false
+counts:
+  added: 10
+  improved: 8
+  untyped: 5
+  breaking: 1

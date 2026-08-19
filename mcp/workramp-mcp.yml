@@ -1,0 +1,631 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/workramp-api-settings-openapi.yml, openapi/workramp-json-api-openapi.yml
+note: >-
+  WorkRamp (Confirm Learn:Up & Academy) ships NO MCP server of any kind. There is no hosted
+  endpoint, no npx/pip package, no mcp.json, and no mention of MCP or agents anywhere in the
+  138-entry documentation index at developers.workramp.com/llms.txt. The tools below are a
+  DERIVED CANDIDATE surface — one tool per well-formed OpenAPI operation, so a builder can
+  see what an MCP server over this API would look like. No endpoint URL is asserted, because
+  none exists.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  auth_note: >-
+    If a server were built, it would carry a static admin-scoped API key
+    (Authorization: Bearer) with no scopes and full read/write access to the tenant — see
+    authentication/workramp-authentication.yml. That is a poor fit for agent delegation and
+    is the single biggest blocker to a safe MCP surface here.
+  verified: searched
+searched:
+  - {source: 'https://developers.workramp.com/llms.txt', result: 'no MCP, agent or tools page', checked: '2026-08-13'}
+  - {source: 'https://api.github.com/orgs/workramp/repos', result: '0 public repositories', checked: '2026-08-13'}
+  - {source: 'npm registry search "workramp"', result: '0 packages', checked: '2026-08-13'}
+third_party:
+  note: >-
+    Third-party bridges exist and are recorded here so they are not mistaken for a first-party
+    server. Neither is operated by WorkRamp/Confirm and neither earns an MCPServer pointer.
+  entries:
+    - {name: 'Zapier MCP - WorkRamp', url: 'https://zapier.com/mcp/workramp', operator: Zapier, mode: remote, official: false}
+    - {name: msdanyg/workramp-mcp, url: 'https://github.com/msdanyg/workramp-mcp', operator: community, mode: local-stdio, official: false, note: 'self-described 30 tools over the WorkRamp LMS API; not published to a registry'}
+coverage:
+  openapi_operations: 137
+  candidate_tools: 117
+  excluded: 20
+  excluded_reason: >-
+    20 operations were excluded because the published path or operationId is malformed and
+    could not be called as-is — unbalanced braces
+    (/api/v1/academies/{academy_id/academy_object_attributes), literal ":param" placeholders,
+    a double slash (/api/v1//resources), a query string embedded in the path template, a bare
+    "/" path, and a leftover "/new-endpoint". These are defects in the provider's own
+    definition, recorded in openapi/workramp-openapi-provenance.yml, not omissions here.
+tools:
+  - name: get_all_awarded_certifications
+    description: Get All Awarded Certifications
+    method: GET
+    path: /api/v1/academies/{academy_id}/awarded_certifications
+    source_operation: workramp-api-settings-openapi.yml#get-all-awarded-certifications
+  - name: get_all_certifications_2
+    description: Get All Offered Certifications
+    method: GET
+    path: /api/v1/academies/{academy_id}/certifications
+    source_operation: workramp-api-settings-openapi.yml#get-all-certifications-2
+  - name: get_certification
+    description: Get All Enrollments for a Certification
+    method: GET
+    path: /api/v1/academies/{academy_id}/certifications/{cert_id}
+    source_operation: workramp-api-settings-openapi.yml#get-certification
+  - name: get_certification_1
+    description: Get Certification
+    method: GET
+    path: /api/v1/academies/{academy_id}/certifications/{certification_id}/details
+    source_operation: workramp-api-settings-openapi.yml#get-certification-1
+  - name: assign_certificates
+    description: Assign Certificates
+    method: POST
+    path: /api/v1/academies/{academy_id}/certifications/{certification_id}/invite
+    source_operation: workramp-api-settings-openapi.yml#assign-certificates
+  - name: get_all_offered_collections
+    description: Get All Offered Collections
+    method: GET
+    path: /api/v1/academies/{academy_id}/collections
+    source_operation: workramp-api-settings-openapi.yml#get-all-offered-collections
+  - name: get_collection
+    description: Get Collection
+    method: GET
+    path: /api/v1/academies/{academy_id}/collections/{collection_id}
+    source_operation: workramp-api-settings-openapi.yml#get-collection
+  - name: get_attendees_for_event_session
+    description: Get Attendees for Event Session
+    method: GET
+    path: /api/v1/academies/{academy_id}/event_sessions/{event_session_id}/attendees
+    source_operation: workramp-api-settings-openapi.yml#get-attendees-for-event-session
+  - name: get_all_academy_events
+    description: Get All Events
+    method: GET
+    path: /api/v1/academies/{academy_id}/events
+    source_operation: workramp-api-settings-openapi.yml#get-all-academy-events
+  - name: get_all_event_sessions
+    description: Get Sessions For Event
+    method: GET
+    path: /api/v1/academies/{academy_id}/events/{event_id}
+    source_operation: workramp-api-settings-openapi.yml#get-all-event-sessions
+  - name: get_attendees_for_event
+    description: Get Attendees For Event
+    method: GET
+    path: /api/v1/academies/{academy_id}/events/{event_id}/attendees
+    source_operation: workramp-api-settings-openapi.yml#get-attendees-for-event
+  - name: invite_users
+    description: Invite Contacts
+    method: POST
+    path: /api/v1/academies/{academy_id}/invite
+    source_operation: workramp-api-settings-openapi.yml#invite-users
+  - name: get_all_paths_academy
+    description: Get All Offered Paths
+    method: GET
+    path: /api/v1/academies/{academy_id}/paths
+    source_operation: workramp-api-settings-openapi.yml#get-all-paths-academy
+  - name: get_all_enrollments_for_a_path
+    description: Get All Enrollments for a Path
+    method: GET
+    path: /api/v1/academies/{academy_id}/paths/{path_id}
+    source_operation: workramp-api-settings-openapi.yml#get-all-enrollments-for-a-path
+  - name: get_path
+    description: Get Path
+    method: GET
+    path: /api/v1/academies/{academy_id}/paths/{path_id}/details
+    source_operation: workramp-api-settings-openapi.yml#get-path
+  - name: assign_paths
+    description: Assign Paths
+    method: POST
+    path: /api/v1/academies/{academy_id}/paths/{path_id}/invite
+    source_operation: workramp-api-settings-openapi.yml#assign-paths
+  - name: get_all_registrations
+    description: Get All Registrations
+    method: GET
+    path: /api/v1/academies/{academy_id}/registrations
+    source_operation: workramp-api-settings-openapi.yml#get-all-registrations
+  - name: get_registration
+    description: Get Registration by ID
+    method: GET
+    path: /api/v1/academies/{academy_id}/registrations/{registration_id}
+    source_operation: workramp-api-settings-openapi.yml#get-registration
+  - name: search_for_trainings
+    description: Search for Trainings
+    method: GET
+    path: /api/v1/academies/{academy_id}/search/{search_term}
+    source_operation: workramp-api-settings-openapi.yml#search-for-trainings
+  - name: assign_segments
+    description: Assign Segments
+    method: POST
+    path: /api/v1/academies/{academy_id}/segments/{segment_id}/invite
+    source_operation: workramp-api-settings-openapi.yml#assign-segments
+  - name: remove_users_from_segment
+    description: Remove Contacts from Segment
+    method: DELETE
+    path: /api/v1/academies/{academy_id}/segments/{segment_id}/remove_users
+    source_operation: workramp-api-settings-openapi.yml#remove-users-from-segment
+  - name: get_all_trainings
+    description: Get All Trainings
+    method: GET
+    path: /api/v1/academies/{academy_id}/trainings
+    source_operation: workramp-api-settings-openapi.yml#get-all-trainings
+  - name: get_training
+    description: Get Training
+    method: GET
+    path: /api/v1/academies/{academy_id}/trainings/{training_id}
+    source_operation: workramp-api-settings-openapi.yml#get-training
+  - name: get_all_registrations_for_a_training
+    description: Get All Registrations for a Training
+    method: GET
+    path: /api/v1/academies/{academy_id}/trainings/{training_id}/registrations
+    source_operation: workramp-api-settings-openapi.yml#get-all-registrations-for-a-training
+  - name: get_academy_customer_users
+    description: Get All Contacts
+    method: GET
+    path: /api/v1/academies/{academy_id}/users
+    source_operation: workramp-api-settings-openapi.yml#get-academy-customer-users
+  - name: get_all_users_support_duplicated
+    description: Get All Contacts (support duplicated)
+    method: GET
+    path: /api/v1/academies/{academy_id}/users-duplicate
+    source_operation: workramp-api-settings-openapi.yml#get-all-users-support-duplicated
+  - name: get_user
+    description: Get Contact
+    method: GET
+    path: /api/v1/academies/{academy_id}/users/{contact_id}
+    source_operation: workramp-api-settings-openapi.yml#get-user
+  - name: delete_academy_user
+    description: Delete Contact
+    method: DELETE
+    path: /api/v1/academies/{academy_id}/users/{contact_id}
+    source_operation: workramp-api-settings-openapi.yml#delete-academy-user
+  - name: get_all_awarded_certifications_for_a_user
+    description: Get All Awarded Certifications For a Contact
+    method: GET
+    path: /api/v1/academies/{academy_id}/users/{contact_id}/awarded_certifications
+    source_operation: workramp-api-settings-openapi.yml#get-all-awarded-certifications-for-a-user
+  - name: get_all_registrations_for_a_user
+    description: Deprecated Get All Registrations for a Contact
+    method: GET
+    path: /api/v1/academies/{academy_id}/users/{contact_id}/registrations
+    source_operation: workramp-api-settings-openapi.yml#get-all-registrations-for-a-user
+  - name: get_all_registrations_for_a_user_1
+    description: Get Registration by Contact ID & Registration ID
+    method: GET
+    path: /api/v1/academies/{academy_id}/users/{contact_id}/registrations/{registration_id}
+    source_operation: workramp-api-settings-openapi.yml#get-all-registrations-for-a-user-1
+  - name: get_all_webhook_subscriptions
+    description: Get All Webhook Subscriptions
+    method: GET
+    path: /api/v1/academies/{academy_id}/webhook_subscriptions
+    source_operation: workramp-api-settings-openapi.yml#get-all-webhook-subscriptions
+  - name: get_webhook_subscription
+    description: Get Webhook Subscription
+    method: GET
+    path: /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}
+    source_operation: workramp-api-settings-openapi.yml#get-webhook-subscription
+  - name: delete_webhook_subscription
+    description: Delete Webhook Subscription
+    method: DELETE
+    path: /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}
+    source_operation: workramp-api-settings-openapi.yml#delete-webhook-subscription
+  - name: get_all_certifications_1
+    description: Get All Certifications
+    method: GET
+    path: /api/v1/certifications
+    source_operation: workramp-api-settings-openapi.yml#get-all-certifications-1
+  - name: get_all_certifications
+    description: Get Awards by Certification
+    method: GET
+    path: /api/v1/certifications/{certification_id}/awards
+    source_operation: workramp-api-settings-openapi.yml#get-all-certifications
+  - name: get_challenge_assignments
+    description: Get all Users for a Challenge
+    method: GET
+    path: /api/v1/challenge/{challenge_id}
+    source_operation: workramp-api-settings-openapi.yml#get-challenge-assignments
+  - name: get_content_catalog
+    description: Get Content Catalog
+    method: GET
+    path: /api/v1/content_catalog
+    source_operation: workramp-api-settings-openapi.yml#get-content-catalog
+  - name: get_event_session
+    description: Get Event Session
+    method: GET
+    path: /api/v1/events/{event_id}/session/{session_id}
+    source_operation: workramp-api-settings-openapi.yml#get-event-session
+  - name: get_all_groups
+    description: Get all Groups
+    method: GET
+    path: /api/v1/groups
+    source_operation: workramp-api-settings-openapi.yml#get-all-groups
+  - name: get_all_users_in_a_group
+    description: Get All Users in a Group
+    method: GET
+    path: /api/v1/groups/{group_id}/users
+    source_operation: workramp-api-settings-openapi.yml#get-all-users-in-a-group
+  - name: delete_assignment
+    description: Delete Assignment
+    method: DELETE
+    path: /api/v1/guide_assignments/{GuideAssignmentID}
+    source_operation: workramp-api-settings-openapi.yml#delete-assignment
+  - name: get_all_guides
+    description: Get All Guides
+    method: GET
+    path: /api/v1/guides
+    source_operation: workramp-api-settings-openapi.yml#get-all-guides
+  - name: get_all_assignments_for_a_guide
+    description: Get All Assignments for a Guide
+    method: GET
+    path: /api/v1/guides/{GuideID}/assignments
+    source_operation: workramp-api-settings-openapi.yml#get-all-assignments-for-a-guide
+  - name: get_all_unique_guide_assignment_changes
+    description: Get All Unique Guide Assignment Changes
+    method: GET
+    path: /api/v1/logs/guides
+    source_operation: workramp-api-settings-openapi.yml#get-all-unique-guide-assignment-changes
+  - name: delete_assignment_1
+    description: Delete Path Assignment
+    method: DELETE
+    path: /api/v1/path_assignments/{assignment_id}
+    source_operation: workramp-api-settings-openapi.yml#delete-assignment-1
+  - name: get_all_paths
+    description: Get All Paths
+    method: GET
+    path: /api/v1/paths
+    source_operation: workramp-api-settings-openapi.yml#get-all-paths
+  - name: get_all_assignments_for_a_path
+    description: Get All Assignments for a Path
+    method: GET
+    path: /api/v1/paths/{path_id}/assignments
+    source_operation: workramp-api-settings-openapi.yml#get-all-assignments-for-a-path
+  - name: get_scorm_assignments
+    description: Get All Assignments for a SCORM Course
+    method: GET
+    path: /api/v1/scorm/{id}/assigned_users
+    source_operation: workramp-api-settings-openapi.yml#get-scorm-assignments
+  - name: get_all_scorms
+    description: Get All SCORM Courses
+    method: GET
+    path: /api/v1/scorms
+    source_operation: workramp-api-settings-openapi.yml#get-all-scorms
+  - name: search_across_all_public_universities
+    description: Search Public Library
+    method: GET
+    path: /api/v1/search/university/{search}
+    source_operation: workramp-api-settings-openapi.yml#search-across-all-public-universities
+  - name: search_within_a_public_university
+    description: Search Within A Public Library
+    method: GET
+    path: /api/v1/search/university/{university_name}/{search}
+    source_operation: workramp-api-settings-openapi.yml#search-within-a-public-university
+  - name: get_all_users_in_enterprise
+    description: Get All Users
+    method: GET
+    path: /api/v1/users
+    source_operation: workramp-api-settings-openapi.yml#get-all-users-in-enterprise
+  - name: get_all_users_attributes
+    description: Get All Users (Including Attributes)
+    method: GET
+    path: /api/v1/users/attributes
+    source_operation: workramp-api-settings-openapi.yml#get-all-users-attributes
+  - name: delete_user
+    description: Delete User
+    method: DELETE
+    path: /api/v1/users/{user_id}
+    source_operation: workramp-api-settings-openapi.yml#delete-user
+  - name: get_all_awards
+    description: Get Awards by User
+    method: GET
+    path: /api/v1/users/{user_id}/certifications
+    source_operation: workramp-api-settings-openapi.yml#get-all-awards
+  - name: get_assignments_for_user
+    description: Get Assignments for User
+    method: GET
+    path: /api/v1/{UserID}/guide_assignments
+    source_operation: workramp-api-settings-openapi.yml#get-assignments-for-user
+  - name: scim_get_all_groups
+    description: 'SCIM: Get All Groups'
+    method: GET
+    path: /scim/v2/Groups
+    source_operation: workramp-api-settings-openapi.yml#scim-get-all-groups
+  - name: scim_create_group
+    description: 'SCIM: Create Group'
+    method: POST
+    path: /scim/v2/Groups
+    source_operation: workramp-api-settings-openapi.yml#scim-create-group
+  - name: scim_get_group
+    description: 'SCIM: Get Group'
+    method: GET
+    path: /scim/v2/Groups/{id}
+    source_operation: workramp-api-settings-openapi.yml#scim-get-group
+  - name: scim_patch_group
+    description: 'SCIM: Patch Group'
+    method: PATCH
+    path: /scim/v2/Groups/{id}
+    source_operation: workramp-api-settings-openapi.yml#scim-patch-group
+  - name: scim_delete_group
+    description: 'SCIM: Delete Group'
+    method: DELETE
+    path: /scim/v2/Groups/{id}
+    source_operation: workramp-api-settings-openapi.yml#scim-delete-group
+  - name: scim_get_all_users
+    description: 'SCIM: Get All Users'
+    method: GET
+    path: /scim/v2/Users
+    source_operation: workramp-api-settings-openapi.yml#scim-get-all-users
+  - name: scim_create_user
+    description: 'SCIM: Create User'
+    method: POST
+    path: /scim/v2/Users
+    source_operation: workramp-api-settings-openapi.yml#scim-create-user
+  - name: scim_get_user
+    description: 'SCIM: Get User'
+    method: GET
+    path: /scim/v2/Users/{id}
+    source_operation: workramp-api-settings-openapi.yml#scim-get-user
+  - name: scim_update_user
+    description: 'SCIM: Update User'
+    method: PUT
+    path: /scim/v2/Users/{id}
+    source_operation: workramp-api-settings-openapi.yml#scim-update-user
+  - name: get_all_certifications_for_a_contact
+    description: Get All Certifications for a Contact
+    method: GET
+    path: /api/v1/academies/{academy_id}/contacts/{contact_id}/certifications
+    source_operation: workramp-json-api-openapi.yml#get-all-certifications-for-a-contact
+  - name: get_all_paths_for_a_contact
+    description: Get all Paths for a Contact
+    method: GET
+    path: /api/v1/academies/{academy_id}/contacts/{contact_id}/paths
+    source_operation: workramp-json-api-openapi.yml#get-all-paths-for-a-contact
+  - name: get_all_registrations_for_a_contact
+    description: Get All Registrations for a Contact
+    method: GET
+    path: /api/v1/academies/{academy_id}/contacts/{contact_id}/registrations
+    source_operation: workramp-json-api-openapi.yml#get-all-registrations-for-a-contact
+  - name: update_allowed_email_domains
+    description: Update Allowed Email Domains
+    method: PUT
+    path: /api/v1/academies/{academy_id}/email_domains
+    source_operation: workramp-json-api-openapi.yml#update-allowed-email-domains
+  - name: remove_allowed_email_domain
+    description: Remove Allowed Email Domain
+    method: DELETE
+    path: /api/v1/academies/{academy_id}/email_domains
+    source_operation: workramp-json-api-openapi.yml#remove-allowed-email-domain
+  - name: get_allowed_email_domains
+    description: Get Allowed Email Domains
+    method: GET
+    path: /api/v1/academies/{academy_id}/email_domains
+    source_operation: workramp-json-api-openapi.yml#get-allowed-email-domains
+  - name: add_allowed_email_domain
+    description: Add Allowed Email Domain
+    method: POST
+    path: /api/v1/academies/{academy_id}/email_domains
+    source_operation: workramp-json-api-openapi.yml#add-allowed-email-domain
+  - name: instant_auth
+    description: Instant Auth
+    method: POST
+    path: /api/v1/academies/{academy_id}/instant_auth_request
+    source_operation: workramp-json-api-openapi.yml#instant-auth
+  - name: patch_apiv1academies_academy_id_registrations_registration_id
+    description: Update Registration (Mark Complete)
+    method: PATCH
+    path: /api/v1/academies/{academy_id}/registrations/{registration_id}
+    source_operation: workramp-json-api-openapi.yml#patch_apiv1academies{academy_id}registrations{registration_id}
+  - name: add_users_to_segment
+    description: Add Contacts to Segment
+    method: POST
+    path: /api/v1/academies/{academy_id}/segments/{segment_id}/add_users
+    source_operation: workramp-json-api-openapi.yml#add-users-to-segment
+  - name: assign_trainings
+    description: Assign Trainings
+    method: POST
+    path: /api/v1/academies/{academy_id}/trainings/{training_id}/invite
+    source_operation: workramp-json-api-openapi.yml#assign-trainings
+  - name: create_contact
+    description: Create Contact
+    method: POST
+    path: /api/v1/academies/{academy_id}/users
+    source_operation: workramp-json-api-openapi.yml#create-contact
+  - name: update_academy_user
+    description: Update Contact
+    method: PATCH
+    path: /api/v1/academies/{academy_id}/users/{contact_id}
+    source_operation: workramp-json-api-openapi.yml#update-academy-user
+  - name: create_webhook_subscription
+    description: Create Webhook Subscription
+    method: POST
+    path: /api/v1/academies/{academy_id}/webhook_subscriptions
+    source_operation: workramp-json-api-openapi.yml#create-webhook-subscription
+  - name: edit_webhook_subscription
+    description: Edit Webhook Subscription
+    method: PATCH
+    path: /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}
+    source_operation: workramp-json-api-openapi.yml#edit-webhook-subscription
+  - name: get_guide_assignments_in_date_range
+    description: Get All Guide Assignments in Date Range
+    method: GET
+    path: /api/v1/assignments/guide
+    source_operation: workramp-json-api-openapi.yml#get-guide-assignments-in-date-range
+  - name: get_path_assignments_in_date_range
+    description: Get All Path Assignments in Date Range
+    method: GET
+    path: /api/v1/assignments/path
+    source_operation: workramp-json-api-openapi.yml#get-path-assignments-in-date-range
+  - name: get_scorm_assignments_in_date_range
+    description: Get All SCORM Assignments in Date Range
+    method: GET
+    path: /api/v1/assignments/scorm
+    source_operation: workramp-json-api-openapi.yml#get-scorm-assignments-in-date-range
+  - name: add_custom_user_attributes
+    description: Set Custom Attributes for a User
+    method: POST
+    path: /api/v1/attributes/user/{UserID}
+    source_operation: workramp-json-api-openapi.yml#add-custom-user-attributes
+  - name: delete_custom_user_attributes
+    description: Delete a Custom Attribute from a User
+    method: DELETE
+    path: /api/v1/attributes/user/{UserID}
+    source_operation: workramp-json-api-openapi.yml#delete-custom-user-attributes
+  - name: get_all_events
+    description: Get All Events
+    method: GET
+    path: /api/v1/events
+    source_operation: workramp-json-api-openapi.yml#get-all-events
+  - name: create_event
+    description: Create Event
+    method: POST
+    path: /api/v1/events
+    source_operation: workramp-json-api-openapi.yml#create-event
+  - name: create_event_session
+    description: Create Event Session
+    method: POST
+    path: /api/v1/events/{EventID}/session
+    source_operation: workramp-json-api-openapi.yml#create-event-session
+  - name: invite_user_to_event_session
+    description: Invite Users to Event Session
+    method: POST
+    path: /api/v1/events/{event_id}/session/{session_id}/invite
+    source_operation: workramp-json-api-openapi.yml#invite-user-to-event-session
+  - name: create_group
+    description: Create Group
+    method: POST
+    path: /api/v1/groups
+    source_operation: workramp-json-api-openapi.yml#create-group
+  - name: update_group
+    description: Update Group
+    method: POST
+    path: /api/v1/groups/{GroupID}
+    source_operation: workramp-json-api-openapi.yml#update-group
+  - name: assign_a_user_to_a_group_1
+    description: Assign a User to a Group
+    method: POST
+    path: /api/v1/groups/{GroupID}/users
+    source_operation: workramp-json-api-openapi.yml#assign-a-user-to-a-group-1
+  - name: update_assignment
+    description: Update Assignment
+    method: POST
+    path: /api/v1/guide_assignments/{GuideAssignmentID}
+    source_operation: workramp-json-api-openapi.yml#update-assignment
+  - name: create_assignment_2
+    description: Create Assignment
+    method: POST
+    path: /api/v1/guides/{GuideID}/assignments
+    source_operation: workramp-json-api-openapi.yml#create-assignment-2
+  - name: elc_instant_auth
+    description: Instant Auth
+    method: POST
+    path: /api/v1/instant_auth
+    source_operation: workramp-json-api-openapi.yml#elc-instant-auth
+  - name: get_new_endpoint
+    description: Delete SCORM Assignments
+    method: GET
+    path: /api/v1/item_folders
+    source_operation: workramp-json-api-openapi.yml#get_new-endpoint
+  - name: delete_api_v1_item_folders_item_folder_id
+    description: Delete Item Folder
+    method: DELETE
+    path: /api/v1/item_folders/{item_folder_id}
+    source_operation: workramp-json-api-openapi.yml#delete_api-v1-item-folders-item-folder-id
+  - name: patch_apiv1item_folders_item_folder_id
+    description: Edit Item Folder
+    method: PATCH
+    path: /api/v1/item_folders/{item_folder_id}
+    source_operation: workramp-json-api-openapi.yml#patch_apiv1item_folders{item_folder_id}
+  - name: get_path_assignment
+    description: Get Path Assignment by ID
+    method: GET
+    path: /api/v1/path_assignments/{assignment_id}
+    source_operation: workramp-json-api-openapi.yml#get-path-assignment
+  - name: update_assignment_1
+    description: Update Path Assignment
+    method: POST
+    path: /api/v1/path_assignments/{assignment_id}
+    source_operation: workramp-json-api-openapi.yml#update-assignment-1
+  - name: create_path_assignment
+    description: Create Path Assignment
+    method: POST
+    path: /api/v1/paths/{path_id}/assignments
+    source_operation: workramp-json-api-openapi.yml#create-path-assignment
+  - name: white_label_customers
+    description: White Label Customers
+    method: GET
+    path: /api/v1/reseller_customers
+    source_operation: workramp-json-api-openapi.yml#white-label-customers
+  - name: delete_api_v1_scorm_assigmments_assignment_id
+    description: Delete SCORM Assignment
+    method: DELETE
+    path: /api/v1/scorm_assigmments/{assignment_id}
+    source_operation: workramp-json-api-openapi.yml#delete_api-v1-scorm-assigmments-assignment-id
+  - name: post_api_v1_scorm_assignments_bulk_create
+    description: Bulk Create SCORM Assignments
+    method: POST
+    path: /api/v1/scorm_assignments/bulk_create
+    source_operation: workramp-json-api-openapi.yml#post_api-v1-scorm-assignments-bulk-create
+  - name: post_api_v1_scorm_assignments_bulk_delete
+    description: Bulk Delete SCORM Assignments
+    method: POST
+    path: /api/v1/scorm_assignments/bulk_delete
+    source_operation: workramp-json-api-openapi.yml#post_api-v1-scorm-assignments-bulk-delete
+  - name: patch_api_v1_scorm_assignments_assignment_id
+    description: Update SCORM Assignment
+    method: PATCH
+    path: /api/v1/scorm_assignments/{assignment_id}
+    source_operation: workramp-json-api-openapi.yml#patch_api-v1-scorm-assignments-assignment-id
+  - name: get_api_v1_universities
+    description: Get All Libraries
+    method: GET
+    path: /api/v1/universities
+    source_operation: workramp-json-api-openapi.yml#get_api-v1-universities
+  - name: get_api_v1_universities_library_id
+    description: Get Library
+    method: GET
+    path: /api/v1/universities/{library_id}
+    source_operation: workramp-json-api-openapi.yml#get_api-v1-universities-library-id
+  - name: create_user
+    description: Create User
+    method: POST
+    path: /api/v1/users
+    source_operation: workramp-json-api-openapi.yml#create-user
+  - name: update_user_1
+    description: Update User
+    method: POST
+    path: /api/v1/users/{user_id}
+    source_operation: workramp-json-api-openapi.yml#update-user-1
+  - name: elc_webhooks_get_all
+    description: Get All Webhook Subscriptions
+    method: GET
+    path: /api/v1/webhook_subscriptions
+    source_operation: workramp-json-api-openapi.yml#elc-webhooks-get-all
+  - name: elc_webhooks_create
+    description: Create Webhook Subscription
+    method: POST
+    path: /api/v1/webhook_subscriptions
+    source_operation: workramp-json-api-openapi.yml#elc-webhooks-create
+  - name: elc_webhooks_get
+    description: Get Webhook Subscription
+    method: GET
+    path: /api/v1/webhook_subscriptions/{webhook_subscription_id}
+    source_operation: workramp-json-api-openapi.yml#elc-webhooks-get
+  - name: elc_webhooks_update
+    description: Update Webhook Subscription
+    method: PATCH
+    path: /api/v1/webhook_subscriptions/{webhook_subscription_id}
+    source_operation: workramp-json-api-openapi.yml#elc-webhooks-update
+  - name: elc_webhooks_delete
+    description: Delete Webhook Subscription
+    method: DELETE
+    path: /api/v1/webhook_subscriptions/{webhook_subscription_id}
+    source_operation: workramp-json-api-openapi.yml#elc-webhooks-delete
+  - name: patch_universities_library_id
+    description: Edit Library
+    method: PATCH
+    path: /universities/{library_id}
+    source_operation: workramp-json-api-openapi.yml#patch_universities-library-id
