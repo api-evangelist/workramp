@@ -46,6 +46,21 @@ tags:
   - Assessments
   - Certifications
   - Coaching
+  - Go-To-Market
+  - SCIM
+  - SCORM
+  - Webhook
+  - Customer Education
+tags_raw:
+  - Learning Management
+  - Revenue Enablement
+  - Sales Enablement
+  - Training
+  - Onboarding
+  - LMS
+  - Assessments
+  - Certifications
+  - Coaching
   - Go-to-Market
   - SCIM
   - SCORM
@@ -65,6 +80,15 @@ apis:
     humanURL: https://developers.workramp.com/reference/getting-started
     baseURL: https://app.workramp.com/api/v1
     tags:
+      - User
+      - Learning
+      - Certifications
+      - SCORM
+      - Registrations
+      - Enrollments
+      - Webhook
+      - SCIM
+    tags_raw:
       - Users
       - Learning
       - Certifications
