@@ -5,18 +5,18 @@
       "source": "https://help.workramp.com/en/feed.xml",
       "feed_url": "https://help.workramp.com/en/feed.xml",
       "title": "",
-      "saved": 2,
+      "saved": 0,
       "method": "feed"
     },
     {
-      "source": "https://help.workramp.com/en/",
-      "feed_url": "https://help.workramp.com/en/feed.xml",
+      "source": "https://help.workramp.com/en/collections/2493185-api",
+      "feed_url": "https://help.workramp.com/en/collections/2493185-api",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "none"
     }
   ],
-  "fetched": "2026-08-15T12:11:08Z",
-  "post_count": 27,
+  "fetched": "2026-08-22T20:20:02Z",
+  "post_count": 29,
   "agent_pulled": "2026-07-04"
 }
