@@ -67,62 +67,591 @@ tags_raw:
   - Webhooks
   - Customer Education
 apis:
-  - aid: workramp:workramp-api
-    name: WorkRamp API
-    description: >-
-      REST API for the Confirm Learn:Up and Academy platform (formerly WorkRamp): manage
-      users, groups and custom attributes, guides/courses, paths, challenges, SCORM courses
-      and assignments, resources, events and sessions, item folders, libraries and the
-      content catalog, plus Academy contacts, segments, trainings, certifications and
-      registrations, webhook subscriptions and SCIM 2.0 provisioning. 137 operations across
-      two published definitions, secured with an admin-scoped API key sent as a bearer token.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://developers.workramp.com/reference/getting-started
-    baseURL: https://app.workramp.com/api/v1
-    tags:
-      - User
-      - Learning
-      - Certifications
-      - SCORM
-      - Registrations
-      - Enrollments
-      - Webhook
-      - SCIM
-    tags_raw:
-      - Users
-      - Learning
-      - Certifications
-      - SCORM
-      - Registrations
-      - Enrollments
-      - Webhooks
-      - SCIM
-    properties:
-      - type: Documentation
-        url: https://developers.workramp.com/reference/getting-started
-      - type: APIReference
-        url: https://developers.workramp.com/reference/getting-started
-      - type: GettingStarted
-        url: https://developers.workramp.com/reference/getting-started
-      - type: Authentication
-        url: https://developers.workramp.com/reference/basic-auth
-      - type: ChangeLog
-        url: https://developers.workramp.com/changelog
-      - type: OpenAPI
-        name: Confirm Learn:Up & Academy API — read and SCIM surface
-        url: openapi/workramp-api-settings-openapi.yml
-      - type: OpenAPI
-        name: Confirm Learn:Up & Academy API — write surface
-        url: openapi/workramp-json-api-openapi.yml
-      - type: Overlay
-        url: overlays/workramp-api-settings-overlay.yaml
-      - type: Overlay
-        url: overlays/workramp-json-api-overlay.yaml
-    contact:
-      - FN: WorkRamp Support
-        url: https://help.workramp.com/en/
-        email: support@workramp.com
+- aid: workramp:workramp-academies-api
+  name: WorkRamp Academies API
+  description: The Academies API from WorkRamp — 48 operation(s) for academies.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Academies
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-academies-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-api-settings-api
+  name: WorkRamp Api Settings API
+  description: The Api Settings API from WorkRamp — 1 operation(s) for api settings.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Api Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-api-settings-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-assignments-api
+  name: WorkRamp Assignments API
+  description: The Assignments API from WorkRamp — 3 operation(s) for assignments.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Assignments
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-assignments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-attributes-api
+  name: WorkRamp Attributes API
+  description: The Attributes API from WorkRamp — 2 operation(s) for attributes.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-attributes-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-certifications-api
+  name: WorkRamp Certifications API
+  description: The Certifications API from WorkRamp — 2 operation(s) for certifications.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Certifications
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-certifications-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-challenge-api
+  name: WorkRamp Challenge API
+  description: The Challenge API from WorkRamp — 1 operation(s) for challenge.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Challenge
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-challenge-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-content-catalog-api
+  name: WorkRamp Content Catalog API
+  description: The Content Catalog API from WorkRamp — 1 operation(s) for content catalog.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Content Catalog
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-content-catalog-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-copy-content-api
+  name: WorkRamp Copy Content API
+  description: The Copy Content API from WorkRamp — 1 operation(s) for copy content.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Copy Content
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-copy-content-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-events-api
+  name: WorkRamp Events API
+  description: The Events API from WorkRamp — 4 operation(s) for events.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-events-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-groups-api
+  name: WorkRamp Groups API
+  description: The Groups API from WorkRamp — 4 operation(s) for groups.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-groups-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-guide-assignments-api
+  name: WorkRamp Guide Assignments API
+  description: The Guide Assignments API from WorkRamp — 2 operation(s) for guide assignments.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Guide Assignments
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-guide-assignments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-guides-api
+  name: WorkRamp Guides API
+  description: The Guides API from WorkRamp — 2 operation(s) for guides.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Guides
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-guides-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-instant-auth-api
+  name: WorkRamp Instant Auth API
+  description: The Instant Auth API from WorkRamp — 1 operation(s) for instant auth.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Instant Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-instant-auth-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-item-folders-api
+  name: WorkRamp Item Folders API
+  description: The Item Folders API from WorkRamp — 3 operation(s) for item folders.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Item Folders
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-item-folders-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-logs-api
+  name: WorkRamp Logs API
+  description: The Logs API from WorkRamp — 2 operation(s) for logs.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Logs
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-logs-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-new-endpoint-api
+  name: WorkRamp New Endpoint API
+  description: The New Endpoint API from WorkRamp — 1 operation(s) for new endpoint.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - New Endpoint
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-new-endpoint-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-path-assignments-api
+  name: WorkRamp Path Assignments API
+  description: The Path Assignments API from WorkRamp — 1 operation(s) for path assignments.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Path Assignments
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-path-assignments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-paths-api
+  name: WorkRamp Paths API
+  description: The Paths API from WorkRamp — 2 operation(s) for paths.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Paths
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-paths-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-reseller-customers-api
+  name: WorkRamp Reseller Customers API
+  description: The Reseller Customers API from WorkRamp — 1 operation(s) for reseller customers.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Reseller Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-reseller-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-resources-api
+  name: WorkRamp Resources API
+  description: The Resources API from WorkRamp — 1 operation(s) for resources.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-resources-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-scim-api
+  name: WorkRamp SCIM API
+  description: The Scim API from WorkRamp — 4 operation(s) for scim.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Scim
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-scim-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-scorm-api
+  name: WorkRamp Scorm API
+  description: The Scorm API from WorkRamp — 1 operation(s) for scorm.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Scorm
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-scorm-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-scorm-assigmments-api
+  name: WorkRamp Scorm Assigmments API
+  description: The Scorm Assigmments API from WorkRamp — 1 operation(s) for scorm assigmments.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Scorm Assigmments
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-scorm-assigmments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-scorm-assignments-api
+  name: WorkRamp Scorm Assignments API
+  description: The Scorm Assignments API from WorkRamp — 3 operation(s) for scorm assignments.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Scorm Assignments
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-scorm-assignments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-scorms-api
+  name: WorkRamp Scorms API
+  description: The Scorms API from WorkRamp — 1 operation(s) for scorms.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Scorms
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-scorms-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-search-api
+  name: WorkRamp Search API
+  description: The Search API from WorkRamp — 2 operation(s) for search.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-search-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-universities-api
+  name: WorkRamp Universities API
+  description: The Universities API from WorkRamp — 3 operation(s) for universities.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Universities
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-universities-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-users-api
+  name: WorkRamp Users API
+  description: The Users API from WorkRamp — 5 operation(s) for users.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-users-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
+- aid: workramp:workramp-webhook-subscriptions-api
+  name: WorkRamp Webhook Subscriptions API
+  description: The Webhook Subscriptions API from WorkRamp — 2 operation(s) for webhook subscriptions.
+  humanURL: https://developers.workramp.com/reference/getting-started
+  baseURL: https://app.workramp.com/api/v1
+  tags:
+  - Webhook Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/workramp-webhook-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://developers.workramp.com/reference/getting-started
+  - type: APIReference
+    url: https://developers.workramp.com/reference/getting-started
+  - type: GettingStarted
+    url: https://developers.workramp.com/reference/getting-started
+  - type: Authentication
+    url: https://developers.workramp.com/reference/basic-auth
+  - type: ChangeLog
+    url: https://developers.workramp.com/changelog
 common:
+  - type: Overlay
+    url: overlays/workramp-api-settings-overlay.yaml
+  - type: Overlay
+    url: overlays/workramp-json-api-overlay.yaml
   - type: AgenticAccess
     url: agentic-access/workramp-agentic-access.yml
   - type: Authentication
