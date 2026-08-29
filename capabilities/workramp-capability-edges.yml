@@ -1,0 +1,60 @@
+slug: workramp
+provider: WorkRamp
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Education
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Scim
+  spec_file: workramp-scim-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: 'SCIM: Create User; SCIM: Get All Groups; PATCH /scim/v2/Groups/{id}  SCIM: Patch Group'
+  reason: Standard SCIM 2.0 user and group provisioning surface — identity lifecycle and group membership
+    synchronisation, i.e. Identity & Access Management rather than any learning capability.
+- tag: Guide Assignments
+  spec_file: workramp-guide-assignments-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.8
+  evidence: GET /api/v1/{UserID}/guide_assignments — "Get Assignments for User"
+  reason: Guides are WorkRamp's training courses; creating, updating and listing per-user guide assignments
+    is administration of employee training assignments, squarely learning & development management.
+- tag: Guides
+  spec_file: workramp-guides-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.8
+  evidence: GET /api/v1/guides/{GuideID}/assignments — "Get All Assignments for a Guide"
+  reason: Lists training guides (courses) and their learner assignments on an LMS, which realises training/capability-building
+    administration.
+- tag: Path Assignments
+  spec_file: workramp-path-assignments-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.8
+  evidence: GET /api/v1/path_assignments/{assignment_id} — "Get Path Assignment by ID"
+  reason: Manages assignment of learning paths to learners on the LMS (get, update, delete path assignments),
+    which is training programme administration under learning & development.
+- tag: Events
+  spec_file: workramp-events-api-openapi.yml
+  capability_id: BC-300.40
+  capability_id_l1: BC-300
+  capability_name: Learning & Development Management
+  confidence: 0.7
+  evidence: POST /api/v1/events/{event_id}/session/{session_id}/invite — "Invite Users to Event Session"
+  reason: Creating training events and sessions and inviting users to them is scheduling and delivery
+    of instructor-led learning on an LMS, i.e. learning & development management rather than generic calendaring.

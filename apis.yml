@@ -660,6 +660,9 @@ apis:
   - type: ChangeLog
     url: https://developers.workramp.com/changelog
 common:
+  - type: CapabilityMap
+    url: capabilities/workramp-capability-edges.yml
+    name: WorkRamp Business Capability Map
   - type: Overlay
     url: overlays/workramp-api-settings-overlay.yaml
   - type: Overlay
