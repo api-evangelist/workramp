@@ -1,0 +1,109 @@
+openapi: 3.2.0
+info:
+  title: api-settings Content Catalog API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Content Catalog
+paths:
+  /api/v1/content_catalog:
+    get:
+      summary: Get Content Catalog
+      description: Get your content catalog (a collection of all content in your WorkRamp instance)
+      operationId: get-content-catalog
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n    {\n        \"folderName\": \"/Guide\",\n        \"universityName\": \"\",\n        \"universityDescription\": \"\",\n        \"universityFolder\": \"\",\n        \"pathName\": \"\",\n        \"pathDescription\": \"\",\n        \"itemType\": \"guide\",\n        \"itemName\": \"Sales Onboarding\",\n        \"itemDescription\": \"Sales is the best job.\",\n        \"itemLink\": \"http://app.workramp.test/admin/guides/34f4g45-f648-123s-92d0-2313\",\n        \"lastEditedDate\": \"2022-06-30T17:36:29.718Z\",\n        \"lastEditor\": \"John Doe\",\n        \"lastAssignedDate\": \"2022-06-27T18:38:21.811Z\",\n        \"numAssignments\": 1,\n        \"originalAuthor\": \"bethsamuels@example.com\",\n        \"createdDate\": \"2022-06-27T18:38:19.303Z\"\n    },\n    {\n        \"folderName\": \"/Path\",\n        \"universityName\": \"\",\n        \"universityDescription\": \"\",\n        \"universityFolder\": \"\",\n        \"pathName\": \"Learning More\",\n        \"pathDescription\": \"\",\n        \"itemType\": \"resource\",\n        \"itemName\": \"Arts\",\n        \"itemDescription\": \"\",\n        \"itemLink\": \"http://app.workramp.test/admin/resources/1s2dss-fdsf6-11ec-dsa-5e3d23\",\n        \"lastEditedDate\": \"2022-06-27T18:38:20.218Z\",\n        \"lastEditor\": \"Bruce Wayne\",\n        \"lastAssignedDate\": \"\",\n        \"numAssignments\": \"20\",\n        \"originalAuthor\": \"clarkkent@example.com\",\n        \"createdDate\": \"2022-04-13T14:18:30.403Z\"\n    },\n    {\n        \"folderName\": \"/Challenge\",\n        \"universityName\": \"\",\n        \"universityDescription\": \"\",\n        \"universityFolder\": \"\",\n        \"pathName\": \"\",\n        \"pathDescription\": \"\",\n        \"itemType\": \"challenge\",\n        \"itemName\": \"Challenge 101\",\n        \"itemDescription\": \"The hardest challenge ever\",\n        \"itemLink\": \"http://app.workramp.test/admin/challenges/12s42-d2df3-1fdec-6g4-d3f3f34f5\",\n        \"lastEditedDate\": \"2022-02-14T22:28:09.048Z\",\n        \"lastEditor\": \"John Wick\",\n        \"lastAssignedDate\": \"2022-04-27T18:38:26.888Z\",\n        \"numAssignments\": 2,\n        \"originalAuthor\": \"brucewayne@example.com\",\n        \"createdDate\": \"2021-01-27T15:17:20.775Z\"\n    }\n]"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    folderName:
+                      type: string
+                      example: /Guide
+                    universityName:
+                      type: string
+                      example: ''
+                    universityDescription:
+                      type: string
+                      example: ''
+                    universityFolder:
+                      type: string
+                      example: ''
+                    pathName:
+                      type: string
+                      example: ''
+                    pathDescription:
+                      type: string
+                      example: ''
+                    itemType:
+                      type: string
+                      example: guide
+                    itemName:
+                      type: string
+                      example: Sales Onboarding
+                    itemDescription:
+                      type: string
+                      example: Sales is the best job.
+                    itemLink:
+                      type: string
+                      example: http://app.workramp.test/admin/guides/34f4g45-f648-123s-92d0-2313
+                    lastEditedDate:
+                      type: string
+                      example: '2022-06-30T17:36:29.718Z'
+                    lastEditor:
+                      type: string
+                      example: John Doe
+                    lastAssignedDate:
+                      type: string
+                      example: '2022-06-27T18:38:21.811Z'
+                    numAssignments:
+                      type: integer
+                      example: 1
+                      default: 0
+                    originalAuthor:
+                      type: string
+                      example: bethsamuels@example.com
+                    createdDate:
+                      type: string
+                      example: '2022-06-27T18:38:19.303Z'
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/content_catalog \
+
+            -H "Authorization: Bearer ACCESS_TOKEN" \
+
+            -H "Content-type: application/json"'
+        samples-languages:
+        - curl
+      tags:
+      - Content Catalog
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

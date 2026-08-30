@@ -1,0 +1,387 @@
+openapi: 3.2.0
+info:
+  title: Workramp Groups API
+  version: '1.0'
+  description: 'Operations tagged Groups across 2 of this provider''s published API definitions: workramp-api-settings-openapi.yml, workramp-json-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Groups
+paths:
+  /api/v1/groups:
+    get:
+      summary: Get all Groups
+      description: Get all groups within the enterprise
+      operationId: get-all-groups
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  {\n    \"id\": 8,\n    \"enterpriseId\": 23,\n    \"name\": \"SDR New Hires - August\",\n    \"createdAt\": 1435038275166.556,\n    \"updatedAt\": 1437021409461.621\n  },\n  {\n    \"id\": 116,\n    \"enterpriseId\": 23,\n    \"name\": \"SDRs\",\n    \"createdAt\": 1457236933952.727,\n    \"updatedAt\": 1457236933952.727\n  }\n]\n"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 8
+                      default: 0
+                    enterpriseId:
+                      type: integer
+                      example: 23
+                      default: 0
+                    name:
+                      type: string
+                      example: SDR New Hires - August
+                    createdAt:
+                      type: number
+                      example: 1435038275166.556
+                      default: 0
+                    updatedAt:
+                      type: number
+                      example: 1437021409461.621
+                      default: 0
+      deprecated: false
+      tags:
+      - Groups
+    post:
+      summary: Create Group
+      description: Create a group in the enterprise
+      operationId: create-group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 123,\n  \"enterpriseId\": 123,\n  \"name\": \"Marketing\",\n  \"originalName\": \"Marketing\",\n  \"hasManagers\": false,\n  \"fromSso\": false,\n  \"groupAutomationsCount\": 0,\n  \"activeGroupAutomationsCount\": 0,\n  \"description\": \"Optional Group description\",\n  \"createdAt\": 1592977736126,\n  \"updatedAt\": 1592977736126\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                    default: 0
+                  enterpriseId:
+                    type: integer
+                    example: 123
+                    default: 0
+                  name:
+                    type: string
+                    example: Marketing
+                  originalName:
+                    type: string
+                    example: Marketing
+                  hasManagers:
+                    type: boolean
+                    example: false
+                    default: true
+                  fromSso:
+                    type: boolean
+                    example: false
+                    default: true
+                  groupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  activeGroupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  description:
+                    type: string
+                    example: Optional Group description
+                  createdAt:
+                    type: integer
+                    example: 1592977736126
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1592977736126
+                    default: 0
+      deprecated: false
+      tags:
+      - Groups
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/groups/{group_id}/users:
+    get:
+      summary: Get All Users in a Group
+      description: Get all users in a specific group
+      operationId: get-all-users-in-a-group
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: group_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: Content-type
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  {\n    \"id\": 1925,\n    \"name\": \"John Doe\",\n    \"email\": \"johndoe@workramp.com\",\n    \"isAdmin\": false,\n    \"isDeleted\": false,\n \t\t\"isPermanentlyDeleted\": false,\n    \"createdAt\": 1656355073141,\n    \"updatedAt\": 1658343360219,\n    \"directReports\": [\n      {\n        \"id\": 4,\n        \"name\": \"Managee Doe\",\n        \"email\": \"manageedoe@workramp.com\"\n      }\n    ],\n    \"certifications\": [\n      {\n        \"id\": 1,\n        \"title\": \"Certification 1\"\n      }\n    ],\n    \"customAttributes\": [\n      {\n        \"id\": 1,\n        \"apiName\": \"alias\",\n        \"value\": \"rockstar\"\n      }\n    ]\n  },\n  {\n    \"id\": 1954,\n    \"name\": \"Beth Samuels\",\n    \"email\": \"bethsamuels@workramp.com\",\n    \"isAdmin\": true,\n    \"isDeleted\": false,\n \t\t\"isPermanentlyDeleted\": false,\n    \"createdAt\": 1656355073125,\n    \"updatedAt\": 1636355073144,\n    \"directReports\": [],\n    \"certifications\": [],\n    \"customAttributes\": []\n  }\n]\n"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1925
+                      default: 0
+                    name:
+                      type: string
+                      example: John Doe
+                    email:
+                      type: string
+                      example: johndoe@workramp.com
+                    isAdmin:
+                      type: boolean
+                      example: false
+                      default: true
+                    isDeleted:
+                      type: boolean
+                      example: false
+                      default: true
+                    isPermanentlyDeleted:
+                      type: boolean
+                      example: false
+                      default: true
+                    createdAt:
+                      type: integer
+                      example: 1656355073141
+                      default: 0
+                    updatedAt:
+                      type: integer
+                      example: 1658343360219
+                      default: 0
+                    directReports:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 4
+                            default: 0
+                          name:
+                            type: string
+                            example: Managee Doe
+                          email:
+                            type: string
+                            example: manageedoe@workramp.com
+                    certifications:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                            default: 0
+                          title:
+                            type: string
+                            example: Certification 1
+                    customAttributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                            default: 0
+                          apiName:
+                            type: string
+                            example: alias
+                          value:
+                            type: string
+                            example: rockstar
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/grous/2/users \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"
+
+            -H "Content-type: application/json" \'
+        samples-languages:
+        - curl
+      tags:
+      - Groups
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/groups/{GroupID}:
+    post:
+      summary: Update Group
+      description: Update a group within the enterprise
+      operationId: update-group
+      parameters:
+      - name: GroupID
+        in: path
+        description: ID of group to be modified
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 283,\n  \"name\": \"Marketing US\",\n  \"createdAt\": 1866832522351.831,\n  \"updatedAt\": 1866832522351.834,\n  \"id\": 123,\n  \"enterpriseId\": 123,\n  \"name\": \"Marketing US\",\n  \"originalName\": \"Marketing US\",\n  \"hasManagers\": false,\n  \"fromSso\": false,\n  \"groupAutomationsCount\": 0,\n  \"activeGroupAutomationsCount\": 0,\n  \"description\": \"Marketing US Description\",\n  \"createdAt\": 1592978265537,\n  \"updatedAt\": 1592978395038\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                    default: 0
+                  name:
+                    type: string
+                    example: Marketing US
+                  createdAt:
+                    type: integer
+                    example: 1592978265537
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1592978395038
+                    default: 0
+                  enterpriseId:
+                    type: integer
+                    example: 123
+                    default: 0
+                  originalName:
+                    type: string
+                    example: Marketing US
+                  hasManagers:
+                    type: boolean
+                    example: false
+                    default: true
+                  fromSso:
+                    type: boolean
+                    example: false
+                    default: true
+                  groupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  activeGroupAutomationsCount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  description:
+                    type: string
+                    example: Marketing US Description
+      deprecated: false
+      tags:
+      - Groups
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/groups/{GroupID}/users:
+    post:
+      summary: Assign a User to a Group
+      description: Get all groups within the enterprise
+      operationId: assign-a-user-to-a-group-1
+      parameters:
+      - name: GroupID
+        in: path
+        description: The group id to add user to
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: integer
+                  description: id of the user you want to assign to a group
+                  format: int32
+                startDate:
+                  type: string
+                  description: Unix time in milliseconds representing the start date of the user. This date is used to calculate the due date when assigning guides/series through group automations
+                  default: Optional
+                  format: date-time
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: 'true
+
+                    '
+              schema:
+                type: boolean
+                example: true
+                default: true
+      deprecated: false
+      tags:
+      - Groups
+    servers:
+    - url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-refined-from:
+- workramp-api-settings-openapi.yml
+- workramp-json-api-openapi.yml
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

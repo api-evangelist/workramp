@@ -1,0 +1,167 @@
+openapi: 3.2.0
+info:
+  title: json-api Universities API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Universities
+paths:
+  /api/v1/universities:
+    get:
+      description: Get all libraries
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    has_more: false
+                    item_count: 3
+                    page: 1
+                    per_page: 20
+                    url: /api/v1/universities
+                    data:
+                      universities:
+                      - id: 019e279c-529d-770a-a1de-27d615d3389d
+                        created_at: 1778781016733
+                        description: null
+                        group_ids:
+                        - 3
+                        - 4
+                        - 5
+                        is_deleted: false
+                        is_private: false
+                        is_published: true
+                        item_folder_id: 019e279c-51f5-75fb-8068-56e083c1e622
+                        name: University 1
+                        sort_order: updated-desc
+                        type: university
+                        udemy: false
+                        ui_order: 1
+                        updated_at: 1778781016733
+                        user_ids:
+                        - 11
+                        - 12
+                        - 13
+                      - id: 019e279c-52b5-78f0-9ca1-2ef0033479a9
+                        created_at: 1778781016757
+                        description: null
+                        group_ids: []
+                        is_deleted: false
+                        is_private: true
+                        is_published: false
+                        item_folder_id: 019e279c-51f5-75fb-8068-56e083c1e622
+                        name: University 2
+                        sort_order: updated-desc
+                        type: university
+                        udemy: false
+                        ui_order: 1
+                        updated_at: 1778781016757
+                        user_ids: []
+      parameters: []
+      operationId: get_api-v1-universities
+      summary: Get All Libraries
+      tags:
+      - Universities
+  /api/v1/universities/{library_id}:
+    get:
+      description: Get a specific library
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    id: 019e279c-529d-770a-a1de-27d615d3389d
+                    created_at: 1778781016733
+                    description: null
+                    group_ids:
+                    - 3
+                    - 4
+                    - 5
+                    is_deleted: false
+                    is_private: false
+                    is_published: true
+                    item_folder_id: 019e279c-51f5-75fb-8068-56e083c1e622
+                    name: University 1
+                    sort_order: updated-desc
+                    type: university
+                    udemy: false
+                    ui_order: 1
+                    updated_at: 1778781016733
+                    user_ids:
+                    - 11
+                    - 12
+                    - 13
+      parameters:
+      - in: path
+        name: library_id
+        schema:
+          type: string
+        required: true
+        description: ID of the library
+      operationId: get_api-v1-universities-library-id
+      summary: Get Library
+      tags:
+      - Universities
+  /universities/{library_id}:
+    patch:
+      description: Edit a specific library
+      responses:
+        '200':
+          description: ''
+      parameters:
+      - in: path
+        name: library_id
+        schema:
+          type: string
+        required: true
+        description: ID of the library
+      summary: Edit Library
+      operationId: patch_universities-library-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_public:
+                  type: boolean
+                  description: Is the library public?
+                permissions:
+                  type: object
+                  properties:
+                    users:
+                      type: array
+                      items:
+                        type: integer
+                      description: IDs of users with access to this library
+                    groups:
+                      type: array
+                      items:
+                        type: integer
+                      description: IDs of groups with access to this library
+      tags:
+      - Universities
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  title: api-settings Logs API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Logs
+paths:
+  /api/v1/logs/guide_assignments?startTime={startTime}&endTime={endTime}:
+    get:
+      summary: Get All Guide Assignment Changes
+      description: ''
+      operationId: get-all-guide-assignment-changes
+      parameters:
+      - name: startTime
+        in: query
+        description: Any path events occurring after this time will be returned (in unixtime in milliseconds)
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: endTime
+        in: query
+        description: Any path events occurring before this time will be returned (in unixtime in milliseconds)
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: Max value of 10,000
+        schema:
+          type: integer
+          format: int32
+          default: 1000
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: createdThrough
+        in: query
+        description: A tag that can be used to filter which changes are returned in the response. This tag should match what was passed in when creating the path/guide assignment originally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n    {\n      \t\"guideId\": \"6192892b-11e9-4ad8-bd04-8bdc7df9726b\",\n      \t\"id\": \"b03a11c5-507a-4c95-8e56-24088d4c0023\",\n        \"occurredAt\": 1557462936300,\n      \t\"status\": \"assigned\",\n        \"trainingSeriesId\": \"eeb14848-a13e-4ca2-b902-6c0a7d0bb570\",\n        \"guideName\": \"test guide 1\",\n        \"userId\": 100,\n      \t\"userEmail\": \"user1@workramp.com\"\n    },\n  \t{\n      \t\"guideId\": \"dcd63edd-9b02-44cf-8c93-c266bc172064\",\n      \t\"id\": \"f6c981f9-65f4-48ba-bb0c-0a96138b85bd\",\n        \"occurredAt\": 1557462936300,\n      \t\"status\": \"completed\",\n        \"trainingSeriesId\": \"eeb14848-a13e-4ca2-b902-6c0a7d0bb570\",\n        \"guideName\": \"test guide 2\",\n        \"userId\": 100,\n      \t\"userEmail\": \"user1@workramp.com\"\n    },\n  \t{\n      \t\"guideId\": \"6192892b-11e9-4ad8-bd04-8bdc7df9726b\",\n      \t\"id\": \"d834db1f-a3d6-46cf-ab63-724d1055b350\",\n        \"occurredAt\": 1557462936300,\n      \t\"status\": \"deleted\",\n        \"trainingSeriesId\": \"eeb14848-a13e-4ca2-b902-6c0a7d0bb570\",\n        \"guideName\": \"test guide 1\",\n        \"userId\": 105,\n      \t\"userEmail\": \"user2@workramp.com\"\n    }\n]"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    guideId:
+                      type: string
+                      example: 6192892b-11e9-4ad8-bd04-8bdc7df9726b
+                    id:
+                      type: string
+                      example: b03a11c5-507a-4c95-8e56-24088d4c0023
+                    occurredAt:
+                      type: integer
+                      example: 1557462936300
+                      default: 0
+                    status:
+                      type: string
+                      example: assigned
+                    trainingSeriesId:
+                      type: string
+                      example: eeb14848-a13e-4ca2-b902-6c0a7d0bb570
+                    guideName:
+                      type: string
+                      example: test guide 1
+                    userId:
+                      type: integer
+                      example: 100
+                      default: 0
+                    userEmail:
+                      type: string
+                      example: user1@workramp.com
+      deprecated: false
+      tags:
+      - Logs
+  /api/v1/logs/guides:
+    get:
+      summary: Get All Unique Guide Assignment Changes
+      description: ''
+      operationId: get-all-unique-guide-assignment-changes
+      parameters:
+      - name: startTime
+        in: query
+        description: Any path events occurring after this time will be returned (in unixtime in milliseconds)
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: endTime
+        in: query
+        description: Any path events occurring before this time will be returned (in unixtime in milliseconds)
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        description: Max value of 10,000
+        schema:
+          type: integer
+          format: int32
+          default: 1000
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: createdThrough
+        in: query
+        description: A tag that can be used to filter which changes are returned in the response. This tag should match what was passed in when creating the path/guide assignment originally.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n    {\n      \t\"guideId\": \"6192892b-11e9-4ad8-bd04-8bdc7df9726b\",\n      \t\"id\": \"b03a11c5-507a-4c95-8e56-24088d4c0023\",\n        \"occurredAt\": 1557462936300,\n      \t\"status\": \"assigned\",\n        \"trainingSeriesId\": \"eeb14848-a13e-4ca2-b902-6c0a7d0bb570\",\n        \"guideName\": \"test guide 1\",\n        \"userId\": 100,\n      \t\"userEmail\": \"user1@workramp.com\"\n    },\n  \t{\n      \t\"guideId\": \"dcd63edd-9b02-44cf-8c93-c266bc172064\",\n      \t\"id\": \"f6c981f9-65f4-48ba-bb0c-0a96138b85bd\",\n        \"occurredAt\": 1557462936300,\n      \t\"status\": \"completed\",\n        \"trainingSeriesId\": \"eeb14848-a13e-4ca2-b902-6c0a7d0bb570\",\n        \"guideName\": \"test guide 2\",\n        \"userId\": 100,\n      \t\"userEmail\": \"user1@workramp.com\"\n    },\n  \t{\n      \t\"guideId\": \"6192892b-11e9-4ad8-bd04-8bdc7df9726b\",\n      \t\"id\": \"d834db1f-a3d6-46cf-ab63-724d1055b350\",\n        \"occurredAt\": 1557462936300,\n      \t\"status\": \"deleted\",\n        \"trainingSeriesId\": \"eeb14848-a13e-4ca2-b902-6c0a7d0bb570\",\n        \"guideName\": \"test guide 1\",\n        \"userId\": 105,\n      \t\"userEmail\": \"user2@workramp.com\"\n    }\n]"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    guideId:
+                      type: string
+                      example: 6192892b-11e9-4ad8-bd04-8bdc7df9726b
+                    id:
+                      type: string
+                      example: b03a11c5-507a-4c95-8e56-24088d4c0023
+                    occurredAt:
+                      type: integer
+                      example: 1557462936300
+                      default: 0
+                    status:
+                      type: string
+                      example: assigned
+                    trainingSeriesId:
+                      type: string
+                      example: eeb14848-a13e-4ca2-b902-6c0a7d0bb570
+                    guideName:
+                      type: string
+                      example: test guide 1
+                    userId:
+                      type: integer
+                      example: 100
+                      default: 0
+                    userEmail:
+                      type: string
+                      example: user1@workramp.com
+      deprecated: false
+      tags:
+      - Logs
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

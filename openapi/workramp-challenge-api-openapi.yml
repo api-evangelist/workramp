@@ -1,0 +1,194 @@
+openapi: 3.2.0
+info:
+  title: api-settings Challenge API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Challenge
+paths:
+  /api/v1/challenge/{challenge_id}:
+    get:
+      summary: Get all Users for a Challenge
+      description: Get all the users assigned to a specific challenge
+      operationId: get-challenge-assignments
+      parameters:
+      - name: challenge_id
+        in: path
+        description: The id of the challenge
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      - in: query
+        name: page
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+        description: Page of results to return
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+        description: Number of results to return per page (1-200)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: string
+                  per_page:
+                    type: string
+                  has_more:
+                    type: string
+                  item_count:
+                    type: string
+                  url:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      challenge:
+                        type: object
+                        properties:
+                          created_at:
+                            type: number
+                          description:
+                            type: string
+                          display_title:
+                            type: string
+                          folder_id:
+                            type: string
+                          id:
+                            type: string
+                          updated_at:
+                            type: number
+                      challenge_user_assignments:
+                        type: array
+                        items:
+                          properties:
+                            completion_date:
+                              type: number
+                            grade:
+                              type: object
+                              properties:
+                                earned_points:
+                                  type: number
+                                total_points:
+                                  type: number
+                                incomplete:
+                                  type: number
+                            is_fully_graded:
+                              type: boolean
+                            time_spent:
+                              type: number
+                            passed:
+                              type: boolean
+                            user:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                email:
+                                  type: string
+                          type: object
+                required:
+                - page
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 1
+                    url: /api/v1/challenge/63e6348a-4045-11ed-b46f-ea39642a425f
+                    data:
+                      challenge:
+                        created_at: null
+                        description: null
+                        display_title: Distributed secondary matrix
+                        folder_id: null
+                        id: 63e6348a-4045-11ed-b46f-ea39642a425f
+                        updated_at: null
+                      challenge_user_assignments:
+                      - completion_date: 1664826769207
+                        grade:
+                          earned_points: 10
+                          total_points: 20
+                          incomplete: 0
+                        is_fully_graded: true
+                        time_spent: 10
+                        passed: false
+                        user:
+                          name: Shubham
+                          email: sgoyal@workramp.com
+                      - completion_date: null
+                        grade:
+                          earned_points: 0
+                          total_points: 0
+                          incomplete: 0
+                        is_fully_graded: false
+                        time_spent: 10
+                        passed: false
+                        user:
+                          name: Shubham
+                          email: sgoyal@workramp.com
+                OK - legacy_mode:
+                  summary: OK - legacy_mode
+                  value:
+                    name: Distributed secondary matrix
+                    id: 63e6348a-4045-11ed-b46f-ea39642a425f
+                    challengeUserAssignments:
+                    - completionDate: 1664826769207
+                      grade:
+                        earnedPoints: 10
+                        totalPoints: 20
+                        incomplete: 0
+                      isFullyGraded: true
+                      timeSpent: 10
+                      passed: false
+                      user:
+                        name: Shubham
+                        email: sgoyal@workramp.com
+                    - completionDate: null
+                      grade:
+                        earnedPoints: 0
+                        totalPoints: 0
+                        incomplete: 0
+                      isFullyGraded: false
+                      timeSpent: 10
+                      passed: false
+                      user:
+                        name: Shubham
+                        email: sgoyal@workramp.com
+      deprecated: false
+      tags:
+      - Challenge
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

@@ -1,0 +1,395 @@
+openapi: 3.2.0
+info:
+  title: json-api Webhook Subscriptions API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Webhook Subscriptions
+paths:
+  /api/v1/webhook_subscriptions:
+    get:
+      summary: Get All Webhook Subscriptions
+      description: Get all Webhook Subscriptions.
+      operationId: elc-webhooks-get-all
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  {\n    \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n    \"eventTypes\": [\n      \"assignmentCompleted\",\n      \"assignmentCreated\"\n    ],\n    \"name\": \"My Assignment Webhook\",\n    \"url\": \"https://webhook.example.com/assignment\"\n  },\n  {\n    \"id\": \"019201f3-363a-7fd9-b3e7-f3ea2cfd51c1\",\n    \"eventTypes\": [\n      \"userCreated\",\n      \"userDeleted\"\n    ],\n    \"name\": \"My User Webhook\",\n    \"url\": \"https://webhook.example.com/user\"\n  }\n]"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                    eventTypes:
+                      type: array
+                      items:
+                        type: string
+                        example: assignmentCompleted
+                    name:
+                      type: string
+                      example: My Assignment Webhook
+                    url:
+                      type: string
+                      example: https://webhook.example.com/assignment
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+      deprecated: false
+      tags:
+      - Webhook Subscriptions
+    post:
+      summary: Create Webhook Subscription
+      description: Create a Webhook Subscription.
+      operationId: elc-webhooks-create
+      parameters:
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - url
+              - eventTypes
+              properties:
+                name:
+                  type: string
+                  description: The name of the webhook subscription
+                url:
+                  type: string
+                  description: The URL that will receive POSTed webhook data. HTTPS only.
+                eventTypes:
+                  type: array
+                  description: Event types, see ELC Webhooks Intro for a list
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n  \"eventTypes\": [\n    \"assignmentCompleted\",\n    \"assignmentCreated\"\n  ],\n  \"name\": \"My Assignment Webhook\",\n  \"url\": \"https://webhook.example.com/assignment\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: assignmentCompleted
+                  name:
+                    type: string
+                    example: My Assignment Webhook
+                  url:
+                    type: string
+                    example: https://webhook.example.com/assignment
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+      deprecated: false
+      tags:
+      - Webhook Subscriptions
+  /api/v1/webhook_subscriptions/{webhook_subscription_id}:
+    get:
+      summary: Get Webhook Subscription
+      description: Get a specific Webhook Subscription.
+      operationId: elc-webhooks-get
+      parameters:
+      - name: webhook_subscription_id
+        in: path
+        description: ID of the Webhook Subscription
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n  \"eventTypes\": [\n    \"assignmentCompleted\",\n    \"assignmentCreated\"\n  ],\n  \"name\": \"My Assignment Webhook\",\n  \"url\": \"https://webhook.example.com/assignment\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: assignmentCompleted
+                  name:
+                    type: string
+                    example: My Assignment Webhook
+                  url:
+                    type: string
+                    example: https://webhook.example.com/assignment
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"not_found\",\n  \"message\": \"Error. Not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: not_found
+                  message:
+                    type: string
+                    example: Error. Not found.
+      deprecated: false
+      tags:
+      - Webhook Subscriptions
+    patch:
+      summary: Update Webhook Subscription
+      description: Update a Webhook Subscription.
+      operationId: elc-webhooks-update
+      parameters:
+      - name: webhook_subscription_id
+        in: path
+        description: ID of the Webhook Subscription
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the webhook subscription
+                url:
+                  type: string
+                  description: The URL that will receive POSTed webhook data. HTTPS only.
+                eventTypes:
+                  type: array
+                  description: Event types, see ELC Webhooks Intro for a list
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"019201f3-3639-7fd9-b3e7-f3ea2cfd51c1\",\n  \"eventTypes\": [\n    \"assignmentCompleted\",\n    \"assignmentCreated\"\n  ],\n  \"name\": \"My Assignment Webhook\",\n  \"url\": \"https://webhook.example.com/assignment\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 019201f3-3639-7fd9-b3e7-f3ea2cfd51c1
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: assignmentCompleted
+                  name:
+                    type: string
+                    example: My Assignment Webhook
+                  url:
+                    type: string
+                    example: https://webhook.example.com/assignment
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"not_found\",\n  \"message\": \"Error. Not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: not_found
+                  message:
+                    type: string
+                    example: Error. Not found.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+      deprecated: false
+      tags:
+      - Webhook Subscriptions
+    delete:
+      summary: Delete Webhook Subscription
+      description: Delete a Webhook Subscription.
+      operationId: elc-webhooks-delete
+      parameters:
+      - name: webhook_subscription_id
+        in: path
+        description: ID of the Webhook Subscription
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: ''
+        '403':
+          description: '403'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"forbidden\",\n  \"message\": \"Error. Access denied.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: forbidden
+                  message:
+                    type: string
+                    example: Error. Access denied.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid\",\n  \"message\": \"Error description\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid
+                  message:
+                    type: string
+                    example: Error description
+      deprecated: false
+      tags:
+      - Webhook Subscriptions
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

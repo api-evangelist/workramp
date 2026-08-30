@@ -1,0 +1,501 @@
+openapi: 3.2.0
+info:
+  title: Workramp Paths API
+  version: '1.0'
+  description: 'Operations tagged Paths across 2 of this provider''s published API definitions: workramp-api-settings-openapi.yml, workramp-json-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Paths
+paths:
+  /api/v1/paths:
+    get:
+      summary: Get All Paths
+      description: ''
+      operationId: get-all-paths
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      - in: query
+        name: page
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+        description: Page of results to return
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+        description: Number of results to return per page (1-200)
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                    default: '1'
+                  per_page:
+                    type: number
+                    default: '20'
+                  has_more:
+                    type: boolean
+                    default: 'false'
+                  item_count:
+                    type: number
+                  url:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      paths:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            sequential_unlock:
+                              type: boolean
+                            passing_score_required_for_unlock:
+                              type: number
+                            created_at:
+                              type: number
+                            updated_at:
+                              type: number
+                            card_banner:
+                              type: string
+                            time_estimate_seconds:
+                              type: number
+                            num_guides:
+                              type: number
+                            num_resources:
+                              type: number
+                            num_challenges:
+                              type: number
+                            tags:
+                              type: array
+                              items:
+                                type: string
+                          type: object
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 3
+                    url: /api/v1/paths
+                    data:
+                      paths:
+                      - id: 23af7b44-e671-11e7-bcac-02ae264840ac
+                        name: My First Path
+                        description: This is a path for onboarding
+                        sequential_unlock: false
+                        passing_score_required_for_unlock: false
+                        created_at: 1513875926143
+                        updated_at: 1513875940034
+                        card_banner: https://bulletinboardfiles-dev.s3-us-west-1.amazonaws.com/uploads/bb/models/training_series/card_banner/678a1042-b4a3-11e9-a065-3af9d3af309e/test-image-1080p.jpg?X-Amz-Expires=86400&X-Amz-Date=20190813T184459Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=REDACTED_AWS_ACCESS_KEY_ID/20190813/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=cfa268e5e8a8ff1fe57ea57c921b497d7933041b7c02c247540a2e982ba6cc89
+                        time_estimate_seconds: 18000
+                        num_guides: 3
+                        num_resources: 1
+                        num_challenges: 1
+                        tags:
+                        - Onboarding
+                      - id: 72713b46-f738-11e7-a950-06a818a6b395
+                        name: My Second Path
+                        description: This is a path that I'm testing out
+                        sequential_unlock: false
+                        passing_score_required_for_unlock: false
+                        created_at: 1515720753544
+                        updated_at: 1515720775278
+                        card_banner: https://bulletinboardfiles-dev.s3-us-west-1.amazonaws.com/uploads/bb/models/training_series/card_banner/678a1042-b4a3-11e9-a065-3af9d3af309e/test-image-1080p.jpg?X-Amz-Expires=86400&X-Amz-Date=20190813T184459Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=REDACTED_AWS_ACCESS_KEY_ID/20190813/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=cfa268e5e8a8ff1fe57ea57c921b497d7933041b7c02c247540a2e982ba6cc89
+                        time_estimate_seconds: 12000
+                        num_guides: 3
+                        num_resources: 3
+                        num_challenges: 4
+                        tags:
+                        - Testing
+                      - id: 2c343060-f739-11e7-9e82-02ae164840ac
+                        name: My Third Path
+                        description: This is a new path
+                        sequential_unlock: false
+                        passing_score_required_for_unlock: false
+                        created_at: 1515721056812
+                        updated_at: 1515721056812
+                        card_banner: https://bulletinboardfiles-dev.s3-us-west-1.amazonaws.com/uploads/bb/models/training_series/card_banner/678a1042-b4a3-11e9-a065-3af9d3af309e/test-image-1080p.jpg?X-Amz-Expires=86400&X-Amz-Date=20190813T184459Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=REDACTED_AWS_ACCESS_KEY_ID/20190813/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=cfa268e5e8a8ff1fe57ea57c921b497d7933041b7c02c247540a2e982ba6cc89
+                        time_estimate_seconds: 6000
+                        num_guides: 3
+                        num_resources: 2
+                        num_challenges: 6
+                        tags: []
+                OK - legacy_mode:
+                  summary: OK - legacy_mode
+                  value: "[\n\n  {\n\n    \"id\": \"23af7b44-e671-11e7-bcac-02ae264840ac\",\n\n    \"name\": \"My First Path\",\n\n    \"description\": \"This is a path for onboarding\",\n\n    \"sequentialUnlock\": false,\n\n    \"passingScoreRequiredForUnlock\": false,\n\n    \"createdAt\": 1513875926143,\n\n    \"updatedAt\": 1513875940034,\n\n    \"cardBanner\": \"https://bulletinboardfiles-dev.s3-us-west-1.amazonaws.com/uploads/bb/models/training_series/card_banner/678a1042-b4a3-11e9-a065-3af9d3af309e/test-image-1080p.jpg?X-Amz-Expires=86400&X-Amz-Date=20190813T184459Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=REDACTED_AWS_ACCESS_KEY_ID/20190813/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=cfa268e5e8a8ff1fe57ea57c921b497d7933041b7c02c247540a2e982ba6cc89\",\n\n    \"timeEstimateSeconds\": 18000,\n\n    \"numGuides\": 3,\n\n    \"numResources\": 1,\n\n    \"numChallenges\": 1,\n\n    \"tags\": [\n\n      \"Onboarding\"\n\n    ]\n\n  },\n\n  {\n\n    \"id\": \"72713b46-f738-11e7-a950-06a818a6b395\",\n\n    \"name\": \"My Second Path\",\n\n    \"description\": \"This is a path that I'm testing out\",\n\n    \"sequentialUnlock\": false,\n\n    \"passingScoreRequiredForUnlock\": false,\n\n    \"createdAt\": 1515720753544,\n\n    \"updatedAt\": 1515720775278,\n\n    \"cardBanner\": \"https://bulletinboardfiles-dev.s3-us-west-1.amazonaws.com/uploads/bb/models/training_series/card_banner/678a1042-b4a3-11e9-a065-3af9d3af309e/test-image-1080p.jpg?X-Amz-Expires=86400&X-Amz-Date=20190813T184459Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=REDACTED_AWS_ACCESS_KEY_ID/20190813/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=cfa268e5e8a8ff1fe57ea57c921b497d7933041b7c02c247540a2e982ba6cc89\",\n\n    \"timeEstimateSeconds\": 12000,\n\n    \"numGuides\": 3,\n\n    \"numResources\": 3,\n\n    \"numChallenges\": 4,\n\n    \"tags\": [\n\n      \"Testing\"\n\n    ]\n\n  },\n\n  {\n\n    \"id\": \"2c343060-f739-11e7-9e82-02ae164840ac\",\n\n    \"name\": \"My Third Path\",\n\n    \"description\": \"This is a new path\",\n\n    \"sequentialUnlock\": false,\n\n    \"passingScoreRequiredForUnlock\": false,\n\n    \"createdAt\": 1515721056812,\n\n    \"updatedAt\": 1515721056812,\n\n    \"cardBanner\": \"https://bulletinboardfiles-dev.s3-us-west-1.amazonaws.com/uploads/bb/models/training_series/card_banner/678a1042-b4a3-11e9-a065-3af9d3af309e/test-image-1080p.jpg?X-Amz-Expires=86400&X-Amz-Date=20190813T184459Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=REDACTED_AWS_ACCESS_KEY_ID/20190813/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=cfa268e5e8a8ff1fe57ea57c921b497d7933041b7c02c247540a2e982ba6cc89\",\n\n    \"timeEstimateSeconds\": 6000,\n\n    \"numGuides\": 3,\n\n    \"numResources\": 2,\n\n    \"numChallenges\": 6,\n\n    \"tags\": []\n\n  }\n\n]\n\nto be in this format:\n\n{\"page\" => 1,\n\n \"per_page\" => 20,\n\n \"has_more\" => false,\n\n \"item_count\" => 1,\n\n \"url\" => \"/api/v1/paths\",\n\n \"data\" =>\n\n  {\"paths\" =>\n\n    [{\"id\" => \"019adb25-bbbe-75e5-99b8-6ecb84fa1821\",\n\n      \"name\" => \"empty path\",\n\n      \"description\" => nil,\n\n      \"sequential_unlock\" => nil,\n\n      \"passing_score_required_for_unlock\" => nil,\n\n      \"created_at\" => 1764613274558,\n\n      \"updated_at\" => 1764613274639,\n\n      \"card_banner\" => nil,\n\n      \"time_estimate_seconds\" => nil,\n\n      \"num_guides\" => 0,\n\n      \"num_resources\" => 0,\n\n      \"num_challenges\" => 0,\n\n      \"tags\" => []}]}}"
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/paths \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+        samples-languages:
+        - curl
+      tags:
+      - Paths
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/paths/{path_id}/assignments:
+    get:
+      summary: Get All Assignments for a Path
+      description: Get all assignments for a path
+      operationId: get-all-assignments-for-a-path
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        description: 'Optional parameter: only assignments for this user id will be returned in the response'
+        schema:
+          type: integer
+          format: int32
+      - name: path_id
+        in: path
+        description: ID of the path
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      - in: query
+        name: page
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+        description: Page of results to return
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+        description: Number of results to return per page (1-200)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                    default: '1'
+                  per_page:
+                    type: number
+                    default: '20'
+                  has_more:
+                    type: boolean
+                    default: 'false'
+                  item_count:
+                    type: string
+                  url:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                            user_id:
+                              type: string
+                            title:
+                              type: string
+                            training_series_id:
+                              type: string
+                            assigner_id:
+                              type: string
+                            overall_grade:
+                              type: number
+                            is_completed:
+                              type: boolean
+                            due_date:
+                              type: number
+                            created_at:
+                              type: number
+                            updated_at:
+                              type: number
+                            created_through:
+                              type: string
+                            num_modules:
+                              type: number
+                            modules_completed:
+                              type: number
+                            completion_percentage:
+                              type: number
+                            completed_at:
+                              type: number
+                            tags:
+                              type: array
+                              items:
+                                type: string
+                            time_spent:
+                              type: string
+                            status:
+                              type: string
+                            is_completed_on_time:
+                              type: boolean
+                            passed:
+                              type: boolean
+                            passing_grade_required:
+                              type: boolean
+                            is_overdue:
+                              type: boolean
+                            num_days_overdue:
+                              type: number
+                            first_accessed_at:
+                              type: number
+                            last_accessed_at:
+                              type: number
+                          type: object
+                required:
+                - page
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    page: 1
+                    per_page: 2
+                    has_more: true
+                    item_count: 2
+                    url: /api/v1/paths/96d27096-5d63-435f-949e-5170cab307d1/assignments
+                    data:
+                      assignments:
+                      - id: 9b4cdf9b-90cb-4853-989d-42e76718f1e6
+                        user_id: 12345
+                        title: How to make cupcakes
+                        training_series_id: 96d27096-5d63-435f-949e-5170cab307d1
+                        assigner_id: 1234
+                        overall_grade: null
+                        is_completed: false
+                        due_date: 1767254400000
+                        created_at: 1765316990000
+                        updated_at: 1765316990000
+                        created_through: Automatic Assignment
+                        num_modules: 1
+                        modules_completed: 0
+                        completion_percentage: 0
+                        completed_at: null
+                        tags:
+                        - MyTag
+                        - AnotherTag
+                        time_spent: null
+                        status: not_started
+                        is_completed_on_time: null
+                        passed: false
+                        passing_grade_required: null
+                        is_overdue: false
+                        num_days_overdue: null
+                        first_accessed_at: null
+                        last_accessed_at: null
+                      - id: 4c429d58-6d4e-4901-8350-8314e858d1b5
+                        user_id: 234324
+                        title: How to make a great cup of coffee
+                        training_series_id: 96d27096-5d63-435f-949e-5170cab307d1
+                        assigner_id: 1234
+                        overall_grade: null
+                        is_completed: false
+                        due_date: 1767254400000
+                        created_at: 1765316990000
+                        updated_at: 1765316990000
+                        created_through: Automatic Assignment
+                        num_modules: 1
+                        modules_completed: 0
+                        completion_percentage: 0
+                        completed_at: null
+                        tags:
+                        - MyTag
+                        - AnotherTag
+                        time_spent: null
+                        status: not_started
+                        is_completed_on_time: null
+                        passed: false
+                        passing_grade_required: null
+                        is_overdue: false
+                        num_days_overdue: null
+                        first_accessed_at: null
+                        last_accessed_at: null
+                OK - legacy_mode:
+                  summary: OK - legacy_mode
+                  value:
+                  - id: 782a8f52-b069-11e8-8d40-06cfa4e7b2f4
+                    userId: 2614323
+                    trainingSeriesId: 2be286b4-ad4f-11e8-c7e9-065821035730
+                    assignerId: 1156812
+                    dueDate: 1536278400000
+                    isCompleted: false
+                    createdAt: 1536082766785
+                    updatedAt: 1536082766785
+                    createdThrough: null
+                    numModules: 4
+                    modulesCompleted: 2
+                    completionPercentage: 50
+                    timeSpent: 43
+                    tags:
+                    - Path Tag
+                  - id: 37eb5c4e-b081-11e8-8600-0260b0cd3c00
+                    userId: 1156832
+                    trainingSeriesId: 2be286b4-ad4f-11e8-c7e9-065821035730
+                    assignerId: 1156812
+                    dueDate: 1536278400000
+                    isCompleted: true
+                    createdAt: 1536092966709
+                    updatedAt: 1536092966709
+                    createdThrough: null
+                    numModules: 4
+                    modulesCompleted: 2
+                    completionPercentage: 100
+                    timeSpent: null
+                    tags:
+                    - Path Tag
+      deprecated: false
+      tags:
+      - Paths
+    post:
+      summary: Create Path Assignment
+      description: Create an assignment for a given user
+      operationId: create-path-assignment
+      parameters:
+      - name: path_id
+        in: path
+        description: ID of the path
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: integer
+                  description: ID of user to be assigned the Path
+                  format: int32
+                dueDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: date-time
+                createdThrough:
+                  type: string
+                  description: An optional string that helps tag or identify this path assignment. You will be able to filter any logs by this tag.
+                email:
+                  type: string
+                  description: Optionally pass in an email in case you don't know the userId
+                dueAtEndOfDay:
+                  type: boolean
+                  description: Specifies whether you want to have the due date set to 23:59:99 of the day chosen.
+                  default: 'true'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"d11a0a34-b659-12e8-91fe-06cfa4e7b2f4\",\n    \"userId\": 2003132,\n    \"trainingSeriesId\": \"40afd844-fc64-21e6-8eb3-02dcdaae3a92\",\n    \"assignerId\": 133432,\n    \"dueDate\": 1487900059000,\n    \"isCompleted\": false,\n    \"createdAt\": 1536735724285,\n    \"updatedAt\": 1536735724285,\n  \t\"createdThrough\": null,\n    \"numModules\": 4,\n    \"modulesCompleted\": 2\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: d11a0a34-b659-12e8-91fe-06cfa4e7b2f4
+                  userId:
+                    type: integer
+                    example: 2003132
+                    default: 0
+                  trainingSeriesId:
+                    type: string
+                    example: 40afd844-fc64-21e6-8eb3-02dcdaae3a92
+                  assignerId:
+                    type: integer
+                    example: 133432
+                    default: 0
+                  dueDate:
+                    type: integer
+                    example: 1487900059000
+                    default: 0
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: integer
+                    example: 1536735724285
+                    default: 0
+                  updatedAt:
+                    type: integer
+                    example: 1536735724285
+                    default: 0
+                  createdThrough: {}
+                  numModules:
+                    type: integer
+                    example: 4
+                    default: 0
+                  modulesCompleted:
+                    type: integer
+                    example: 2
+                    default: 0
+      deprecated: false
+      tags:
+      - Paths
+    servers:
+    - url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-refined-from:
+- workramp-api-settings-openapi.yml
+- workramp-json-api-openapi.yml
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

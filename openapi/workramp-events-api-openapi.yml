@@ -1,0 +1,272 @@
+openapi: 3.2.0
+info:
+  title: Workramp Events API
+  version: '1.0'
+  description: 'Operations tagged Events across 2 of this provider''s published API definitions: workramp-api-settings-openapi.yml, workramp-json-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Events
+paths:
+  /api/v1/events/{event_id}/session/{session_id}:
+    get:
+      summary: Get Event Session
+      description: Get a specific session in an event
+      operationId: get-event-session
+      parameters:
+      - name: event_id
+        in: path
+        description: Event ID
+        schema:
+          type: string
+        required: true
+      - name: session_id
+        in: path
+        description: Event Session ID
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "\t\"id\": \"9fdbdf98-56b8-11ec-9b11-1e00533a9645\",\n\t\"trainingClassId\": \"dcb1ec60-56ad-11ec-9b11-1e00533a9645\",\n\t\"title\": \"Session #1\",\n\t\"trainingClassSessionInstructors\": [\n\t\t{\n\t\t\t\"id\": \"7c446e8c-11de-11ee-b8a2-a22f70550673\",\n\t\t\t\"sessionId\": \"9fdbdf98-56b8-11ec-9b11-1e00533a9645\",\n\t\t\t\"user\": {\n\t\t\t\t\"id\": 620,\n\t\t\t\t\"displayName\": \"Robbie Kertzmann\",\n\t\t\t\t\"email\": \"jacinto@stoltenberg.io\"\n\t\t\t}\n\t\t}\n\t],\n\t\"start\": 1640973600000,\n\t\"end\": 1640980800000,\n\t\"zoomMeetingId\": null,\n\t\"zoomMeetingStartUrl\": null,\n\t\"zoomMeetingJoinUrl\": null"
+      deprecated: false
+      tags:
+      - Events
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/events:
+    get:
+      summary: Get All Events
+      description: Get all events in an enterprise
+      operationId: get-all-events
+      parameters:
+      - name: session_start_date
+        in: query
+        required: false
+        description: ISO8601 DateTime (e.g. `2025-12-31T223:59:59Z`. If provided, we will include only events that have sessions after the specified time, and the sessions lists will include only those matching sessions.
+        schema:
+          type: string
+          format: date-time
+          default: ''
+      - name: session_end_date
+        in: query
+        required: false
+        description: ISO8601 DateTime (e.g. `2025-12-31T223:59:59Z`. If provided, we will include only events that have sessions before the specified time, and the sessions lists will include only those matching sessions.
+        schema:
+          type: string
+          format: date-time
+          default: ''
+      - name: exclude_groups
+        in: query
+        required: false
+        description: pass 'true' if you would like to leave off group information from users.
+        schema:
+          type: boolean
+          default: ''
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"status_code\": 200,\n    \"events\": [\n        {\n            \"id\": \"2d7a78b8-a197-11ec-baa5-3ea79e46732a\",\n            \"name\": \"Commission Farming\",\n            \"type\": \"single\",\n            \"sessions\": [\n                {\n                    \"id\": \"2d809e0a-a197-11ec-baa5-3ea79e46732a\",\n                    \"title\": \"Session #1\",\n                    \"learners\": [\n                        {\n                            \"user_id\": 79,\n                            \"name\": \"Miss Cecille Waters\",\n                            \"email\": \"adena8@workramp.com\",\n                            \"groups\": [\n                                \"Movies, Kids & Games\"\n                            ],\n                            \"registration_status\": \"registered\",\n                            \"registration_date\": \"2022-07-19T19:48:02.554Z\",\n                          \t\"attended_event\": null,\n                          \t\"invitation_date\": \"2022-07-01T17:15:49.771Z\",\n                            \"declined_date\": null,\n                            \"is_archived\": true\n                        }\n                    ]\n                },\n                {\n                    \"id\": \"2d81aa52-a197-11ec-baa5-3ea79e46732a\",\n                    \"title\": \"Session #2\",\n                    \"learners\": []\n                },\n                {\n                    \"id\": \"2d8277a2-a197-11ec-baa5-3ea79e46732a\",\n                    \"title\": \"Session #3\",\n                    \"learners\": []\n                },\n                {\n                    \"id\": \"5cbdf55a-0786-11ed-bac8-3ea79e467329\",\n                    \"title\": \"Session #4\",\n                    \"learners\": [\n                        {\n                            \"user_id\": 71,\n                            \"name\": \"Theo Harber\",\n                            \"email\": \"juliann0@workramp.com\",\n                            \"groups\": [\n                                \"Home\"\n                            ],\n                            \"registration_status\": \"attended\",\n                            \"registration_date\": \"2022-07-19T17:15:49.771Z\",\n                            \"attended_event\": true,\n\t                          \"invitation_date\": \"2022-07-01T17:15:49.771Z\",\n                            \"declined_date\": null,\n                            \"is_archived\": false\n                        },\n                        {\n                            \"user_id\": 115,\n                            \"name\": \"Manual Lindgren\",\n                            \"email\": \"cheree44@workramp.com\",\n                            \"groups\": [\n                                \"Home, Tools & Baby\"\n                            ],\n                            \"registration_status\": \"invited\",\n                            \"registration_date\": null,\n                            \"attended_event\": null,\n                            \"invitation_date\": \"2023-07-01T17:15:49.771Z\",\n                            \"declined_date\": null,\n                            \"is_archived\": true                          \n                        }\n                    ]\n                },\n                {\n                    \"id\": \"32a95356-07e8-11ed-b1b1-3ea79e467329\",\n                    \"title\": \"Session #5\",\n                    \"learners\": []\n                }\n            ]\n        },\n        ...\n    ]\n}"
+      deprecated: false
+      tags:
+      - Events
+    post:
+      summary: Create Event
+      description: Create an event (parent event for all sessions)
+      operationId: create-event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the Event you want to create
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"6a5a747e-1175-11ed-90c8-3ea79e467329\",\n    \"type\": \"training_class\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 6a5a747e-1175-11ed-90c8-3ea79e467329
+                  type:
+                    type: string
+                    example: training_class
+      deprecated: false
+      tags:
+      - Events
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/events/{EventID}/session:
+    post:
+      summary: Create Event Session
+      description: Create a session within an event
+      operationId: create-event-session
+      parameters:
+      - name: EventID
+        in: path
+        description: ID of event in which to create a session
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - base_url
+              - title
+              properties:
+                base_url:
+                  type: string
+                  description: Your base url for your domain. ie. https://app.workramp.com/api/... your base_url would be app.workramp.com
+                title:
+                  type: string
+                  description: Name of the event session you want to create
+                start_time:
+                  type: string
+                  description: Date & time you want the event to start. Note that this is an ISO8601 Timestamp and not an integer. e.g. `2022-07-30T05:31:30.363Z`
+                  format: date-time
+                end_time:
+                  type: string
+                  description: Date & time you want the event to end. Note that this is an ISO8601 Timestamp and not an integer
+                  format: date-time
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"03001a56-1178-11ed-90c8-3ea79e467329\",\n    \"trainingClassId\": \"6a5a747e-1175-11ed-90c8-3ea79e467329\",\n    \"title\": \"Session API #4\",\n    \"start\": 1659159090363,\n    \"end\": 1659166290363,\n    \"zoomMeetingId\": \"85292117715\",\n    \"zoomMeetingStartUrl\": \"https://us06web.zoom.us/s/85292117715?zak=eyJ0eXAiOiJKV1QiLCJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsImFsZyI6IkhTMjU2In0.eyJhdWQiOiJjbGllbnRzbSIsInVpZCI6InRYVzBRUUt4VGlPQnBiTkRzMUF1WEEiLCJpc3MiOiJ3ZWIiLCJzayI6IjAiLCJzdHkiOjk5LCJ3Y2QiOiJ1czA2IiwiY2x0IjowLCJtbnVtIjoiODUyOTIxMTc3MTUiLCJleHAiOjE2NjcxMjAyNjYsImlhdCI6MTY1OTM0NDI2NiwiYWlkIjoidnhtOU9kLTRTZEd0T2hqa2ZKOHdYUSIsImNpZCI6IiJ9.jS4v3vT_PGjQLDRoM-4ooZyUbjo_r-UqM4rdPIJNQRA\",\n    \"zoomMeetingJoinUrl\": \"https://us06web.zoom.us/j/85292117715\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 03001a56-1178-11ed-90c8-3ea79e467329
+                  trainingClassId:
+                    type: string
+                    example: 6a5a747e-1175-11ed-90c8-3ea79e467329
+                  title:
+                    type: string
+                    example: 'Session API #4'
+                  start:
+                    type: integer
+                    example: 1659159090363
+                    default: 0
+                  end:
+                    type: integer
+                    example: 1659166290363
+                    default: 0
+                  zoomMeetingId:
+                    type: string
+                    example: '85292117715'
+                  zoomMeetingStartUrl:
+                    type: string
+                    example: https://us06web.zoom.us/s/85292117715?zak=eyJ0eXAiOiJKV1QiLCJzdiI6IjAwMDAwMSIsInptX3NrbSI6InptX28ybSIsImFsZyI6IkhTMjU2In0.eyJhdWQiOiJjbGllbnRzbSIsInVpZCI6InRYVzBRUUt4VGlPQnBiTkRzMUF1WEEiLCJpc3MiOiJ3ZWIiLCJzayI6IjAiLCJzdHkiOjk5LCJ3Y2QiOiJ1czA2IiwiY2x0IjowLCJtbnVtIjoiODUyOTIxMTc3MTUiLCJleHAiOjE2NjcxMjAyNjYsImlhdCI6MTY1OTM0NDI2NiwiYWlkIjoidnhtOU9kLTRTZEd0T2hqa2ZKOHdYUSIsImNpZCI6IiJ9.jS4v3vT_PGjQLDRoM-4ooZyUbjo_r-UqM4rdPIJNQRA
+                  zoomMeetingJoinUrl:
+                    type: string
+                    example: https://us06web.zoom.us/j/85292117715
+      deprecated: false
+      tags:
+      - Events
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/events/{event_id}/session/{session_id}/invite:
+    post:
+      summary: Invite Users to Event Session
+      description: Create an event registration for an array of users
+      operationId: invite-user-to-event-session
+      parameters:
+      - name: event_id
+        in: path
+        description: Event ID
+        schema:
+          type: string
+        required: true
+      - name: session_id
+        in: path
+        description: Event Session ID
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userIds:
+                  type: array
+                  description: Array of User IDs
+                  items:
+                    type: integer
+                    format: int32
+                groupIds:
+                  type: array
+                  description: Array of Group IDs
+                  items:
+                    type: integer
+                    format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"status_code\": 200,\n    \"message\": \"Successfully registered all users and group ids\"\n}"
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 200
+                    default: 0
+                  message:
+                    type: string
+                    example: Successfully registered all users and group ids
+      deprecated: false
+      tags:
+      - Events
+    servers:
+    - url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-refined-from:
+- workramp-api-settings-openapi.yml
+- workramp-json-api-openapi.yml
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: json-api Copy Content API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Copy Content
+paths:
+  /api/v1/copy_content:
+    post:
+      description: ''
+      operationId: post_apiv1copy_content
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                JSON:
+                  summary: JSON
+                  value:
+                    createdAt: 1753737105
+                    description: A very interesting course about ducks
+                    displayTitle: Ducks 101
+                    folderId: 019852e1-7151-7d59-976f-b5781379b648
+                    id: 019852e1-29a3-7d9d-a3b9-8cb099b881d4
+                    sourceId: 019852e1-4bea-70a3-b120-060c7b11cd6a
+                    updatedAt: 1753737105
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                content_type:
+                  type: string
+                  description: Should be "scorm"
+                content_id:
+                  type: string
+                  description: ID of the SCORM to copy
+                item_folder_id:
+                  type: string
+                  description: ID of the Item Folder to copy to
+              type: object
+              required:
+              - content_type
+              - content_id
+              - item_folder_id
+      tags:
+      - Copy Content
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

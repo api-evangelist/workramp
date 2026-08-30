@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: api-settings Api Settings API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Api Settings
+paths:
+  /:
+    get:
+      description: ''
+      operationId: get_academy_object_attribute_values
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 2
+                    url: /api/v1/academies/:academy_id/academy_object_attributes
+                    data:
+                      academy_object_attributes:
+                      - id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                        name: Difficulty
+                        academy_object_attribute_values:
+                        - id: 0197a76a-4834-712c-874e-e503a14a5775
+                          name: Beginner
+                        - id: 0197a76a-5ffc-71d4-9b95-630287b28941
+                          name: Intermediate
+                        - id: 0197a76a-6dd9-7c9e-b8ea-4b148bc5a330
+                          name: Advanced
+                      - id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                        name: Content Type
+                        academy_object_attribute_values:
+                        - id: 0197a76a-25c8-7ee1-894d-b01ee1dffefa
+                          name: Certification
+                        - id: 0197a76a-79de-77cd-bbf6-ba87341ae6bb
+                          name: Course
+      parameters: []
+      tags:
+      - Api Settings
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

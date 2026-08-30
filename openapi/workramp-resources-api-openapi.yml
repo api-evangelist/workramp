@@ -1,0 +1,50 @@
+openapi: 3.2.0
+info:
+  title: api-settings Resources API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Resources
+paths:
+  /api/v1//resources:
+    get:
+      summary: Get All Resources
+      description: Get all resources in an enterprise
+      operationId: get-all-resources
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"status_code\": 200,\n    \"resources\": [\n        {\n            \"id\": \"a6dc981c-5c4f-11ed-aa0d-c229bc8ef7ec\",\n            \"name\": \"Design\",\n            \"description\": null,\n            \"createdAt\": 1667573268999,\n            \"updatedAt\": 1667573268999,\n        },\n        {\n            \"id\": \"a6e0624e-5c4f-11ed-aa0d-c229bc8ef7ec\",\n            \"name\": \"Communications\",\n            \"description\": null,\n            \"createdAt\": 1667573269024,\n            \"updatedAt\": 1667573269024,\n        }\n    ]\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Resources
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

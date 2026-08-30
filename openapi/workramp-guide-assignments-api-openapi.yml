@@ -1,0 +1,192 @@
+openapi: 3.2.0
+info:
+  title: Workramp Guide Assignments API
+  version: '1.0'
+  description: 'Operations tagged Guide Assignments across 2 of this provider''s published API definitions: workramp-api-settings-openapi.yml, workramp-json-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Guide Assignments
+paths:
+  /api/v1/guide_assignments/{GuideAssignmentID}:
+    delete:
+      summary: Delete Assignment
+      description: Update an assignment for a user
+      operationId: delete-assignment
+      parameters:
+      - name: GuideAssignmentID
+        in: path
+        description: ID of the assignment to delete
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: 'true
+
+                    '
+              schema:
+                type: boolean
+                example: true
+                default: true
+      deprecated: false
+      tags:
+      - Guide Assignments
+    post:
+      summary: Update Assignment
+      description: Update an assignment for a given user
+      operationId: update-assignment
+      parameters:
+      - name: GuideAssignmentID
+        in: path
+        description: The Guide Assignment ID (a GUID)
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dueDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: date-time
+                isCompleted:
+                  type: boolean
+                completedDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept number of milliseconds since 1970-01-01 00:00:00 UTC.- Providing a "completedDate" does NOT complete a user's assignment.
+                  format: date-time
+                score:
+                  type: number
+                  description: A percentage with value from 0-100. Providing a "score" does NOT complete a user's assignment.
+                  format: float
+                dueAtEndOfDay:
+                  type: boolean
+                  default: 'true'
+                  description: Specifies whether you want to have the due date set to 23:59:99 of the day chosen.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"80afd844-fc64-11e6-8eb3-02dcdaae3a92\",\n  \"userId\": 1144,\n  \"title\": \"Guide 1 Title\",\n  \"courseId\": \"e585fd3e-509d-11e6-9bd0-06d818a6b395\",\n  \"trainingSeriesUserAssignmentId\": null,\n  \"dueDate\": 1487900059000,\n  \"numViewedTasks\": 0,\n  \"numCompletedTasks\": 0,\n  \"numCompletedTestQuestions\": 0,\n  \"numGradedTestQuestions\": 0,\n  \"numCorrectTestQuestions\": 0,\n  \"score\": 80,\n  \"isArchived\": null,\n  \"isCompleted\": false,\n  \"createdAt\": 1488141926731.2966,\n  \"updatedAt\": 1488141926731.2966,\n  \"completedAt\": 1609416000000\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 80afd844-fc64-11e6-8eb3-02dcdaae3a92
+                  userId:
+                    type: integer
+                    example: 1144
+                    default: 0
+                  title:
+                    type: string
+                    example: Guide 1 Title
+                  courseId:
+                    type: string
+                    example: e585fd3e-509d-11e6-9bd0-06d818a6b395
+                  trainingSeriesUserAssignmentId: {}
+                  dueDate:
+                    type: integer
+                    example: 1487900059000
+                    default: 0
+                  numViewedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numGradedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCorrectTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  score:
+                    type: integer
+                    example: 80
+                    default: 0
+                  isArchived: {}
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  completedAt:
+                    type: integer
+                    example: 1609416000000
+                    default: 0
+      deprecated: false
+      tags:
+      - Guide Assignments
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/{UserID}/guide_assignments:
+    get:
+      summary: Get Assignments for User
+      description: Gets assignments for a specific user.
+      operationId: get-assignments-for-user
+      parameters:
+      - name: UserID
+        in: path
+        description: ID of the user to fetch assignments for
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  { \n      \"userId\":\"assignment.user_id\",\n      \"courseId\":\"assignment.course_id\",\n      \"dueDate\":\"assignment.due_date\",\n      \"numViewedTasks\":\"assignment.num_viewed_tasks\",\n      \"numCompletedTasks\":\"assignment.num_completed_tasks\",\n      \"numCompletedTestQuestions\":\"assignment.num_completed_test_questions\",\n      \"isCompleted\":\"assignment.is_completed\",\n      \"isArchived\":\"assignment.is_archived\"\n\t}, \n\t{ \n      \"userId\":\"assignment.user_id\",\n      \"courseId\":\"assignment.course_id\",\n      \"dueDate\":\"assignment.due_date\",\n      \"numViewedTasks\":\"assignment.num_viewed_tasks\",\n      \"numCompletedTasks\":\"assignment.num_completed_tasks\",\n      \"numCompletedTestQuestions\":\"assignment.num_completed_test_questions\",\n      \"isCompleted\":\"assignment.is_completed\",\n      \"isArchived\":\"assignment.is_archived\"\n\t},\n  ...\n]"
+      deprecated: false
+      tags:
+      - Guide Assignments
+    servers:
+    - url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-refined-from:
+- workramp-api-settings-openapi.yml
+- workramp-json-api-openapi.yml
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

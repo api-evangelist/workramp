@@ -1,0 +1,233 @@
+openapi: 3.2.0
+info:
+  title: api-settings Certifications API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Certifications
+paths:
+  /api/v1/certifications:
+    get:
+      summary: Get All Certifications
+      description: Fetches all badges created in /admin/badges
+      operationId: get-all-certifications-1
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        required: false
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      - in: query
+        name: page
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+        description: Page of results to return
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+        description: Number of results to return per page (1-200)
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              examples:
+                ? ''
+                : summary: ''
+                  value: '{}'
+                ' Result':
+                  summary: ' Result'
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 4
+                    url: /api/v1/certifications
+                    data:
+                      certifications:
+                      - id: ecfd0b48-62d2-11e6-8ef2-06871305d8f3
+                        title: AE Onboarding
+                        is_deleted: false
+                        created_at: 1471146922841
+                        updated_at: 1471146943642
+                      - id: 662b500e-3a93-11e3-b978-06d818a6b395
+                        title: SDR Level 2
+                        is_deleted: false
+                        created_at: 1466831543009
+                        updated_at: 1466831544553
+                      - id: 28a78272-50a3-11e6-b0f4-06571305d8f3
+                        title: Challenger Sales
+                        is_deleted: false
+                        created_at: 1469257237333
+                        updated_at: 1470530302845
+                      - id: 01a1452e-61d3-11e6-bff9-06d818a6b395
+                        title: CSM Champion
+                        is_deleted: false
+                        created_at: 1471146957891
+                        updated_at: 1471146959834
+                Result - legacy_mode enabled:
+                  summary: Result - legacy_mode enabled
+                  value:
+                  - id: ecfd0b48-62d2-11e6-8ef2-06871305d8f3
+                    title: AE Onboarding
+                    isDeleted: false
+                    createdAt: 1471146922840.7722
+                    updatedAt: 1471146943641.622
+                  - id: 662b500e-3a93-11e3-b978-06d818a6b395
+                    title: SDR Level 2
+                    isDeleted: false
+                    createdAt: 1466831543009.3372
+                    updatedAt: 1466831544553.353
+                  - id: 28a78272-50a3-11e6-b0f4-06571305d8f3
+                    title: Challenger Sales
+                    isDeleted: false
+                    createdAt: 1469257237333.28
+                    updatedAt: 1470530302844.82
+                  - id: 01a1452e-61d3-11e6-bff9-06d818a6b395
+                    title: CSM Champion
+                    isDeleted: false
+                    createdAt: 1471146957890.85
+                    updatedAt: 1471146959834.044
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                    example: ecfd0b48-62d2-11e6-8ef2-06871305d8f3
+                    default: '1'
+                  per_page:
+                    type: number
+                    example: AE Onboarding
+                    default: '20'
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: 'false'
+                  item_count:
+                    type: number
+                    example: 1471146922840.7722
+                    default: 0
+                  url:
+                    type: string
+                    example: 1471146943641.622
+                    default: /api/v1/certifications
+                  data:
+                    type: object
+                    properties:
+                      certifications:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                            title:
+                              type: string
+                            is_deleted:
+                              type: boolean
+                            created_at:
+                              type: number
+                            updated_at:
+                              type: number
+                          type: object
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/certifications \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+        samples-languages:
+        - curl
+      tags:
+      - Certifications
+  /api/v1/certifications/{certification_id}/awards:
+    get:
+      summary: Get Awards by Certification
+      description: ''
+      operationId: get-all-certifications
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: certification_id
+        in: path
+        description: The id of the certification
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  {\n    \"id\": \"32eba0bc-3a94-11e6-a66e-06871305d8f3\",\n    \"userId\": 1918,\n    \"courseUserAssignmentId\": \"269f9aac-3a94-11e6-aa93-06d818a6b395\",\n    \"certificationId\": \"662b500e-3a93-11e6-b978-06d818a6b395\",\n    \"fileUrl\": \"https://www.url/to/file\",\n    \"createdAt\": 1466831886524.865,\n    \"updatedAt\": 1466831886524.865\n  },\n  {\n    \"id\": \"00e7a0ea-40cd-11e6-b7d4-06871305d8f3\",\n    \"userId\": 1954,\n    \"courseUserAssignmentId\": \"8d8965d4-40cc-11e6-9cc0-06871305d8f3\",\n    \"certificationId\": \"662b500e-3a93-11e6-b978-06d818a6b395\",\n    \"fileUrl\": \"https://www.url/to/file\",\n    \"createdAt\": 1467515990902.8079,\n    \"updatedAt\": 1467515990902.8079\n  },\n  {\n    \"id\": \"a94156f0-40cd-11e6-b7d4-06871305d8f3\",\n    \"userId\": 1918,\n    \"courseUserAssignmentId\": \"98dcc09c-40cd-11e6-b7d4-06871305d8f3\",\n    \"certificationId\": \"662b500e-3a93-11e6-b978-06d818a6b395\",\n    \"fileUrl\": \"https://www.url/to/file\",\n    \"createdAt\": 1467516273348.231,\n    \"updatedAt\": 1467516273348.231\n  },\n  {\n    \"id\": \"e281f456-40cd-11e6-9dae-06d818a6b395\",\n    \"userId\": 1954,\n    \"courseUserAssignmentId\": \"65ad9fe8-40cd-11e6-bbbc-06d818a6b395\",\n    \"certificationId\": \"662b500e-3a93-11e6-b978-06d818a6b395\",\n    \"fileUrl\": \"https://www.url/to/file\",\n    \"createdAt\": 1467516369401.7869,\n    \"updatedAt\": 1467516369401.7869\n  },\n  {\n    \"id\": \"fc9bf256-50a4-11e6-b0f4-06871305d8f3\",\n    \"userId\": 2062,\n    \"courseUserAssignmentId\": \"b0aa4ec0-50a3-11e6-a8ea-06871305d8f3\",\n    \"certificationId\": \"662b500e-3a93-11e6-b978-06d818a6b395\",\n    \"fileUrl\": \"https://www.url/to/file\",\n    \"createdAt\": 1469258022431.205,\n    \"updatedAt\": 1469258022431.205\n  }\n]"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 32eba0bc-3a94-11e6-a66e-06871305d8f3
+                    userId:
+                      type: integer
+                      example: 1918
+                      default: 0
+                    courseUserAssignmentId:
+                      type: string
+                      example: 269f9aac-3a94-11e6-aa93-06d818a6b395
+                    certificationId:
+                      type: string
+                      example: 662b500e-3a93-11e6-b978-06d818a6b395
+                    fileUrl:
+                      type: string
+                      example: https://www.url/to/file
+                    createdAt:
+                      type: number
+                      example: 1466831886524.865
+                      default: 0
+                    updatedAt:
+                      type: number
+                      example: 1466831886524.865
+                      default: 0
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/certifications/562b500e-3a93-11e6-b978-06d818a6b395/awards \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+        samples-languages:
+        - curl
+      tags:
+      - Certifications
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

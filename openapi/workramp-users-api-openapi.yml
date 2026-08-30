@@ -1,0 +1,1339 @@
+openapi: 3.2.0
+info:
+  title: Workramp Users API
+  version: '1.0'
+  description: 'Operations tagged Users across 2 of this provider''s published API definitions: workramp-api-settings-openapi.yml, workramp-json-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Users
+paths:
+  /api/v1/users:
+    get:
+      summary: Get All Users
+      description: 'Gets all users within the enterprise.
+
+
+        See also: <a href="/reference/get-all-users-attributes">Get All Users (Including Attributes)</a>'
+      operationId: get-all-users-in-enterprise
+      parameters:
+      - name: limit
+        in: query
+        description: Limit the number of results returned per page. See warnings above -- failure to limit can result in your request being blocked due to rate-limiting. **Best practice is to always set to 1 when querying for one user, or less than 100 when doing batches.**
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        description: When used in conjunction with "limit," indicate what page (zero indexed) of results to return. The last "page" will have potentially fewer results than "limit," and pages beyond results will have return an empty array.
+        schema:
+          type: integer
+          format: int32
+      - name: includeDeleted
+        in: query
+        description: Default behavior is to return users where isDeleted is "false". You can set this parameter to "true" to return users for which isDeleted is either "true" or "false".
+        schema:
+          type: boolean
+          default: false
+      - name: email
+        in: query
+        description: Optional - To filter to a single email address. If a user with this email address exists in the system, then only that user will be in the return data. If no user exists with that email, then a blank list will be returned.
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Optional - To filter by name, pass in a name to search, please note this is case sensitive
+        schema:
+          type: string
+      - name: custom_attributes
+        in: query
+        description: 'Optional - To filter to only users with a certain custom attribute value, pass an object with a single key-value pair where the key represents the custom attribute name and the value represents the custom attribute value. (ie. `{ "custom_attributes": { "isAdmin": true } }`)'
+        schema:
+          properties: {}
+          type: object
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  {\n    \"id\": 1925,\n    \"name\": \"John Doe\",\n    \"email\": \"johndoe@workramp.com\",\n    \"isAdmin\": false,\n    \"isDeleted\": false,\n \t\t\"isPermanentlyDeleted\": false,\n    \"createdAt\": 1466832522351.831,\n    \"updatedAt\": 1469950882088.9028,\n    \"directReports\": [\n      {\n        \"id\": 4,\n        \"name\": \"Managee Doe\",\n        \"email\": \"manageedoe@workramp.com\"\n      }\n    ],\n    \"certifications\": [\n      {\n        \"id\": 1,\n        \"title\": \"Certification 1\"\n      }\n    ]\n  },\n  {\n    \"id\": 1954,\n    \"name\": \"Beth Samuels\",\n    \"email\": \"bethsamuels@workramp.com\",\n    \"isAdmin\": true,\n    \"isDeleted\": false,\n \t\t\"isPermanentlyDeleted\": false,\n    \"createdAt\": 1467515797325.3892,\n    \"updatedAt\": 1467515860387.0022,\n    \"directReports\": [],\n    \"certifications\": []\n  },\n  {\n    \"id\": 1955,\n    \"name\": \"Julie Thomas\",\n    \"email\": \"juliethomas@workramp.com\",\n    \"isAdmin\": false,\n    \"isDeleted\": false,\n \t\t\"isPermanentlyDeleted\": false,\n    \"createdAt\": 1467515822265.4888,\n    \"updatedAt\": 1467515932613.6372,\n    \"directReports\": [],\n    \"certifications\": []\n  }\n]\n"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1925
+                      default: 0
+                    name:
+                      type: string
+                      example: John Doe
+                    email:
+                      type: string
+                      example: johndoe@workramp.com
+                    isAdmin:
+                      type: boolean
+                      example: false
+                      default: true
+                    isDeleted:
+                      type: boolean
+                      example: false
+                      default: true
+                    isPermanentlyDeleted:
+                      type: boolean
+                      example: false
+                      default: true
+                    createdAt:
+                      type: number
+                      example: 1466832522351.831
+                      default: 0
+                    updatedAt:
+                      type: number
+                      example: 1469950882088.9028
+                      default: 0
+                    directReports:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 4
+                            default: 0
+                          name:
+                            type: string
+                            example: Managee Doe
+                          email:
+                            type: string
+                            example: manageedoe@workramp.com
+                    certifications:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                            default: 0
+                          title:
+                            type: string
+                            example: Certification 1
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error
+                    default: Rate Limited...
+                required:
+                - error
+              examples:
+                Rate Limited:
+                  summary: Rate Limited
+                  value:
+                    error: Rate limited. See info at https://developers.workramp.com/reference/get-all-users-in-enterprise
+      deprecated: false
+      tags:
+      - Users
+    post:
+      summary: Create User
+      description: Create a user within the enterprise
+      operationId: create-user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                managers:
+                  type: array
+                  description: Array of user ids to associate as a manager
+                  items:
+                    type: integer
+                    format: int32
+                groups:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                isAdmin:
+                  type: boolean
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 5065,\n  \"name\": \"Jane Doe\",\n  \"email\": \"ted+apitester1234@workramp.com\",\n  \"isAdmin\": false,\n  \"isDeleted\": false,\n  \"createdAt\": 1488144236206.5808,\n  \"updatedAt\": 1488144236206.5808,\n  \"mentors\": [\n    {\n      \"id\": 69,\n      \"name\": \"Ted Blosser\",\n      \"email\": \"ted@workramp.com\",\n      \"isAdmin\": true,\n      \"createdAt\": 1429851794143.246,\n      \"updatedAt\": 1487379136689.895\n    }\n  ],\n  \"groups\": [\n    {\n      \"id\": 185,\n      \"enterpriseId\": 23,\n      \"name\": \"NA Interns\",\n      \"createdAt\": 1463354276004.189,\n      \"updatedAt\": 1463354276004.189\n    },\n    {\n      \"id\": 186,\n      \"enterpriseId\": 23,\n      \"name\": \"Risk Interns\",\n      \"createdAt\": 1463354276027.895,\n      \"updatedAt\": 1463354276027.895\n    }\n  ]\n}\n"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 5065
+                    default: 0
+                  name:
+                    type: string
+                    example: Jane Doe
+                  email:
+                    type: string
+                    example: ted+apitester1234@workramp.com
+                  isAdmin:
+                    type: boolean
+                    example: false
+                    default: true
+                  isDeleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  mentors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 69
+                          default: 0
+                        name:
+                          type: string
+                          example: Ted Blosser
+                        email:
+                          type: string
+                          example: ted@workramp.com
+                        isAdmin:
+                          type: boolean
+                          example: true
+                          default: true
+                        createdAt:
+                          type: number
+                          example: 1429851794143.246
+                          default: 0
+                        updatedAt:
+                          type: number
+                          example: 1487379136689.895
+                          default: 0
+                  groups:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 185
+                          default: 0
+                        enterpriseId:
+                          type: integer
+                          example: 23
+                          default: 0
+                        name:
+                          type: string
+                          example: NA Interns
+                        createdAt:
+                          type: number
+                          example: 1463354276004.189
+                          default: 0
+                        updatedAt:
+                          type: number
+                          example: 1463354276004.189
+                          default: 0
+      deprecated: false
+      tags:
+      - Users
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/users/{user_id}:
+    delete:
+      summary: Delete User
+      description: Delete an existing user
+      operationId: delete-user
+      parameters:
+      - name: user_id
+        in: path
+        description: ID of user to be deleted
+        schema:
+          type: integer
+          format: int32
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: 'true'
+              schema:
+                type: boolean
+                example: true
+                default: true
+      deprecated: false
+      tags:
+      - Users
+    post:
+      summary: Update User
+      description: Updates a user's attributes
+      operationId: update-user-1
+      parameters:
+      - name: user_id
+        in: path
+        description: ID of user to update
+        schema:
+          type: integer
+          format: int32
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: '[Optional]'
+                name:
+                  type: string
+                  description: '[Optional]'
+                isAdmin:
+                  type: boolean
+                  description: '[Optional]'
+                isDeleted:
+                  type: boolean
+                  description: '[Optional]'
+                managerEmails:
+                  type: array
+                  description: '[Optional] Array of existing manager emails.'
+                  items:
+                    type: string
+                overwriteManagerEmails:
+                  type: boolean
+                  description: '[Optional] If set to true, user''s managers will be exactly what `managerEmails` is set to. Having an empty array for `mangerEmails` while this is true will delete all managers of the user.'
+                custom_attributes:
+                  type: object
+                  description: '[Optional] An object that represents all custom attributes the user should have. This will OVERWRITE the existing custom attributes and be set exactly as the object that is passed in.'
+                  properties:
+                    key:
+                      type: string
+                      description: API key for this custom attribute
+                    value:
+                      type: string
+                      description: Value to set this custom attribute to
+                update_custom_attributes:
+                  type: object
+                  description: '[Optional] Create/update custom attributes for this user without deleting the existing values first. Use this INSTEAD OF custom_attributes!'
+                  properties:
+                    key:
+                      type: string
+                      description: API key for this custom attribute
+                    value:
+                      type: string
+                      description: Value to set this custom attribute to
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": 5065,\n  \"name\": \"Jane Doe\",\n  \"email\": \"ted+apitester1234@workramp.com\",\n  \"isAdmin\": false,\n  \"isDeleted\": false,\n  \"isPermanentlyDeleted\": false,\n  \"createdAt\": 1488144236206.5808,\n  \"updatedAt\": 1488144236206.5808,\n  \"mentors\": [\n    {\n      \"id\": 7,\n      \"name\": \"John Doe\",\n      \"email\": \"jdoe@workramp.com\",\n      \"isAdmin\": false,\n      \"isDeleted\": false,\n      \"isPermanentlyDeleted\": false,\n      \"createdAt\": 1564692110394,\n      \"updatedAt\": 1589355546681\n    },\n    {\n      \"id\": 4,\n      \"name\": \"John Smith\",\n      \"email\": \"jsmith@workramp.com\",\n      \"isAdmin\": false,\n      \"isDeleted\": false,\n      \"isPermanentlyDeleted\": false,\n      \"createdAt\": 1564692048130,\n      \"updatedAt\": 1589359593434\n    }\n  ],\n  \"mentorsViaGroups\": []\n}\n"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 5065
+                    default: 0
+                  name:
+                    type: string
+                    example: Jane Doe
+                  email:
+                    type: string
+                    example: ted+apitester1234@workramp.com
+                  isAdmin:
+                    type: boolean
+                    example: false
+                    default: true
+                  isDeleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  isPermanentlyDeleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488144236206.5808
+                    default: 0
+                  mentors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 7
+                          default: 0
+                        name:
+                          type: string
+                          example: John Doe
+                        email:
+                          type: string
+                          example: jdoe@workramp.com
+                        isAdmin:
+                          type: boolean
+                          example: false
+                          default: true
+                        isDeleted:
+                          type: boolean
+                          example: false
+                          default: true
+                        isPermanentlyDeleted:
+                          type: boolean
+                          example: false
+                          default: true
+                        createdAt:
+                          type: integer
+                          example: 1564692110394
+                          default: 0
+                        updatedAt:
+                          type: integer
+                          example: 1589355546681
+                          default: 0
+                  mentorsViaGroups:
+                    type: array
+      deprecated: false
+      tags:
+      - Users
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/users/:user_id/assignments/:
+    get:
+      summary: Get all User Assignments
+      description: For provided user_id, returns all Course, Training Series (Paths), Challenge, and SCORM assignments.
+      operationId: get-all-user-assignments
+      parameters:
+      - name: :user_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: webhook_payloads
+        in: query
+        description: Use webhook formats for assignment payloads
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 6
+                    url: /api/v1/users/27483/assignments
+                    data:
+                      challenge_assignments:
+                      - id: d09f7598-bc99-11e8-bb1c-06cfa4e7b2f4
+                        user_id: 27483
+                        title: Challenge 1 Title
+                        challenge_id: 8b439e84-bc99-11e8-a7f4-06cfa4e7b2f4
+                        training_series_user_assignment_id: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                        due_date: 1538784000000
+                        reviewers_due_date: null
+                        is_submitted: false
+                        is_partially_graded: false
+                        is_fully_graded: false
+                        calculated_grade: 0
+                        passed: false
+                        created_at: 1537422945092
+                        updated_at: 1541702793186
+                        completed_at: null
+                        completion_percentage: 0
+                        tags: []
+                        status: not_started
+                        is_completed: false
+                        is_completed_on_time: null
+                        passing_grade_required: null
+                        is_overdue: null
+                        num_days_overdue: null
+                        date_first_accessed: null
+                        date_last_accessed: null
+                        assigner_id: null
+                      - id: 32509f28-4044-11e9-823e-06cfa4e7b2f4
+                        user_id: 27483
+                        title: Challenge 2 Title
+                        challenge_id: eb6008b0-3ac6-11e9-b297-0260b0cd3c00
+                        training_series_user_assignment_id: null
+                        due_date: 1553126400000
+                        reviewers_due_date: 1553817600000
+                        is_submitted: false
+                        is_partially_graded: false
+                        is_fully_graded: false
+                        calculated_grade: 0
+                        passed: false
+                        created_at: 1551899725760
+                        updated_at: 1551899725919
+                        completed_at: null
+                        completion_percentage: 0
+                        tags: []
+                        status: not_started
+                        is_completed: false
+                        is_completed_on_time: null
+                        passing_grade_required: null
+                        is_overdue: null
+                        num_days_overdue: null
+                        date_first_accessed: null
+                        date_last_accessed: null
+                        assigner_id: null
+                      guide_assignments:
+                      - id: d20a8ddc-02ad-11e9-af0d-0260b0cd3c00
+                        user_id: 27483
+                        title: Guide 1 Title
+                        course_id: c52ca028-02ad-11e9-8d2f-0260b0cd3c00
+                        training_series_user_assignment_id: null
+                        training_series_user_assignment_ids: []
+                        assigner_id: null
+                        due_date: 1545955200000
+                        num_viewed_tasks: 3
+                        num_completed_tasks: 3
+                        num_completed_test_questions: 5
+                        num_graded_test_questions: 4
+                        num_correct_test_questions: 3
+                        score: 75
+                        is_archived: null
+                        is_completed: false
+                        completion_percentage: 100
+                        created_at: 1545128118800
+                        updated_at: 1545328427200
+                        completed_at: 1545328427200
+                        tags: []
+                        status: completed
+                        is_completed_on_time: null
+                        passed: true
+                        passing_grade_required: null
+                        is_overdue: null
+                        num_days_overdue: null
+                        is_retaken: false
+                        retake_count: 0
+                        time_spent: null
+                        first_accessed_at: null
+                        last_accessed_at: null
+                      - id: d07457d2-bc99-11e8-bb1c-06cfa4e7b2f4
+                        user_id: 27483
+                        title: Guide 2 Title
+                        course_id: 72647668-bc99-11e8-a7f4-06cfa4e7b2f4
+                        training_series_user_assignment_id: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                        training_series_user_assignment_ids: []
+                        assigner_id: null
+                        due_date: 1538784000000
+                        num_viewed_tasks: 1
+                        num_completed_tasks: 0
+                        num_completed_test_questions: 0
+                        num_graded_test_questions: 0
+                        num_correct_test_questions: 0
+                        score: null
+                        is_archived: null
+                        is_completed: false
+                        completion_percentage: 0
+                        created_at: 1537422944809
+                        updated_at: 1537422969899
+                        completed_at: null
+                        tags: []
+                        status: in_progress
+                        is_completed_on_time: null
+                        passed: false
+                        passing_grade_required: null
+                        is_overdue: null
+                        num_days_overdue: null
+                        is_retaken: false
+                        retake_count: 0
+                        time_spent: null
+                        first_accessed_at: null
+                        last_accessed_at: null
+                      path_assignments:
+                      - id: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                        user_id: 27483
+                        title: Path 1 Title
+                        training_series_id: 7d30e004-bc99-11e8-86d3-0260b0cd3c00
+                        assigner_id: 27484
+                        overall_grade: null
+                        is_completed: false
+                        due_date: 1538784000000
+                        created_at: 1537422944784
+                        updated_at: 1537422944784
+                        created_through: null
+                        num_modules: 4
+                        modules_completed: 2
+                        completion_percentage: 50
+                        completed_at: null
+                        tags: []
+                        time_spent: 32
+                        status: in_progress
+                        is_completed_on_time: null
+                        passed: false
+                        passing_grade_required: null
+                        is_overdue: null
+                        num_days_overdue: null
+                        first_accessed_at: null
+                        last_accessed_at: null
+                      scorm_assignments:
+                      - assigner_user_id: null
+                        completion_percentage: 100
+                        due_at: 1551899725760
+                        due_date: 1551899725760
+                        id: 019659d6-4c16-7707-bc7e-966a6cfa3a0b
+                        is_completed: true
+                        score: 100
+                        tags:
+                        - Ad Solutions
+                        - Trending Takeover
+                        - Reddit Takeover
+                        - Front Page Takeover
+                        - Category Takeover
+                        - Takeovers
+                        top_level_content_id: 019659d6-6758-7f30-af63-9446f9011d1e
+                        training_series_user_assignment_ids:
+                        - 01965e3b-1627-7bfc-a1d3-01d28d78e873
+                        - 01965e3b-409f-7cad-b2fa-8889cffd799d
+                webhook_payloads:
+                  summary: webhook_payloads
+                  value:
+                    challengeAssignments: []
+                    guideAssignments: []
+                    pathAssignments: []
+                    scormAssignments: []
+                legacy_mode:
+                  summary: legacy_mode
+                  value:
+                    courseAssignments:
+                    - id: d20a8ddc-02ad-11e9-af0d-0260b0cd3c00
+                      userId: 27483
+                      title: Guide 1 Title
+                      courseId: c52ca028-02ad-11e9-8d2f-0260b0cd3c00
+                      trainingSeriesUserAssignmentId: null
+                      dueDate: 1545955200000
+                      numViewedTasks: 3
+                      numCompletedTasks: 3
+                      numCompletedTestQuestions: 5
+                      numGradedTestQuestions: 4
+                      numCorrectTestQuestions: 3
+                      score: 75
+                      isArchived: null
+                      isCompleted: false
+                      createdAt: 1545128118800
+                      updatedAt: 1545328427200
+                      completedAt: 1545328427200
+                      completionPercentage: 100
+                    - id: d07457d2-bc99-11e8-bb1c-06cfa4e7b2f4
+                      userId: 27483
+                      title: Guide 2 Title
+                      courseId: 72647668-bc99-11e8-a7f4-06cfa4e7b2f4
+                      trainingSeriesUserAssignmentId: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                      dueDate: 1538784000000
+                      numViewedTasks: 1
+                      numCompletedTasks: 0
+                      numCompletedTestQuestions: 0
+                      numGradedTestQuestions: 0
+                      numCorrectTestQuestions: 0
+                      score: null
+                      isArchived: null
+                      isCompleted: false
+                      createdAt: 1537422944809
+                      updatedAt: 1537422969899
+                      completedAt: null
+                      completionPercentage: 0
+                    trainingSeriesAssignments:
+                    - id: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                      userId: 27483
+                      title: Path 1 Title
+                      trainingSeriesId: 7d30e004-bc99-11e8-86d3-0260b0cd3c00
+                      assignerId: 27484
+                      overallGrade: null
+                      isCompleted: false
+                      dueDate: 1538784000000
+                      createdAt: 1537422944784
+                      updatedAt: 1537422944784
+                      createdThrough: null
+                      numModules: 4
+                      modulesCompleted: 2
+                      completionPercentage: 50
+                      timeSpent: 32
+                    challengeAssignments:
+                    - id: d09f7598-bc99-11e8-bb1c-06cfa4e7b2f4
+                      userId: 27483
+                      title: Challenge 1 Title
+                      challengeId: 8b439e84-bc99-11e8-a7f4-06cfa4e7b2f4
+                      trainingSeriesUserAssignmentId: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                      dueDate: 1538784000000
+                      reviewersDueDate: null
+                      isSubmitted: false
+                      isPartiallyGraded: false
+                      isFullyGraded: false
+                      calculatedGrade: 0
+                      passed: false
+                      createdAt: 1537422945092
+                      updatedAt: 1541702793186
+                      completedAt: null
+                      completionPercentage: 0
+                    - id: 32509f28-4044-11e9-823e-06cfa4e7b2f4
+                      userId: 27483
+                      title: Challenge 2 Title
+                      challengeId: eb6008b0-3ac6-11e9-b297-0260b0cd3c00
+                      trainingSeriesUserAssignmentId: null
+                      dueDate: 1553126400000
+                      reviewersDueDate: 1553817600000
+                      isSubmitted: false
+                      isPartiallyGraded: false
+                      isFullyGraded: false
+                      calculatedGrade: 0
+                      passed: false
+                      createdAt: 1551899725760
+                      updatedAt: 1551899725919
+                      completedAt: null
+                      completionPercentage: 0
+                    scormAssignments:
+                    - id: 019659d6-4c16-7707-bc7e-966a6cfa3a0b
+                      topLevelContentId: 019659d6-6758-7f30-af63-9446f9011d1e
+                      isCompleted: true
+                      completionPercentage: 100
+                      score: 100
+                      dueAt: 1551899725760
+                      dueDate: 1551899725760
+                      tags:
+                      - Ad Solutions
+                      - Trending Takeover
+                      - Reddit Takeover
+                      - Front Page Takeover
+                      - Category Takeover
+                      - Takeovers
+                      trainingSeriesUserAssignmentIds:
+                      - 01965e3b-1627-7bfc-a1d3-01d28d78e873
+                      - 01965e3b-409f-7cad-b2fa-8889cffd799d
+              schema:
+                oneOf:
+                - title: legacy_mode
+                  type: object
+                  properties:
+                    courseAssignments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: d20a8ddc-02ad-11e9-af0d-0260b0cd3c00
+                          userId:
+                            type: integer
+                            example: 27483
+                            default: 0
+                          title:
+                            type: string
+                            example: Guide 1 Title
+                          courseId:
+                            type: string
+                            example: c52ca028-02ad-11e9-8d2f-0260b0cd3c00
+                          trainingSeriesUserAssignmentId: {}
+                          dueDate:
+                            type: integer
+                            example: 1545955200000
+                            default: 0
+                          numViewedTasks:
+                            type: integer
+                            example: 3
+                            default: 0
+                          numCompletedTasks:
+                            type: integer
+                            example: 3
+                            default: 0
+                          numCompletedTestQuestions:
+                            type: integer
+                            example: 5
+                            default: 0
+                          numGradedTestQuestions:
+                            type: integer
+                            example: 4
+                            default: 0
+                          numCorrectTestQuestions:
+                            type: integer
+                            example: 3
+                            default: 0
+                          score:
+                            type: integer
+                            example: 75
+                            default: 0
+                          isArchived: {}
+                          isCompleted:
+                            type: boolean
+                            example: false
+                            default: true
+                          createdAt:
+                            type: integer
+                            example: 1545128118800
+                            default: 0
+                          updatedAt:
+                            type: integer
+                            example: 1545328427200
+                            default: 0
+                          completedAt:
+                            type: integer
+                            example: 1545328427200
+                            default: 0
+                          completionPercentage:
+                            type: integer
+                            example: 100
+                            default: 0
+                    trainingSeriesAssignments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                          userId:
+                            type: integer
+                            example: 27483
+                            default: 0
+                          title:
+                            type: string
+                            example: Path 1 Title
+                          trainingSeriesId:
+                            type: string
+                            example: 7d30e004-bc99-11e8-86d3-0260b0cd3c00
+                          assignerId:
+                            type: integer
+                            example: 27484
+                            default: 0
+                          overallGrade: {}
+                          isCompleted:
+                            type: boolean
+                            example: false
+                            default: true
+                          dueDate:
+                            type: integer
+                            example: 1538784000000
+                            default: 0
+                          createdAt:
+                            type: integer
+                            example: 1537422944784
+                            default: 0
+                          updatedAt:
+                            type: integer
+                            example: 1537422944784
+                            default: 0
+                          createdThrough: {}
+                          numModules:
+                            type: integer
+                            example: 4
+                            default: 0
+                          modulesCompleted:
+                            type: integer
+                            example: 2
+                            default: 0
+                          completionPercentage:
+                            type: integer
+                            example: 50
+                            default: 0
+                          timeSpent:
+                            type: integer
+                            example: 32
+                            default: 0
+                    challengeAssignments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: d09f7598-bc99-11e8-bb1c-06cfa4e7b2f4
+                          userId:
+                            type: integer
+                            example: 27483
+                            default: 0
+                          title:
+                            type: string
+                            example: Challenge 1 Title
+                          challengeId:
+                            type: string
+                            example: 8b439e84-bc99-11e8-a7f4-06cfa4e7b2f4
+                          trainingSeriesUserAssignmentId:
+                            type: string
+                            example: d07067f8-bc99-11e8-bb1c-06cfa4e7b2f4
+                          dueDate:
+                            type: integer
+                            example: 1538784000000
+                            default: 0
+                          reviewersDueDate: {}
+                          isSubmitted:
+                            type: boolean
+                            example: false
+                            default: true
+                          isPartiallyGraded:
+                            type: boolean
+                            example: false
+                            default: true
+                          isFullyGraded:
+                            type: boolean
+                            example: false
+                            default: true
+                          calculatedGrade:
+                            type: integer
+                            example: 0
+                            default: 0
+                          passed:
+                            type: boolean
+                            example: false
+                            default: true
+                          createdAt:
+                            type: integer
+                            example: 1537422945092
+                            default: 0
+                          updatedAt:
+                            type: integer
+                            example: 1541702793186
+                            default: 0
+                          completedAt: {}
+                          completionPercentage:
+                            type: integer
+                            example: 0
+                            default: 0
+                    scormAssignments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: 019659d6-4c16-7707-bc7e-966a6cfa3a0b
+                          topLevelContentId:
+                            type: string
+                            example: 019659d6-6758-7f30-af63-9446f9011d1e
+                          isCompleted:
+                            type: boolean
+                            example: true
+                            default: true
+                          completionPercentage:
+                            type: integer
+                            example: 100
+                            default: 0
+                          score:
+                            type: integer
+                            example: 100
+                            default: 0
+                          dueAt:
+                            type: integer
+                            example: 1551899725760
+                            default: 0
+                          dueDate:
+                            type: integer
+                            example: 1551899725760
+                            default: 0
+                          tags:
+                            type: array
+                            items:
+                              type: string
+                              example: Ad Solutions
+                          trainingSeriesUserAssignmentIds:
+                            type: array
+                            items:
+                              type: string
+                              example: 01965e3b-1627-7bfc-a1d3-01d28d78e873
+                - title: webhook_payloads
+                  type: object
+                  properties:
+                    challengeAssignments:
+                      type: array
+                    guideAssignments:
+                      type: array
+                    pathAssignments:
+                      type: array
+                    scormAssignments:
+                      type: array
+                - type: object
+                  properties:
+                    page:
+                      type: number
+                      default: '1'
+                    per_page:
+                      type: number
+                      default: '20'
+                    has_more:
+                      type: boolean
+                      default: 'false'
+                    item_count:
+                      type: number
+                    url:
+                      type: string
+                    data:
+                      type: object
+                      properties:
+                        challenge_assignments:
+                          type: array
+                          items:
+                            properties: {}
+                            type: object
+                        guide_assignments:
+                          type: array
+                          items:
+                            properties: {}
+                            type: object
+                        path_assignments:
+                          type: array
+                          items:
+                            properties: {}
+                            type: object
+                        scorm_assignments:
+                          type: array
+                          items:
+                            properties: {}
+                            type: object
+                  required:
+                  - page
+                  title: default
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/users/1/assignments \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"
+
+            -H "Content-type: application/json" \'
+        samples-languages:
+        - curl
+      tags:
+      - Users
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/users/attributes:
+    get:
+      summary: Get All Users (Including Attributes)
+      description: 'This returns a list of all users, including built-in and custom attributes.
+
+
+        See also: <a href="/reference/get-all-users-in-enterprise">Get All Users</a>'
+      operationId: get-all-users-attributes
+      parameters:
+      - name: includeDeleted
+        in: query
+        description: Default behavior is to return custom attributes for users where isDeleted is "false". You can set this parameter to "true" to return custom attributes for users where isDeleted is either "true" or "false".
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      - in: query
+        name: page
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+        description: 'Page of results to return
+
+          '
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+        description: Number of results to return per page (1-200)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                    default: '1'
+                  per_page:
+                    type: number
+                    default: '20'
+                  has_more:
+                    type: boolean
+                    default: 'false'
+                  item_count:
+                    type: number
+                  url:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: number
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            is_admin:
+                              type: boolean
+                            is_deleted:
+                              type: boolean
+                            is_permanently_deleted:
+                              type: boolean
+                            created_at:
+                              type: number
+                            updated_at:
+                              type: number
+                            custom_attributes:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                api_name:
+                                  type: string
+                                value:
+                                  type: string
+                          type: object
+                required:
+                - page
+              examples:
+                OK:
+                  summary: OK
+                  value: "{\n  \"page\": 1,\n  \"per_page\": 20,\n  \"has_more\": false,\n  \"item_count\": 3,\n  \"url\": \"/api/v1/users/attributes\",\n  \"data\": {\n    \"users\": [\n      {\n        \"id\": 1925,\n        \"name\": \"John Doe\",\n        \"email\": \"johndoe@workramp.com\",\n        \"is_admin\": false,\n        \"is_deleted\": false,\n        \"is_permanently_deleted\": false,\n        \"created_at\": 1466832522352,\n        \"updated_at\": 1469950882089,\n        \"custom_attributes\": [\n          {\n            \"id\": 13,\n            \"api_name\": \"custom_attribute\",\n            \"value\": \"Custom Attribute Value\"\n          },\n          {\n            \"id\": 15,\n            \"api_name\": \"custom_attribute\",\n            \"value\": \"Custom Attribute Value\"\n          }\n        ]\n      },\n      {\n        \"id\": 1954,\n        \"name\": \"Beth Samuels\",\n        \"email\": \"bethsamuels@workramp.com\",\n        \"is_admin\": true,\n        \"is_deleted\": false,\n        \"is_permanently_deleted\": false,\n        \"created_at\": 1467515797325,\n        \"updated_at\": 1467515860387,\n        \"custom_attributes\": [\n          {\n            \"id\": 13,\n            \"api_name\": \"custom_attribute\",\n            \"value\": \"Custom Attribute Value\"\n          }\n        ]\n      },\n      {\n        \"id\": 1955,\n        \"name\": \"Julie Thomas\",\n        \"email\": \"juliethomas@workramp.com\",\n        \"is_admin\": false,\n        \"is_deleted\": false,\n        \"is_permanently_deleted\": false,\n        \"created_at\": 1467515822265,\n        \"updated_at\": 14"
+                OK - legacy_mode:
+                  summary: OK - legacy_mode
+                  value:
+                  - id: 1925
+                    name: John Doe
+                    email: johndoe@workramp.com
+                    isAdmin: false
+                    isDeleted: false
+                    isPermanentlyDeleted: false
+                    createdAt: 1466832522351.831
+                    updatedAt: 1469950882088.9028
+                    customAttributes:
+                    - id: 13
+                      apiName: custom_attribute
+                      value: Custom Attribute Value
+                    - id: 15
+                      apiName: custom_attribute
+                      value: Custom Attribute Value
+                  - id: 1954
+                    name: Beth Samuels
+                    email: bethsamuels@workramp.com
+                    isAdmin: true
+                    isDeleted: false
+                    isPermanentlyDeleted: false
+                    createdAt: 1467515797325.3892
+                    updatedAt: 1467515860387.0022
+                    customAttributes:
+                    - id: 13
+                      apiName: custom_attribute
+                      value: Custom Attribute Value
+                  - id: 1955
+                    name: Julie Thomas
+                    email: juliethomas@workramp.com
+                    isAdmin: false
+                    isDeleted: false
+                    isPermanentlyDeleted: false
+                    createdAt: 1467515822265.4888
+                    updatedAt: 1467515932613.6372
+                    directReports: []
+                    certifications: []
+                    customAttributes: []
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Users
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/users/{user_id}/certifications:
+    get:
+      summary: Get Awards by User
+      description: ''
+      operationId: get-all-awards
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        description: The id of the user
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: ID of the award
+                    userId:
+                      type: integer
+                      description: ID of the user
+                    certificationId:
+                      type: string
+                      description: ID of the badge/certification
+                    createdAt:
+                      type: integer
+                      description: Timestamp with milliseconds for when the award was created
+                    updatedAt:
+                      type: integer
+                      description: Timestamp with milliseconds for when the award was updated
+                    assignmentId:
+                      type: string
+                      description: ID of the user's SCORM assignment (if awarded via SCORM)
+                    challengeUserAssignmentId:
+                      type: string
+                      description: ID of the user's challenge assignment (if awarded via challenge)
+                    courseUserAssignmentId:
+                      type: string
+                      description: ID of the user's course assignment (if awarded via course)
+                    trainingClassSessionAttendeeId:
+                      type: string
+                      description: ID of the user's event/training class session attendance (if awarded via event session)
+                    trainingSeriesUserAssignmentId:
+                      type: string
+                      description: ID of the user's path/training series assignment (if awarded via path)
+                  required:
+                  - id
+                  - certificationId
+                  - userId
+                  - createdAt
+                  - updatedAt
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                  - id: 019cde5d-f782-7ca8-82b2-d0db9619ef23
+                    userId: 1
+                    certificationId: 019cde5d-f782-7ef1-95b5-77deff867844
+                    courseUserAssignmentId: 019cde5d-f782-75d3-8cca-a0e60c0b43da
+                    createdAt: 1773252000000
+                    updatedAt: 1773252000000
+                  - id: 019cde5d-f782-7fce-a84e-206aed0c2470
+                    userId: 1
+                    certificationId: 019cde5d-f782-75b9-821e-a6344b95bb0f
+                    challengeUserAssignmentId: 019cde5d-f782-7e5e-965d-daaddbad3817
+                    createdAt: 1773252000000
+                    updatedAt: 1773252000000
+                  - id: 019cde5d-f782-7ec8-92f0-9e1c197994fa
+                    userId: 1
+                    certificationId: 019cde5d-f782-77a4-9ea8-c225469135c9
+                    trainingClassSessionAttendeeId: 019cde5d-f782-7d00-b320-86bfbb2b94f6
+                    createdAt: 1773252000000
+                    updatedAt: 1773252000000
+                  - id: 019cde5d-f782-79d7-8db0-a53fb53d3ce3
+                    userId: 1
+                    certificationId: 019cde5d-f782-7283-9bb9-92fdd368b65a
+                    trainingSeriesUserAssignmentId: 019cde5d-f782-7a61-a4a0-72d85bb8557b
+                    createdAt: 1773252000000
+                    updatedAt: 1773252000000
+                  - id: 019cde5d-f782-7553-bf66-641291d98163
+                    userId: 1
+                    certificationId: 019cde5d-f782-78c7-9c13-1b68019c94d8
+                    assignmentId: 019cde5d-f782-796b-88f1-8959e502fc03
+                    createdAt: 1773252000000
+                    updatedAt: 1773252000000
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/users/1918/certifications \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+        samples-languages:
+        - curl
+      tags:
+      - Users
+    servers:
+    - url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-refined-from:
+- workramp-api-settings-openapi.yml
+- workramp-json-api-openapi.yml
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

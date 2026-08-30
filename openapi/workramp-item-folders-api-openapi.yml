@@ -1,0 +1,252 @@
+openapi: 3.2.0
+info:
+  title: json-api Item Folders API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Item Folders
+paths:
+  /api/v1/item_folders:
+    get:
+      description: ''
+      operationId: get_new-endpoint
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value: ''
+                OK:
+                  summary: OK
+                  value:
+                  - id: 0197c6e2-00fd-7048-b6bc-ca34116fcad8
+                    name: Jogging 126
+                    order: 1
+                    createdAt: 1751388389629
+                    updatedAt: 1751388389629
+                  - id: 0197c6e2-00ef-7d0c-9a73-447d99645dc4
+                    name: Board Games 977
+                    order: 2
+                    createdAt: 1751388389614
+                    updatedAt: 1751388389614
+                    children:
+                    - id: 0197c6e2-0109-72fe-9e9c-288eb29d5597
+                      name: Basketball 844
+                      order: 1
+                      createdAt: 1751388389641
+                      updatedAt: 1751388389641
+                      children:
+                      - id: 0197c6e2-0114-770b-9690-088ac9734272
+                        name: Lar Ping 637
+                        order: 1
+                        createdAt: 1751388389652
+                        updatedAt: 1751388389652
+                New Example 2:
+                  summary: New Example 2
+                  value: ''
+      parameters: []
+      summary: Delete SCORM Assignments
+      tags:
+      - Item Folders
+    post:
+      description: ''
+      operationId: post_apiv1item-folders
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                JSON:
+                  summary: JSON
+                  value:
+                    id: 0197c6e2-00ef-7d0c-9a73-447d99645dc4
+                    name: Board Games 977
+                    order: 2
+                    parentItemFolderId: null
+                    isHidden: false
+                    isLocked: false
+                    createdAt: 1751388389614
+                    updatedAt: 1751388389614
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: Name of the item folder
+                is_hidden:
+                  type: boolean
+                  description: Hidden state of the item folder
+                is_locked:
+                  type: boolean
+                  description: Locked state of the item folder
+                parent_item_folder_id:
+                  type: string
+                  description: ID of the parent item folder
+              type: object
+              required:
+              - name
+      tags:
+      - Item Folders
+  /api/v1/item_folders/{item_folder_id}:
+    delete:
+      description: Delete a single item folder
+      responses:
+        '200':
+          description: ''
+      parameters:
+      - in: path
+        name: item_folder_id
+        schema:
+          type: string
+        required: true
+        description: ID of the item folder
+      operationId: delete_api-v1-item-folders-item-folder-id
+      summary: Delete Item Folder
+      tags:
+      - Item Folders
+    patch:
+      description: Edit a single item folder
+      operationId: patch_apiv1item_folders{item_folder_id}
+      responses:
+        '200':
+          description: ''
+      parameters:
+      - in: path
+        name: item_folder_id
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  default: ''
+                  description: Name of the item folder
+                ui_order:
+                  type: integer
+                  description: UI order of the item folder
+                is_hidden:
+                  type: boolean
+                  description: Hidden state of the item folder
+                is_locked:
+                  type: boolean
+                  description: Locked state of the item folder
+                permissions:
+                  type: object
+                  properties:
+                    groups:
+                      type: string
+                      description: 'Group ID keys => role values. Valid roles are:
+
+                        - full_editor
+
+                        - limited_editor
+
+                        - edit
+
+                        - assign
+
+                        - read'
+                    users:
+                      type: string
+                      description: 'User ID keys => role values. Valid roles are:
+
+                        - full_editor
+
+                        - limited_editor
+
+                        - edit
+
+                        - assign
+
+                        - read'
+                  description: User/group permissions
+              type: object
+      summary: Edit Item Folder
+      tags:
+      - Item Folders
+  /api/v1/item-folders:
+    get:
+      description: ''
+      operationId: get_new-endpoint
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value: ''
+                OK:
+                  summary: OK
+                  value:
+                  - id: 0197c6e2-00fd-7048-b6bc-ca34116fcad8
+                    name: Jogging 126
+                    order: 1
+                    createdAt: 1751388389629
+                    updatedAt: 1751388389629
+                  - id: 0197c6e2-00ef-7d0c-9a73-447d99645dc4
+                    name: Board Games 977
+                    order: 2
+                    createdAt: 1751388389614
+                    updatedAt: 1751388389614
+                    children:
+                    - id: 0197c6e2-0109-72fe-9e9c-288eb29d5597
+                      name: Basketball 844
+                      order: 1
+                      createdAt: 1751388389641
+                      updatedAt: 1751388389641
+                      children:
+                      - id: 0197c6e2-0114-770b-9690-088ac9734272
+                        name: Lar Ping 637
+                        order: 1
+                        createdAt: 1751388389652
+                        updatedAt: 1751388389652
+                New Example 2:
+                  summary: New Example 2
+                  value: ''
+      parameters: []
+      tags:
+      - Item Folders
+    post:
+      description: ''
+      operationId: post_apiv1item-folders
+      responses:
+        '200':
+          description: ''
+      parameters: []
+      tags:
+      - Item Folders
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

@@ -1,0 +1,378 @@
+openapi: 3.2.0
+info:
+  title: Workramp Guides API
+  version: '1.0'
+  description: 'Operations tagged Guides across 2 of this provider''s published API definitions: workramp-api-settings-openapi.yml, workramp-json-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Guides
+paths:
+  /api/v1/guides:
+    get:
+      summary: Get All Guides
+      description: ''
+      operationId: get-all-guides
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                    default: '1'
+                  per_page:
+                    type: number
+                    default: '20'
+                  has_more:
+                    type: boolean
+                    default: 'false'
+                  item_count:
+                    type: number
+                  url:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      guides:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: string
+                            title:
+                              type: string
+                            num_total_tasks:
+                              type: number
+                            num_total_test_questions:
+                              type: number
+                            created_at:
+                              type: number
+                            updated_at:
+                              type: number
+                            tags:
+                              type: array
+                              items:
+                                type: string
+                          type: object
+                required:
+                - page
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 5
+                    url: /api/v1/guides
+                    data:
+                      guides:
+                      - id: 5525a100-50a1-11e6-b0f4-06871305d8f3
+                        title: Sales Onboarding
+                        num_total_tasks: 20
+                        num_total_test_questions: 45
+                        created_at: 1469256453510
+                        updated_at: 1469422217610
+                        tags:
+                        - Sales
+                        - Onboarding
+                      - id: 1311829e-3a33-11e6-b978-06d818d6b395
+                        title: CSM Onboarding
+                        num_total_tasks: 15
+                        num_total_test_questions: 20
+                        created_at: 1466831403590
+                        updated_at: 1469949861174
+                        tags:
+                        - Onboarding
+                      - id: 1309d2f0-3a94-11e6-ba78-06d818a6b395
+                        title: Challenger Training Prework
+                        num_total_tasks: 8
+                        num_total_test_questions: 20
+                        created_at: 1466831833036
+                        updated_at: 1466832487093
+                        tags: []
+                      - id: 53fd4646-3c17-a1e6-9484-0ad818a6b395
+                        title: API Overview
+                        num_total_tasks: 7
+                        num_total_test_questions: 5
+                        created_at: 1466998157240
+                        updated_at: 1466998157240
+                        tags: []
+                      - id: 6b3a41da-56f5-a1e6-ae63-06d818a6b395
+                        title: New Product Releases
+                        num_total_tasks: 8
+                        num_total_test_questions: 15
+                        created_at: 1469952274733
+                        updated_at: 1469952509535
+                        tags:
+                        - Releases
+                OK - legacy_mode:
+                  summary: OK - legacy_mode
+                  value:
+                  - id: 5525a100-50a1-11e6-b0f4-06871305d8f3
+                    title: Sales Onboarding
+                    numTotalTasks: 20
+                    numTotalTestQuestions: 45
+                    createdAt: 1469256453510.3901
+                    updatedAt: 1469422217609.812
+                    tags:
+                    - Sales
+                    - Onboarding
+                  - id: 1311829e-3a33-11e6-b978-06d818d6b395
+                    title: CSM Onboarding
+                    numTotalTasks: 15
+                    numTotalTestQuestions: 20
+                    createdAt: 1466831403589.577
+                    updatedAt: 1469949861173.6838
+                    tags:
+                    - Onboarding
+                  - id: 1309d2f0-3a94-11e6-ba78-06d818a6b395
+                    title: Challenger Training Prework
+                    numTotalTasks: 8
+                    numTotalTestQuestions: 20
+                    createdAt: 1466831833035.932
+                    updatedAt: 1466832487092.9001
+                    tags: []
+                  - id: 53fd4646-3c17-a1e6-9484-0ad818a6b395
+                    title: API Overview
+                    numTotalTasks: 7
+                    numTotalTestQuestions: 5
+                    createdAt: 1466998157239.662
+                    updatedAt: 1466998157239.662
+                    tags: []
+                  - id: 6b3a41da-56f5-a1e6-ae63-06d818a6b395
+                    title: New Product Releases
+                    numTotalTasks: 8
+                    numTotalTestQuestions: 15
+                    createdAt: 1469952274733.3948
+                    updatedAt: 1469952509534.7478
+                    tags:
+                    - Releases
+      deprecated: false
+      parameters:
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: '1'
+          format: int32
+        description: 'Page of results to return
+
+          '
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          default: '20'
+          format: int32
+        description: Number of results to return per page (1-200)
+      tags:
+      - Guides
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/guides/{GuideID}/assignments:
+    get:
+      summary: Get All Assignments for a Guide
+      description: Get all assignment for a specified guide
+      operationId: get-all-assignments-for-a-guide
+      parameters:
+      - name: user_id
+        in: query
+        description: 'Optional parameter: only assignments for this user id will be returned in the response'
+        schema:
+          type: integer
+          format: int32
+      - name: GuideID
+        in: path
+        description: ID of the guide to get assignments for
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode is enabled, the API will return the entire result set in a single, non-paginated response.
+      - in: query
+        name: page
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+        description: Page of results to return
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+        description: Number of results to return per page (1-200)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value: "{\"page\" => 1,\n \"per_page\" => 20,\n \"has_more\" => false,\n \"item_count\" => 2,\n \"url\" => \"/api/v1/guides/019adb1d-ad5f-729e-8411-6c784bf94ddf/assignments\",\n \"data\" =>\n  {\"assignments\" =>\n    [{\"id\" => \"019adb1d-aede-7747-a5dc-ad0de8f8a734\",\n      \"user_id\" => 73,\n      \"title\" => \"Biomedical Science\",\n      \"course_id\" => \"019adb1d-ad5f-729e-8411-6c784bf94ddf\",\n      \"training_series_user_assignment_id\" => nil,\n      \"training_series_user_assignment_ids\" =>\n       [\"019adb1d-aeb5-7364-89a2-368611243b5d\",\n        \"019adb1d-aec0-7add-ae2f-216ee4dfa677\"],\n      \"assigner_id\" => 70,\n      \"due_date\" => nil,\n      \"num_viewed_tasks\" => 1,\n      \"num_completed_tasks\" => 0,\n      \"num_completed_test_questions\" => nil,\n      \"num_graded_test_questions\" => 0,\n      \"num_correct_test_questions\" => 0,\n      \"score\" => nil,\n      \"is_archived\" => false,\n      \"is_completed\" => false,\n      \"completion_percentage\" => 0,\n      \"created_at\" => 1764612746974,\n      \"updated_at\" => 1764612746974,\n      \"completed_at\" => nil,\n      \"tags\" => [nil, nil],\n      \"status\" => \"not_started\",\n      \"is_completed_on_time\" => nil,\n      \"passed\" => false,\n      \"passing_grade_required\" => nil,\n      \"is_overdue\" => false,\n      \"num_days_overdue\" => nil,\n      \"is_retaken\" => false,\n      \"retake_count\" => 0,\n      \"time_spent\" => nil,\n      \"first_accessed_at\" => nil,\n      \"last_accessed_at\" => nil,\n      \"paths\" =>\n       [{\"id\" => \"019adb1d-ae17-726c-95cb-4e121b08c643\",\n         \"name\" => \"Dave O'Connell DDS\"},\n        {\"id\" => \"019adb1d-ae52-7e1a-8c08-5eab7adbf473\",\n         \"name\" => \"Alysa Ferry\"}]},\n     {\"id\" => \"019adb1d-aee5-780c-8680-4b2d27c6c54c\",\n      \"user_id\" => 70,\n      \"title\" => \"Biomedical Science\",\n      \"course_id\" => \"019adb1d-ad5f-729e-8411-6c784bf94ddf\",\n      \"training_series_user_assignment_id\" => nil,\n      \"training_series_user_assignment_ids\" =>\n       [\"019adb1d-aeba-7b09-8394-565b1ce02751\",\n        \"019adb1d-aec5-7e30-9ba2-58e669924f30\"],\n      \"assigner_id\" => 70,\n      \"due_date\" => nil,\n      \"num_viewed_tasks\" => 1,\n      \"num_completed_tasks\" => 0,\n      \"num_completed_test_questions\" => nil,\n      \"num_graded_test_questions\" => 0,\n      \"num_correct_test_questions\" => 0,\n      \"score\" => nil,\n      \"is_archived\" => false,\n      \"is_completed\" => false,\n      \"completion_percentage\" => 0,\n      \"created_at\" => 1764612746981,\n      \"updated_at\" => 1764612746981,\n      \"completed_at\" => nil,\n      \"tags\" => [nil, nil],\n      \"status\" => \"not_started\",\n      \"is_completed_on_time\" => nil,\n      \"passed\" => false,\n      \"passing_grade_required\" => nil,\n      \"is_overdue\" => false,\n      \"num_days_overdue\" => nil,\n      \"is_retaken\" => false,\n      \"retake_count\" => 0,\n      \"time_spent\" => nil,\n      \"first_accessed_at\" => nil,\n      \"last_accessed_at\" => nil,\n      \"paths\" =>\n       [{\"id\" => \"019adb1d-ae17-726c-95cb-4e121b08c643\",\n         \"name\" => \"Dave O'Connell DDS\"},\n        {\"id\" => \"019adb1d-ae52-7e1a-8c08-5eab7adbf473\",\n         \"name\" => \"Alysa Ferry\"}]}]}}"
+                OK - legacy_mode:
+                  summary: OK - legacy_mode
+                  value: "[\n    {\n        \"id\": \"8f44e9fa-56ef-11e6-8622-06871305d8f3\",\n        \"userId\": 1955,\n        \"title\": \"Guide 1 Title\",\n        \"courseId\": \"e585fd3e-509d-11e6-9bd0-06d818a6b395\",\n        \"dueDate\": 1469689200000,\n        \"numViewedTasks\": 1,\n        \"numCompletedTasks\": 0,\n        \"numCompletedTestQuestions\": 0,\n        \"numGradedTestQuestions\": 0,\n        \"numCorrectTestQuestions\": 0,\n        \"score\": null,\n        \"isArchived\": null,\n        \"isCompleted\": false,\n        \"createdAt\": 1469949758220,\n        \"updatedAt\": 1471145372226,\n        \"completedAt\": null,\n      \t\"completionPercentage\": 0,\n        \"timeSpent\": 0,\n        \"tags\": [\n        \t\"Guide 1\"\n        ],\n        \"paths\": [\n          {\n            \"id\": \"8f44e9fa-56ef-11e6-a622-06871305d8f3\",\n            \"title\": \"Path 1 Title\"\n          },\n          {\n            \"id\": \"8f4as9fa-56ef-d1e6-a122-068713addd8f3\",\n            \"title\": \"Path 2 Title\"\n          },\n        ]\n    },\n    {\n        \"id\": \"348bbdd8-509e-11e6-b0f4-06871305d8f3\",\n        \"userId\": 1918,\n        \"title\": \"Guide 1 Title\",\n        \"courseId\": \"e585fd3e-509d-11e6-9bd0-06d818a6b395\",\n        \"dueDate\": 1469775600000,\n        \"numViewedTasks\": 7,\n        \"numCompletedTasks\": 2,\n        \"numCompletedTestQuestions\": 1,\n        \"numGradedTestQuestions\": 1,\n        \"numCorrectTestQuestions\": 1,\n        \"score\": 100.0,\n        \"isArchived\": null,\n        \"isCompleted\": false,\n        \"createdAt\": 1469255109800,\n        \"updatedAt\": 1491615188754,\n        \"completedAt\": null,\n      \t\"completionPercentage\": 28,\n        \"timeSpent\": 0,\n      \t\"tags\": [\n        \t\"Guide 1\"\n        ],\n        \"paths\": []\n    },\n    {\n        \"id\": \"2b1b2c8e-509e-11e6-9bd0-06d818a6b395\",\n        \"userId\": 1923,\n        \"title\": \"Guide 1 Title\",\n        \"courseId\": \"e585fd3e-509d-11e6-9bd0-06d818a6b395\",\n        \"dueDate\": 1469775600000,\n        \"numViewedTasks\": 0,\n        \"numCompletedTasks\": 0,\n        \"numCompletedTestQuestions\": 0,\n        \"numGradedTestQuestions\": 0,\n        \"numCorrectTestQuestions\": 0,\n        \"score\": null,\n        \"isArchived\": null,\n        \"isCompleted\": true,\n        \"createdAt\": 1469255093963,\n        \"updatedAt\": 1471145372967,\n        \"completedAt\": 1544579460840,\n      \t\"completionPercentage\": 100,\n        \"timeSpent\": 100,\n      \t\"tags\": [\n        \t\"Guide 1\"\n        ],\n        \"paths\": []\n    }\n]"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: string
+                  per_page:
+                    type: string
+                  has_more:
+                    type: string
+                  item_count:
+                    type: string
+                  url:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          properties: {}
+                          type: object
+                required:
+                - page
+      deprecated: false
+      tags:
+      - Guides
+    post:
+      summary: Create Assignment
+      description: Create an assignment for a given user
+      operationId: create-assignment-2
+      parameters:
+      - name: GuideID
+        in: path
+        description: ID of the guide to assign
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: integer
+                  format: int32
+                dueDate:
+                  type: string
+                  description: Flexible date format, with a preference for ISO8601 formats, but can accept number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: date
+                email:
+                  type: string
+                  description: Optionally pass in an email in case you don't know the userId
+                dueAtEndOfDay:
+                  type: boolean
+                  default: 'true'
+                  description: Specifies whether you want to have the due date set to 11:59:99 of the day chosen.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"80afd844-fc64-11e6-8eb3-02dcdaae3a92\",\n  \"userId\": 1144,\n  \"title\": \"Guide 1 Title\",\n  \"courseId\": \"e585fd3e-509d-11e6-9bd0-06d818a6b395\",\n  \"trainingSeriesUserAssignmentId\": null,\n  \"dueDate\": 1487900059000,\n  \"numViewedTasks\": 0,\n  \"numCompletedTasks\": 0,\n  \"numCompletedTestQuestions\": 0,\n  \"numGradedTestQuestions\": 0,\n  \"numCorrectTestQuestions\": 0,\n  \"score\": null,\n  \"isArchived\": null,\n  \"isCompleted\": false,\n  \"createdAt\": 1488141926731.2966,\n  \"updatedAt\": 1488141926731.2966,\n  \"completedAt\": null\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 80afd844-fc64-11e6-8eb3-02dcdaae3a92
+                  userId:
+                    type: integer
+                    example: 1144
+                    default: 0
+                  title:
+                    type: string
+                    example: Guide 1 Title
+                  courseId:
+                    type: string
+                    example: e585fd3e-509d-11e6-9bd0-06d818a6b395
+                  trainingSeriesUserAssignmentId: {}
+                  dueDate:
+                    type: integer
+                    example: 1487900059000
+                    default: 0
+                  numViewedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTasks:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCompletedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numGradedTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numCorrectTestQuestions:
+                    type: integer
+                    example: 0
+                    default: 0
+                  score: {}
+                  isArchived: {}
+                  isCompleted:
+                    type: boolean
+                    example: false
+                    default: true
+                  createdAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  updatedAt:
+                    type: number
+                    example: 1488141926731.2966
+                    default: 0
+                  completedAt: {}
+      deprecated: false
+      tags:
+      - Guides
+    servers:
+    - url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-refined-from:
+- workramp-api-settings-openapi.yml
+- workramp-json-api-openapi.yml
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

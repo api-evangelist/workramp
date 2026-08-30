@@ -1,0 +1,65 @@
+openapi: 3.2.0
+info:
+  title: api-settings Scorms API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Scorms
+paths:
+  /api/v1/scorms:
+    get:
+      summary: Get All SCORM Courses
+      description: Gets all SCORM in an enterprise
+      operationId: get-all-scorms
+      parameters:
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"page\": 1,\n  \"per_page\": 20,\n  \"has_more\": false,\n  \"url\": \"/api/v1/scorms\",\n  \"data\": {\n    \"scorms\": [\n      {\n        \"id\": \"481e68e0-056f-11ee-af61-06635f23b5b5\",\n        \"title\": \"Title of the SCORM\",\n        \"created_at\": 1686168600452,\n        \"time_estimate\": 10\n      },\n      {\n        \"id\": \"d1fa2138-06f2-11ee-b231-06635f23b5b5\",\n        \"title\": \"Title of another SCORM\",\n        \"created_at\": 1686335046974,\n        \"time_estimate\": 236\n      }\n    ]\n  }"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Scorms
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

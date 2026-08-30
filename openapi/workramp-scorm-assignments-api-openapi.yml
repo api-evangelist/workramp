@@ -1,0 +1,236 @@
+openapi: 3.2.0
+info:
+  title: json-api Scorm Assignments API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Scorm Assignments
+paths:
+  /api/v1/scorm_assignments/bulk_create:
+    post:
+      description: Create one or more SCORM assignments
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    success:
+                    - user_id: 1234567891
+                      assignment_id: assignment-id-1
+                    - user_id: 1234567892
+                      assignment_id: assignment-id-2
+                    error:
+                    - error: assignment_exists
+                      user_id: 1234567893
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                          example: 1234567891
+                          default: 0
+                        assignment_id:
+                          type: string
+                          example: assignment-id-1
+                      required:
+                      - user_id
+                      - assignment_id
+                  error:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          type: string
+                          example: assignment_exists
+                        user_id:
+                          type: integer
+                          example: 1234567893
+                          default: 0
+                      required:
+                      - error
+                      - user_id
+                required:
+                - success
+                - error
+      parameters: []
+      summary: Bulk Create SCORM Assignments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scorm_id:
+                  type: string
+                  description: ID of the SCORM
+                group_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of groups to be assigned this content
+                user_ids:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of users to be assigned this content
+                user_emails:
+                  type: array
+                  description: Emails of users to be assigned this content
+                  items:
+                    type: string
+                assigning_user_id:
+                  type: number
+                  description: ID of the user that is assigning the content
+                due_date:
+                  type: string
+                  description: Due date for this assignment
+              required:
+              - scorm_id
+      operationId: post_api-v1-scorm-assignments-bulk-create
+      tags:
+      - Scorm Assignments
+  /api/v1/scorm_assignments/bulk_delete:
+    post:
+      description: Delete one or more SCORM assignments
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    success:
+                    - user_id: 1234567891
+                      assignment_id: assignment-id-1
+                    - user_id: 1234567892
+                      assignment_id: assignment-id-2
+                    error:
+                    - error: did_not_exist
+                      assignment_id: assignment-id-3
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                          example: 1234567891
+                          default: 0
+                          description: ID of the user
+                        assignment_id:
+                          type: string
+                          example: assignment-id-1
+                          description: ID of the SCORM assignment
+                  error:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          type: string
+                          example: did_not_exist
+                          description: Error type
+                        assignment_id:
+                          type: string
+                          example: assignment-id-3
+                          description: SCORM assignment ID
+                      required:
+                      - error
+                      - assignment_id
+                required:
+                - success
+                - error
+      parameters: []
+      summary: Bulk Delete SCORM Assignments
+      operationId: post_api-v1-scorm-assignments-bulk-delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scorm_id:
+                  type: string
+                  description: ID of the SCORM
+                assignment_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: IDs of the assignments to delete
+              required:
+              - scorm_id
+              - assignment_ids
+      tags:
+      - Scorm Assignments
+  /api/v1/scorm_assignments/{assignment_id}:
+    patch:
+      description: Update a single SCORM assignment
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    assignerUserId: null
+                    completionPercentage: 0
+                    dueAt: null
+                    dueDate: null
+                    id: assignment-id-1
+                    isCompleted: false
+                    score: 0
+                    tags: []
+                    topLevelContentId: scorm-content-id-1
+                    trainingSeriesUserAssignmentIds: []
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+        required: true
+      operationId: patch_api-v1-scorm-assignments-assignment-id
+      summary: Update SCORM Assignment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                due_date:
+                  type: string
+                  description: Due date for the assignment
+      tags:
+      - Scorm Assignments
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

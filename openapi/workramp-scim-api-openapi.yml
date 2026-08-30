@@ -1,0 +1,917 @@
+openapi: 3.2.0
+info:
+  title: api-settings SCIM API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Scim
+paths:
+  /scim/v2/Users:
+    get:
+      summary: 'SCIM: Get All Users'
+      description: ''
+      operationId: scim-get-all-users
+      parameters:
+      - name: count
+        in: query
+        description: Number of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startIndex
+        in: query
+        description: The page of results to return (starts with page 1)
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - in: query
+        name: attributes
+        schema:
+          type: string
+        description: 'The list of attributes to return. Note that the `id` attribute is always returned. For custom attributes, include the fully qualified attribute name. Example: `userName,name,urn:ietf:params:scim:schemas:extension:workramp:2.0:User:age`'
+      - in: query
+        name: excludedAttributes
+        schema:
+          type: string
+        description: 'The list of attributes to not return. Note that the `id` attribute is always returned. For custom attributes, include the fully qualified attribute name. Example: `userName,urn:ietf:params:scim:schemas:extension:workramp:2.0:User:age`'
+      - in: query
+        name: filter
+        schema:
+          type: string
+        description: 'A string to filter the response. Only the `eq` operator and the `userName`, `id`, `emails`, `externalId` attributes are supported in the filter. Example: `userName eq "testuser1@workramp.com"`'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:api:messages:2.0:ListResponse\"\n  ],\n  \"startIndex\": 1,\n  \"itemsPerPage\": 2,\n  \"totalResults\": 2,\n  \"Resources\": [\n    {\n      \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\"\n      ],\n      \"id\": 1,\n      \"userName\": \"testuser1@workramp.com\",\n      \"name\": {\n        \"formatted\": \"Test User1\",\n        \"familyName\": \"User1\",\n        \"givenName\": \"Test\"\n      },\n      \"emails\": [\n        {\n          \"value\": \"testuser1@workramp.com\"\n        }\n      ],\n      \"active\": true,\n      \"meta\": {\n        \"resourceType\": \"User\",\n        \"location\": \"https://app.workramp.com/scim/v2/Users/1\"\n      },\n      \"externalId\": \"Ql7zCBW06soi60qbbz1A\"\n    },\n    {\n      \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\"\n      ],\n      \"id\": 2,\n      \"userName\": \"testuser2@workramp.com\",\n      \"name\": {\n        \"formatted\": \"Test User2\",\n        \"familyName\": \"User2\",\n        \"givenName\": \"Test\"\n      },\n      \"emails\": [\n        {\n          \"value\": \"testuser2@workramp.com\"\n        }\n      ],\n      \"active\": true,\n      \"meta\": {\n        \"resourceType\": \"User\",\n        \"location\": \"https://app.workramp.com/scim/v2/Users/2\"\n      }\n    }\n  ]\n}"
+                Result with excludedAttributes param:
+                  summary: Result with excludedAttributes param
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:api:messages:2.0:ListResponse\",\n  ],\n  \"startIndex\": 1,\n  \"itemsPerPage\": 2,\n  \"totalResults\": 2,\n  \"Resources\": [\n    {\n      \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\"\n      ],\n      \"id\": 1,\n      \"emails\": [\n        {\n          \"value\": \"testuser1@workramp.com\"\n        }\n      ],\n      \"active\": true,\n      \"meta\": {\n        \"resourceType\": \"User\",\n        \"location\": \"https://app.workramp.com/scim/v2/Users/1\"\n      },\n      \"externalId\": \"Ql7zCBW06soi60qbbz1A\",\n      \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\": {\n        \"location\": \"US\"\n      }\n    },\n    {\n      \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\"\n      ],\n      \"id\": 2,\n      \"emails\": [\n        {\n          \"value\": \"testuser2@workramp.com\"\n        }\n      ],\n      \"active\": true,\n      \"meta\": {\n        \"resourceType\": \"User\",\n        \"location\": \"https://app.workramp.com/scim/v2/Users/2\"\n      },\n      \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\": {\n        \"location\": \"UK\"\n      }\n    }\n}"
+                Result with attributes param:
+                  summary: Result with attributes param
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:api:messages:2.0:ListResponse\",\n  ],\n  \"startIndex\": 1,\n  \"itemsPerPage\": 2,\n  \"totalResults\": 2,\n  \"Resources\": [\n    {\n      \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\"\n      ],\n      \"id\": 1,\n      \"userName\": \"testuser1@workramp.com\",\n      \"name\": {\n        \"formatted\": \"Test User1\",\n        \"familyName\": \"User1\",\n        \"givenName\": \"Test\"\n      },\n      \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\": {\n        \"age\": \"30\"\n      }\n    },\n    {\n      \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\"\n      ],\n      \"id\": 2,\n      \"userName\": \"testuser2@workramp.com\",\n      \"name\": {\n        \"formatted\": \"Test User2\",\n        \"familyName\": \"User2\",\n        \"givenName\": \"Test\"\n      },\n      \"urn:ietf:params:scim:schemas:extension:workramp:2.0:User\": {}\n    }\n  ]\n}"
+                Result with filter params:
+                  summary: Result with filter params
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:api:messages:2.0:ListResponse
+                    startIndex: 1
+                    itemsPerPage: 1
+                    totalResults: 1
+                    Resources:
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:core:2.0:User
+                      id: 1
+                      userName: testuser1@workramp.com
+                      name:
+                        formatted: Test User1
+                        familyName: User1
+                        givenName: Test
+                      emails:
+                      - value: testuser1@workramp.com
+                      active: true
+                      meta:
+                        resourceType: User
+                        location: https://app.workramp.com/scim/v2/Users/1
+                      externalId: Ql7zCBW06soi60qbbz1A
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                      example: urn:ietf:params:scim:api:messages:2.0:ListResponse
+                  startIndex:
+                    type: integer
+                    example: 1
+                    default: 0
+                  itemsPerPage:
+                    type: integer
+                    example: 2
+                    default: 0
+                  totalResults:
+                    type: integer
+                    example: 2
+                    default: 0
+                  Resources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        schemas:
+                          type: array
+                          items:
+                            type: string
+                            example: urn:ietf:params:scim:schemas:core:2.0:User
+                        id:
+                          type: integer
+                          example: 1
+                          default: 0
+                        userName:
+                          type: string
+                          example: testuser1@workramp.com
+                        name:
+                          type: object
+                          properties:
+                            formatted:
+                              type: string
+                              example: Test User1
+                            familyName:
+                              type: string
+                              example: User1
+                            givenName:
+                              type: string
+                              example: Test
+                        emails:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              value:
+                                type: string
+                                example: testuser1@workramp.com
+                        active:
+                          type: boolean
+                          example: true
+                          default: true
+                        meta:
+                          type: object
+                          properties:
+                            resourceType:
+                              type: string
+                              example: User
+                            location:
+                              type: string
+                              example: https://app.workramp.com/scim/v2/Users/1
+                        externalId:
+                          type: string
+                          example: Ql7zCBW06soi60qbbz1A
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: shell
+          code: 'curl https://app.workramp.com/scim/v2/Users \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+          name: ''
+        samples-languages:
+        - shell
+      tags:
+      - Scim
+    post:
+      summary: 'SCIM: Create User'
+      description: ''
+      operationId: scim-create-user
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  description: Email of the user
+                name:
+                  type: object
+                  description: Name of the user
+                  required:
+                  - givenName
+                  properties:
+                    givenName:
+                      type: string
+                      description: Given name of the user
+                    familyName:
+                      type: string
+                      description: Family name of the user
+                externalId:
+                  type: string
+                  description: Id of the user in your external system (the system where you are syncing users from)
+                groups:
+                  type: array
+                  description: List of group ids that the user is a part of
+                  items:
+                    type: integer
+                    format: int32
+                manager:
+                  type: string
+                  description: Email of the user's manager
+                managerName:
+                  type: string
+                  description: Name of the user's manager
+                startDate:
+                  type: string
+                  description: Start date of the user
+                  format: date
+                urn:ietf:params:scim:schemas:extension:workramp:2․0:User:
+                  type: object
+                  description: Custom attributes to create for the user. Note that the custom attribute should already exists on the enterprise. Replace "2․0" with "2.0" (normal full stop)!
+                  properties:
+                    key:
+                      type: string
+                      description: API name of the custom attribute
+                    value:
+                      type: string
+                      description: Value to set the custom attribute to
+                displayName:
+                  type: string
+                  description: The name of the user. Note that this takes precedence over the `name` parameter
+                customAttributes:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      description: API name of the custom attribute
+                    value:
+                      type: string
+                      description: Value to set the custom attribute to
+                  description: Custom attributes to create for the user
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:schemas:core:2.0:User\"\n  ],\n  \"id\": 10,\n  \"userName\": \"newtestuser@workramp.com\",\n  \"name\": {\n    \"formatted\": \"NewTest User\",\n    \"familyName\": \"User\",\n    \"givenName\": \"NewTest\"\n  },\n  \"emails\": [\n    {\n      \"value\": \"newtestuser@workramp.com\"\n    }\n  ],\n  \"active\": true,\n  \"meta\": {\n    \"resourceType\": \"User\",\n    \"location\": \"https://app.workramp.com/scim/v2/Users/10\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                      example: urn:ietf:params:scim:schemas:core:2.0:User
+                  id:
+                    type: integer
+                    example: 10
+                    default: 0
+                  userName:
+                    type: string
+                    example: newtestuser@workramp.com
+                  name:
+                    type: object
+                    properties:
+                      formatted:
+                        type: string
+                        example: NewTest User
+                      familyName:
+                        type: string
+                        example: User
+                      givenName:
+                        type: string
+                        example: NewTest
+                  emails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          example: newtestuser@workramp.com
+                  active:
+                    type: boolean
+                    example: true
+                    default: true
+                  meta:
+                    type: object
+                    properties:
+                      resourceType:
+                        type: string
+                        example: User
+                      location:
+                        type: string
+                        example: https://app.workramp.com/scim/v2/Users/10
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: "curl https://app.workramp.com/scim/v2/Users \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-d '{\"userName\": \"newtestuser@workramp.com\",\"name\": {\"givenName\": \"NewTest\", \"familyName\": \"User\"},\"groups\":[24,50]}' \\\n-X POST"
+        samples-languages:
+        - text
+      tags:
+      - Scim
+  /scim/v2/Users/{id}:
+    get:
+      summary: 'SCIM: Get User'
+      description: ''
+      operationId: scim-get-user
+      parameters:
+      - name: id
+        in: path
+        description: The user id to return information about
+        schema:
+          type: integer
+          format: int32
+        required: true
+      - in: query
+        name: attributes
+        schema:
+          type: string
+        description: 'The list of attributes to return. Note that the `id` attribute is always returned. For custom attributes, include the fully qualified attribute name. Example: `userName,name,urn:ietf:params:scim:schemas:extension:workramp:2.0:User:age`'
+      - in: query
+        name: excludedAttributes
+        schema:
+          type: string
+        description: 'The list of attributes to not return. Note that the `id` attribute is always returned. For custom attributes, include the fully qualified attribute name. Example: `userName,urn:ietf:params:scim:schemas:extension:workramp:2.0:User:age`'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:schemas:core:2.0:User\"\n  ],\n  \"id\": 2,\n  \"userName\": \"testuser1@workramp.com\",\n  \"name\": {\n    \"formatted\": \"Test User1\",\n    \"familyName\": \"User1\",\n    \"givenName\": \"Test\"\n  },\n  \"emails\": [\n    {\n      \"value\": \"testuser1@workramp.com\"\n    }\n  ],\n  \"active\": true,\n  \"meta\": {\n    \"resourceType\": \"User\",\n    \"location\": \"https://app.workramp.com/scim/v2/Users/1\"\n  }\n}"
+                Result with excludedAttributes param:
+                  summary: Result with excludedAttributes param
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:schemas:core:2.0:User
+                    - urn:ietf:params:scim:schemas:extension:workramp:2.0:User
+                    id: 1
+                    emails:
+                    - value: testuser1@workramp.com
+                    active: true
+                    meta:
+                      resourceType: User
+                      location: https://app.workramp.com/scim/v2/Users/1
+                    externalId: Ql7zCBW06soi60qbbz1A
+                    urn:ietf:params:scim:schemas:extension:workramp:2.0:User:
+                      location: US
+                Result with attributes param:
+                  summary: Result with attributes param
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:schemas:core:2.0:User
+                    - urn:ietf:params:scim:schemas:extension:workramp:2.0:User
+                    id: 1
+                    userName: testuser1@workramp.com
+                    name:
+                      formatted: Test User1
+                      familyName: User1
+                      givenName: Test
+                    urn:ietf:params:scim:schemas:extension:workramp:2.0:User:
+                      age: '30'
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                      example: urn:ietf:params:scim:schemas:core:2.0:User
+                  id:
+                    type: integer
+                    example: 2
+                    default: 0
+                  userName:
+                    type: string
+                    example: testuser1@workramp.com
+                  name:
+                    type: object
+                    properties:
+                      formatted:
+                        type: string
+                        example: Test User1
+                      familyName:
+                        type: string
+                        example: User1
+                      givenName:
+                        type: string
+                        example: Test
+                  emails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          example: testuser1@workramp.com
+                  active:
+                    type: boolean
+                    example: true
+                    default: true
+                  meta:
+                    type: object
+                    properties:
+                      resourceType:
+                        type: string
+                        example: User
+                      location:
+                        type: string
+                        example: https://app.workramp.com/scim/v2/Users/1
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: 'curl https://app.workramp.com/scim/v2/Users/1 \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+        samples-languages:
+        - text
+      tags:
+      - Scim
+    put:
+      summary: 'SCIM: Update User'
+      description: ''
+      operationId: scim-update-user
+      parameters:
+      - name: id
+        in: path
+        description: The user id to update
+        schema:
+          type: integer
+          format: int32
+        required: true
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  description: The email of the user
+                externalId:
+                  type: string
+                  description: Id of the user in your external system (the system where you are syncing users from)
+                active:
+                  type: boolean
+                  description: Whether this user is deactivated or not
+                urn:ietf:params:scim:schemas:extension:workramp:2.0:User:
+                  type: object
+                  description: Custom attributes to update for the user. Note that this only updates existing custom attributes. Replace "2․0" with "2.0" (normal full stop)!
+                  properties:
+                    key:
+                      type: string
+                      description: API name of the custom attribute
+                    value:
+                      type: string
+                      description: Value to set the custom attribute to
+                name:
+                  type: object
+                  description: The name of the user (see the Response example in lower right for the exact format required here, sent in raw JSON)
+                  properties:
+                    givenName:
+                      type: string
+                      description: Given name of the user
+                    familyName:
+                      type: string
+                      description: Family name of the user
+                  required:
+                  - givenName
+                displayName:
+                  type: string
+                  description: The name of the user. Note that this takes precedence over the `name` parameter
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:schemas:core:2.0:User\"\n  ],\n  \"id\": 2,\n  \"userName\": \"testuser1@workramp.com\",\n  \"name\": {\n    \"formatted\": \"Updated Name\",\n    \"familyName\": \"Name\",\n    \"givenName\": \"Updated\"\n  },\n  \"emails\": [\n    {\n      \"value\": \"testuser1@workramp.com\"\n    }\n  ],\n  \"active\": false,\n  \"meta\": {\n    \"resourceType\": \"User\",\n    \"location\": \"https://app.workramp.com/scim/v2/Users/1\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                      example: urn:ietf:params:scim:schemas:core:2.0:User
+                  id:
+                    type: integer
+                    example: 2
+                    default: 0
+                  userName:
+                    type: string
+                    example: testuser1@workramp.com
+                  name:
+                    type: object
+                    properties:
+                      formatted:
+                        type: string
+                        example: Updated Name
+                      familyName:
+                        type: string
+                        example: Name
+                      givenName:
+                        type: string
+                        example: Updated
+                  emails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          example: testuser1@workramp.com
+                  active:
+                    type: boolean
+                    example: false
+                    default: true
+                  meta:
+                    type: object
+                    properties:
+                      resourceType:
+                        type: string
+                        example: User
+                      location:
+                        type: string
+                        example: https://app.workramp.com/scim/v2/Users/1
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: "curl https://app.workramp.com/scim/v2/Users/1 \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-d '{\"active\": false, \"name\": {\"givenName\": \"Updated\", \"familyName\": \"Name\"}}' \\\n-X PUT"
+        samples-languages:
+        - text
+      tags:
+      - Scim
+  /scim/v2/Groups:
+    get:
+      summary: 'SCIM: Get All Groups'
+      description: ''
+      operationId: scim-get-all-groups
+      parameters:
+      - name: count
+        in: query
+        description: Number of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: startIndex
+        in: query
+        description: The page of results to return (starts with page 1)
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:api:messages:2.0:ListResponse\"\n  ],\n  \"startIndex\": 1,\n  \"itemsPerPage\": 1,\n  \"totalResults\": 1,\n  \"Resources\": [\n    {\n      \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\"\n      ],\n      \"id\": 35,\n      \"displayName\": \"Test Group\",\n      \"members\": [\n        {\n          \"value\": \"testuser1@workramp.com\",\n          \"$ref\": \"https://app.workramp.com/scim/v2/Users/1\",\n          \"display\": \"Test User1\"\n        }\n      ]\n    }\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                      example: urn:ietf:params:scim:api:messages:2.0:ListResponse
+                  startIndex:
+                    type: integer
+                    example: 1
+                    default: 0
+                  itemsPerPage:
+                    type: integer
+                    example: 1
+                    default: 0
+                  totalResults:
+                    type: integer
+                    example: 1
+                    default: 0
+                  Resources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        schemas:
+                          type: array
+                          items:
+                            type: string
+                            example: urn:ietf:params:scim:schemas:core:2.0:Group
+                        id:
+                          type: integer
+                          example: 35
+                          default: 0
+                        displayName:
+                          type: string
+                          example: Test Group
+                        members:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              value:
+                                type: string
+                                example: testuser1@workramp.com
+                              $ref:
+                                type: string
+                                example: https://app.workramp.com/scim/v2/Users/1
+                              display:
+                                type: string
+                                example: Test User1
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: "curl https://app.workramp.com/scim/v2/Groups \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\""
+        samples-languages:
+        - text
+      tags:
+      - Scim
+    post:
+      summary: 'SCIM: Create Group'
+      description: ''
+      operationId: scim-create-group
+      parameters:
+      - name: displayName
+        in: query
+        description: Name of the group
+        schema:
+          type: string
+      - name: members
+        in: query
+        description: The users belong to this group (see the example below for the exact format required here)
+        schema:
+          type: array
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:schemas:core:2.0:Group\"\n  ],\n  \"id\": 34,\n  \"displayName\": \"New Group\",\n  \"members\": [\n    {\n      \"value\": \"testuser1@workramp.com\",\n      \"$ref\": \"https://app.workramp.com/scim/v2/Users/1\",\n      \"display\": \"Test User1\"\n    },\n    {\n      \"value\": \"testuser2@workramp.com\",\n      \"$ref\": \"https://app.workramp.com/scim/v2/Users/25\",\n      \"display\": \"Test User2\"\n    }\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                      example: urn:ietf:params:scim:schemas:core:2.0:Group
+                  id:
+                    type: integer
+                    example: 34
+                    default: 0
+                  displayName:
+                    type: string
+                    example: New Group
+                  members:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          example: testuser1@workramp.com
+                        $ref:
+                          type: string
+                          example: https://app.workramp.com/scim/v2/Users/1
+                        display:
+                          type: string
+                          example: Test User1
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: "curl https://app.workramp.com/scim/v2/Groups \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-d '{\"displayName\": \"New Group\",\"members\": [{\"value\": 1}, {\"value\": 25}]}' \\\n-X POST"
+        samples-languages:
+        - text
+      tags:
+      - Scim
+  /scim/v2/Groups/{id}:
+    get:
+      summary: 'SCIM: Get Group'
+      description: ''
+      operationId: scim-get-group
+      parameters:
+      - name: id
+        in: path
+        description: The group id to return information about
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"schemas\": [\n    \"urn:ietf:params:scim:schemas:core:2.0:Group\"\n  ],\n  \"id\": 35,\n  \"displayName\": \"Test Group\",\n  \"members\": [\n    {\n      \"value\": \"testuser1@workramp.com\",\n      \"$ref\": \"https://app.workramp.com/scim/v2/Users/1\",\n      \"display\": \"Test User1\"\n    }\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                      example: urn:ietf:params:scim:schemas:core:2.0:Group
+                  id:
+                    type: integer
+                    example: 35
+                    default: 0
+                  displayName:
+                    type: string
+                    example: Test Group
+                  members:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          example: testuser1@workramp.com
+                        $ref:
+                          type: string
+                          example: https://app.workramp.com/scim/v2/Users/1
+                        display:
+                          type: string
+                          example: Test User1
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: "curl https://app.workramp.com/scim/v2/Groups/35 \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\""
+        samples-languages:
+        - text
+      tags:
+      - Scim
+    patch:
+      summary: 'SCIM: Patch Group'
+      description: ''
+      operationId: scim-patch-group
+      parameters:
+      - name: id
+        in: path
+        description: The group id to patch
+        schema:
+          type: integer
+          format: int32
+        required: true
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                Operations:
+                  type: array
+                  description: The operations to perform to patch/update this group (see the example below for the exact format required here)
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "All the above examples will have a response in the following format as an example:\n\n{\n  \"schemas\": [\n    \"urn:ietf:params:scim:schemas:core:2.0:Group\"\n  ],\n  \"id\": 34,\n  \"displayName\": \"Group\",\n  \"members\": [\n    {\n      \"value\": \"testuser1@workramp.com\",\n      \"$ref\": \"https://app.workramp.com/scim/v2/Users/1\",\n      \"display\": \"Test User1\"\n    },\n    {\n      \"value\": \"testuser2@workramp.com\",\n      \"$ref\": \"https://app.workramp.com/scim/v2/Users/25\",\n      \"display\": \"Test User2\"\n    }\n  ]\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: "# Updating the name of a group\ncurl https://app.workramp.com/scim/v2/Groups/1 \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-d '{\"Operations\": [{\"op\": \"replace\", \"value\": {\"displayName\": \"Updated Group\"}}]}' \\\n-X PATCH\n\n# Adding users (with ids 2 and 4) to the group\ncurl https://app.workramp.com/scim/v2/Groups/1 \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-d '{\"Operations\": [{\"op\": \"add\", \"path\": \"members\", \"value\": [{\"value\": 2}, {\"value\": 4}]}]}' \\\n-X PATCH\n\n# Removing user (with id 2) from the group\ncurl https://app.workramp.com/scim/v2/Groups/1 \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-d '{\"Operations\": [{\"op\": \"remove\", \"path\": \"members\\[value eq \\\"2\\\"\\]\"}]}' \\\n-X PATCH\n\n# Replace all existing users in the group with the following users (user ids 2 and 4)\ncurl https://app.workramp.com/scim/v2/Groups/1 \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-d '{\"Operations\": [{\"op\": \"replace\", \"path\": \"members\", \"value\": [{\"value\": 2}, {\"value\": 4}]}]}' \\\n-X PATCH\n"
+        samples-languages:
+        - text
+      tags:
+      - Scim
+    delete:
+      summary: 'SCIM: Delete Group'
+      description: ''
+      operationId: scim-delete-group
+      parameters:
+      - name: id
+        in: path
+        description: The group id to delete
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: text
+          code: "curl https://app.workramp.com/scim/v2/Groups/34 \\\n-H \"Authorization: Bearer ACCESS_TOKEN\" \\ \n-H \"Content-type: application/json\" \\\n-X DELETE"
+        samples-languages:
+        - text
+      tags:
+      - Scim
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

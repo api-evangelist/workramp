@@ -1,0 +1,52 @@
+openapi: 3.2.0
+info:
+  title: json-api Scorm Assigmments API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Scorm Assigmments
+paths:
+  /api/v1/scorm_assigmments/{assignment_id}:
+    delete:
+      description: Delete a single SCORM assignment
+      responses:
+        '200':
+          description: ''
+        '204':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                No Content:
+                  summary: No Content
+                  value: ''
+          description: No Content
+      parameters:
+      - in: path
+        name: assignment_id
+        schema:
+          type: string
+        required: true
+        description: ID of the SCORM assignment
+      summary: Delete SCORM Assignment
+      operationId: delete_api-v1-scorm-assigmments-assignment-id
+      tags:
+      - Scorm Assigmments
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

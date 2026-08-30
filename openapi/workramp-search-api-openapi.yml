@@ -1,0 +1,112 @@
+openapi: 3.2.0
+info:
+  title: api-settings Search API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Search
+paths:
+  /api/v1/search/university/{search}:
+    get:
+      summary: Search Public Library
+      description: Search across all guides and resources in libraries that are public for the enterprise
+      operationId: search-across-all-public-universities
+      parameters:
+      - name: search
+        in: path
+        description: String to match against titles and descriptions for guides and resources.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\nsearch: {SEARCH},\nresults: [\n  {\n      university: {UNIVERSITY_NAME},\n      name: {TITLE},\n      type: (guide|resource),\n      description: {DESCRIPTION},\n      url: {URL}\n  }, ...\n]\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/search/university/string%20to%20search \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+        samples-languages:
+        - curl
+      tags:
+      - Search
+  /api/v1/search/university/{university_name}/{search}:
+    get:
+      summary: Search Within A Public Library
+      description: Searches across all guides and resources in a specific library that is public for the enterprise
+      operationId: search-within-a-public-university
+      parameters:
+      - name: university_name
+        in: path
+        description: The name of the public university to search within.
+        schema:
+          type: string
+        required: true
+      - name: search
+        in: path
+        description: String to match against titles and descriptions for guides and resources.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  search: {SEARCH},\n  results: [\n    {\n        university: {UNIVERSITY},\n        name: {TITLE},\n        type: (guide|resource),\n        description: {DESCRIPTION},\n        url: {URL}\n    }, ...\n  ]\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl https://app.workramp.com/api/v1/search/university/name%20of%20university/string%20to%20search \
+
+            -H "Authorization: Bearer ACCESS_TOKEN"'
+        samples-languages:
+        - curl
+      tags:
+      - Search
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

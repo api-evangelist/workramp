@@ -1,0 +1,206 @@
+openapi: 3.2.0
+info:
+  title: api-settings Scorm API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Scorm
+paths:
+  /api/v1/scorm/{id}/assigned_users:
+    get:
+      summary: Get All Assignments for a SCORM Course
+      description: 'Gets all user assignments for a specific SCORM.
+
+
+        Note: Only Employee Learning Cloud assignments are returned - Academy assignments have a separate endpoint.'
+      operationId: get-scorm-assignments
+      parameters:
+      - name: id
+        in: path
+        description: Scorm ID
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: legacy_mode
+        schema:
+          type: boolean
+          default: 'true'
+        description: '**Always set this to false unless you have a very compelling reason not to.**
+
+
+          For accounts provisioned prior to November 11, 2025, the optional query parameter legacy_mode can be set to bypass pagination. When legacy_mode=true, the API will return the entire result set in a single, non-paginated response, and the response format itself will be completely different (See response examples).'
+      - in: query
+        name: page
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+        description: Page of results to return
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+        description: Number of results to return per page (1-200)
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 2
+                    url: /api/v1/scorm/SCORM_1_PACKAGE_ID/assigned_users
+                    data:
+                      scorm:
+                        created_at: null
+                        description: null
+                        display_title: SCORM 1
+                        folder_id: null
+                        id: SCORM_1_PACKAGE_ID
+                        source_id: null
+                        updated_at: null
+                      assignments:
+                      - completed_at: null
+                        completion_percentage: null
+                        due_date: null
+                        date_assigned: 1696340396481
+                        assigner: mChief@workramp.com
+                        time_spent_in_minutes: 2
+                        user:
+                          name: Dr. Mohamed Heller
+                          email: mHeller60@workramp.com
+                      - completed_at: 1665030173000
+                        completion_percentage: 100
+                        due_date: null
+                        date_assigned: 1696340396482
+                        assigner: eYager@workramp.com
+                        time_spent_in_minutes: 10
+                        user:
+                          name: Theo Harber
+                          email: TheoH0@workramp.com
+                OK - legacy_mode:
+                  summary: OK - legacy_mode
+                  value:
+                    name: SCORM 1
+                    assignments:
+                    - completedAt: null
+                      completionPercentage: null
+                      dueDate: null
+                      dateAssigned: 1696340396481
+                      assigner: mChief@workramp.com
+                      timeSpentInMinutes: 2
+                      user:
+                        name: Dr. Mohamed Heller
+                        email: mHeller60@workramp.com
+                    - completedAt: 1665030173000
+                      completionPercentage: 100
+                      dueDate: null
+                      dateAssigned: 1696340396482
+                      assigner: eYager@workramp.com
+                      timeSpentInMinutes: 10
+                      user:
+                        name: Theo Harber
+                        email: TheoH0@workramp.com
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                    default: '1'
+                  per_page:
+                    type: number
+                    default: '20'
+                  has_more:
+                    type: boolean
+                    default: 'false'
+                  item_count:
+                    type: number
+                  url:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      scorm:
+                        type: object
+                        properties:
+                          created_at:
+                            type: number
+                          description:
+                            type: string
+                          display_title:
+                            type: string
+                          folder_id:
+                            type: string
+                          id:
+                            type: string
+                          source_id:
+                            type: string
+                          updated_at:
+                            type: number
+                      assignments:
+                        type: array
+                        items:
+                          properties:
+                            completed_at:
+                              type: number
+                            completion_percentage:
+                              type: number
+                            due_date:
+                              type: number
+                            date_assigned:
+                              type: number
+                            assigner:
+                              type: string
+                            time_spent_in_minutes:
+                              type: number
+                            user:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                email:
+                                  type: string
+                          type: object
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"type\": \"not_found\",\n    \"message\": \"Error. The SCORM you are trying to search does not exist.\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: not_found
+                  message:
+                    type: string
+                    example: Error. The SCORM you are trying to search does not exist.
+      deprecated: false
+      tags:
+      - Scorm
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

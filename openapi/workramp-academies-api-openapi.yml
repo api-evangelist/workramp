@@ -1,0 +1,4732 @@
+openapi: 3.2.0
+info:
+  title: Workramp Academies API
+  version: '1.0'
+  description: 'Operations tagged Academies across 2 of this provider''s published API definitions: workramp-api-settings-openapi.yml, workramp-json-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Academies
+paths:
+  /api/v1/academies/{academy_id}/users:
+    get:
+      summary: Get All Contacts
+      description: Get all Contacts in an Academy. Results can be filtered by name, email, email domain, status, and custom registration fields. All filters combine with AND. By default, both Active and Deactivated Contacts are returned, including Contacts with a pending invitation. Results are always sorted by email, ascending.
+      operationId: get-academy-customer-users
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: name
+        in: query
+        description: Optional. Returns Contacts whose name contains this value (case-insensitive, partial match).
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Optional. Returns Contacts whose email address contains this value (case-insensitive partial match). For example, `email=bob@example.com` also matches `alice.bob@example.com`. To match one address exactly, use `exact_email`.
+        schema:
+          type: string
+      - in: query
+        name: email_domain
+        schema:
+          type: string
+        description: 'Optional. Returns Contacts whose email address ends in exactly `@<value>` (case-insensitive). Subdomains are not included: `example.com` does not match `bob@mail.example.com`.'
+      - in: query
+        name: exact_email
+        schema:
+          type: string
+        description: Optional. Returns only the Contact whose email address exactly matches this value. Matching is case-insensitive, and surrounding whitespace is ignored. No partial matching is performed. When `exact_email` is provided, the `email` and `email_domain` parameters are ignored.
+      - name: status
+        in: query
+        description: Optional. `Active` returns only active Contacts; `Deactivated` returns only deactivated Contacts. If omitted, both are returned.
+        schema:
+          type: string
+          enum:
+          - Active
+          - Deactivated
+      - name: custom_registration_fields
+        in: query
+        description: Optional object with a single key-value pair where the key represents the custom registration field name and the value represents the custom attribute field value. (e.g. `custom_registration_fields%5Bnickname%5D=Bobby` ) -- **NOTE:** This tool can't generate this parameter for you because the parameter name itself (such as `custom_registration_fields[example]`) is dynamic.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/users\",\n    \"data\": {\n        \"users\": [\n            {\n                \"id\": \"d3d6edf4-e25d-11ea-be19-0242ac140003\",\n                \"email\": \"ted+apitester1234@workramp.com\",\n                \"segments\": [],\n                \"display_name\": \"Jane Doe\",\n                \"first_name\": \"Jane\",\n                \"last_name\": \"Doe\",\n                \"created_at\": \"2022-06-08 14:59:04 UTC\",\n                \"custom_registration_field_values\": [\n                    {\n                        \"value\": \"Gold\",\n                        \"name\": \"customer_tier\"\n                    }\n                ]\n            },\n            {...},\n            {...}\n        ]\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      tags:
+      - Academies
+    post:
+      summary: Create Contact
+      description: Creates a new contact in your Academy. You can create a contact with a password, or, if you use SSO or another login mechanism, you can just use this to ensure that the user has been created, for instance, if you want to add them to a segment before they first visit the site.
+      operationId: create-contact
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - name
+              properties:
+                email:
+                  type: string
+                  description: The email address of the Contact
+                name:
+                  type: string
+                  description: The name of the Contact
+                password:
+                  type: string
+                  description: (Optional) If you'd like the contact to sign in with a password. Not needed when using SSO, magic links, or another login mechanism.
+                custom_registration_fields:
+                  type: string
+                  description: 'JSON dictionary where keys are the "API Name" of your registration field to set, and the values are the values to set. e.g. `{"favorite_color": "blue"}`'
+                  default: '{}'
+                  format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"url\": \"/api/v1/academies/c8be6efc-c511-11ee-8dca-000000000001/users\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"01902776-8464-76c5-a173-293333b17baa\",\n      \"email\": \"john@doe.com\",\n      \"segments\": [],\n      \"display_name\": \"John Doe\",\n      \"first_name\": \"John\",\n      \"last_name\": \"Doe\",\n      \"created_at\": \"2024-06-17 18:29:56 UTC\",\n      \"custom_registration_field_values\": [\n      \t{\n      \t\t\"academy_registration_field_id\": \"field-id-1234\",\n      \t\t\"name\": \"department\",\n      \t\t\"value\": \"Sales\"\n    \t\t}\n      ],\n      \"status\": \"Active\"\n    }\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: /api/v1/academies/c8be6efc-c511-11ee-8dca-000000000001/users
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: 01902776-8464-76c5-a173-293333b17baa
+                          email:
+                            type: string
+                            example: john@doe.com
+                          segments:
+                            type: array
+                          display_name:
+                            type: string
+                            example: John Doe
+                          first_name:
+                            type: string
+                            example: John
+                          last_name:
+                            type: string
+                            example: Doe
+                          created_at:
+                            type: string
+                            example: 2024-06-17 18:29:56 UTC
+                          custom_registration_field_values:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                academy_registration_field_id:
+                                  type: string
+                                  example: field-id-1234
+                                name:
+                                  type: string
+                                  example: department
+                                value:
+                                  type: string
+                                  example: Sales
+                          status:
+                            type: string
+                            example: Active
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid custom parameters: badField1, badField2\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: 'Invalid custom parameters: badField1, badField2'
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/users/{contact_id}:
+    get:
+      summary: Get Contact
+      description: Get a specific Contact in an Academy
+      operationId: get-user
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/users/:user_id\",\n    \"data\": {\n        \"user\": {\n            \"id\": \"d3d6edf4-e25d-11ea-be19-0242ac140003\",\n            \"email\": \"ted+apitester1234@workramp.com\",\n            \"display_name\": \"Jane Doe\",\n            \"first_name\": \"Jane\",\n            \"last_name\": \"Doe\"\n        }\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 100
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  url:
+                    type: string
+                    example: https://app.workramp.com/api/v1/academies/:academy_id/users/:user_id
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: d3d6edf4-e25d-11ea-be19-0242ac140003
+                          email:
+                            type: string
+                            example: ted+apitester1234@workramp.com
+                          display_name:
+                            type: string
+                            example: Jane Doe
+                          first_name:
+                            type: string
+                            example: Jane
+                          last_name:
+                            type: string
+                            example: Doe
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    delete:
+      summary: Delete Contact
+      description: Soft-delete/deactivate an Academy Contact
+      operationId: delete-academy-user
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    patch:
+      summary: Update Contact
+      description: Updates any of a Academy Contact's default or custom attributes using a JSON dictionary
+      operationId: update-academy-user
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always send JSON format
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RAW_BODY:
+                  type: object
+                  description: Send as JSON
+                  properties:
+                    name:
+                      type: string
+                      description: new full name for the contact
+                    email:
+                      type: string
+                      description: new email for the contact
+                    password:
+                      type: string
+                      description: new password to set for the contact
+                    custom_registration_fields:
+                      type: string
+                      description: 'JSON dictionary where keys are the "API Name" of your registration field to set, and the values are the values to set. e.g. `{"favorite_color": "blue"}`'
+                      format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"abcdef-1234\",\n  \"created_at\": 1689013085,\n  \"custom_registration_field_values\": [\n    {\n      \"academy_registration_field_id\": \"field-id-1234\",\n      \"name\": \"department\",\n      \"value\": \"Sales\"\n    }\n  ],\n  \"display_name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"segments\": [],\n  \"status\": \"Active\"      \n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: abcdef-1234
+                  created_at:
+                    type: integer
+                    example: 1689013085
+                    default: 0
+                  custom_registration_field_values:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        academy_registration_field_id:
+                          type: string
+                          example: field-id-1234
+                        name:
+                          type: string
+                          example: department
+                        value:
+                          type: string
+                          example: Sales
+                  display_name:
+                    type: string
+                    example: John Doe
+                  email:
+                    type: string
+                    example: johndoe@example.com
+                  first_name:
+                    type: string
+                    example: John
+                  last_name:
+                    type: string
+                    example: Doe
+                  segments:
+                    type: array
+                  status:
+                    type: string
+                    example: Active
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid custom parameters: badField1, badField2\"\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: 'Invalid custom parameters: badField1, badField2'
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/invite:
+    post:
+      summary: Invite Contacts
+      description: Invite Contacts to an Academy
+      operationId: invite-users
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userEmailsToInvite:
+                  type: array
+                  description: Array of Contact emails you'd like to invite to the academy.
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"errors\": [],\n    \"newAcademyInvitations\": [\n        {\n            \"email\": \"test2@workramp.com\",\n            \"id\": \"6b6efe96-117c-11ed-90c8-3ea79e467329\",\n            \"inviteHash\": \"LibFxu3D9lms3F8VMadf-A\",\n            \"lastInvitedAt\": 1659346159439,\n            \"originallyInvitedAt\": 1659346159439\n        }\n    ]\n}"
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                  newAcademyInvitations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          example: test2@workramp.com
+                        id:
+                          type: string
+                          example: 6b6efe96-117c-11ed-90c8-3ea79e467329
+                        inviteHash:
+                          type: string
+                          example: LibFxu3D9lms3F8VMadf-A
+                        lastInvitedAt:
+                          type: integer
+                          example: 1659346159439
+                          default: 0
+                        originallyInvitedAt:
+                          type: integer
+                          example: 1659346159439
+                          default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/segments/{segment_id}/remove_users:
+    delete:
+      summary: Remove Contacts from Segment
+      description: Remove Contacts from Academy Segment
+      operationId: remove-users-from-segment
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: segment_id
+        in: path
+        description: The id of the segment
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userEmails:
+                  type: array
+                  description: Array of Contact emails you'd like to remove from the segment.
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"status\": true\n}"
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/users-duplicate:
+    get:
+      summary: Get All Contacts (support duplicated)
+      description: Get all Contacts in an Academy
+      operationId: get-all-users-support-duplicated
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                custom_registration_fields:
+                  type: string
+                  format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/users\",\n    \"data\": {\n        \"users\": [\n            {\n                \"id\": \"d3d6edf4-e25d-11ea-be19-0242ac140003\",\n                \"email\": \"ted+apitester1234@workramp.com\",\n                \"segments\": [],\n                \"display_name\": \"Jane Doe\",\n                \"first_name\": \"Jane\",\n                \"last_name\": \"Doe\",\n                \"created_at\": \"2022-06-08 14:59:04 UTC\",\n                \"custom_registration_field_values\": [\n                    {\n                        \"value\": \"Gold\",\n                        \"name\": \"customer_tier\"\n                    }\n                ]\n            },\n            {...},\n            {...}\n        ]\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/segments/{segment_id}/invite:
+    post:
+      summary: Assign Segments
+      description: Add Contacts to an Academy Segment
+      operationId: assign-segments
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: segment_id
+        in: path
+        description: The id of the segment
+        schema:
+          type: string
+        required: true
+      - name: userEmails
+        in: query
+        description: 'Array of Contact emails you''d like to invite to the segment. **NOTE: Contact must be registered in order to be placed in a segment**'
+        schema:
+          type: array
+          items:
+            type: string
+      - name: Content-type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"numAddedToGroup\": 1,\n    \"numConvertedToManual\": 0,\n    \"numAlreadyInGroup\": 0,\n    \"numDeletedUser\": 0,\n    \"numUnregisteredUser\": 0\n}"
+              schema:
+                type: object
+                properties:
+                  numAddedToGroup:
+                    type: integer
+                    example: 1
+                    default: 0
+                  numConvertedToManual:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numAlreadyInGroup:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numDeletedUser:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numUnregisteredUser:
+                    type: integer
+                    example: 0
+                    default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: 'curl "https://app.workramp.com/api/v1/academies/233710e8-a938-11ec-ae72-3ea79e46732a/segments/cd0ce734-0e85-11ed-bc8c-3ea79e467329/invite
+
+            -H "Authorization: Bearer ACCESS_TOKEN" \
+
+            -H "Content-type: application/json" \
+
+            -d ''{ "userEmails": ["testemail@workramp.com"] }'' \
+
+            -X POST'
+        samples-languages:
+        - curl
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/users/{contact_id}/awarded_certifications:
+    get:
+      summary: Get All Awarded Certifications For a Contact
+      description: ''
+      operationId: get-all-awarded-certifications-for-a-user
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/users/:user_id/awarded_certifications\" ,\n    \"data\": {\n        \"user_id\": \"d3d6edf4-e25d-11ea-be19-0242ac140003\",\n        \"awarded_certifications\": [\n            {\n                \"id\": 242424,\n                \"badge_image\": \"some_img_1.jpg\",\n                \"display_title\": \"Certified Cert\"\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 100
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  url:
+                    type: string
+                    example: https://app.workramp.com/api/v1/academies/:academy_id/users/:user_id/awarded_certifications
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: string
+                        example: d3d6edf4-e25d-11ea-be19-0242ac140003
+                      awarded_certifications:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 242424
+                              default: 0
+                            badge_image:
+                              type: string
+                              example: some_img_1.jpg
+                            display_title:
+                              type: string
+                              example: Certified Cert
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/certifications/{certification_id}/invite:
+    post:
+      summary: Assign Certificates
+      description: Assign certificates to Academy Contacts
+      operationId: assign-certificates
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: certification_id
+        in: path
+        description: The id of the certificate
+        schema:
+          type: string
+        required: true
+      - name: Content-type
+        in: header
+        description: Always use application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userEmails:
+                  type: array
+                  description: Array of Contact emails you'd like to invite to the training.
+                  items:
+                    type: string
+                dueAt:
+                  type: integer
+                  description: Number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"errors\": [],\n    \"assignments\": [\n        {\n            \"id\": \"86971320-19d3-11ed-8678-3ea79e467329\",\n            \"awardedAt\": null,\n            \"completed\": false,\n            \"externalUser\": {\n                \"academySegments\": [\n                    {\n                        \"name\": \"Segment 1\"\n                    }\n                ],\n                \"id\": \"40cfc380-0ed1-11ed-9885-3ea79e467329\",\n                \"createdAt\": 1659052741665,\n                \"displayName\": \"Test Account\",\n                \"email\": \"test@workramp.com\",\n                \"updatedAt\": 1659052741742,\n                \"academyRegistrationFieldValues\": [],\n                \"assignments\": [\n                    {\n                        \"id\": \"1d7b3ae0-0efe-11ed-9885-3ea79e467329\",\n                        \"completedAt\": null\n                    }\n                ]\n            }\n        }\n    ],\n    \"trainingInvitations\": []\n}"
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                  assignments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 86971320-19d3-11ed-8678-3ea79e467329
+                        awardedAt: {}
+                        completed:
+                          type: boolean
+                          example: false
+                          default: true
+                        externalUser:
+                          type: object
+                          properties:
+                            academySegments:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                    example: Segment 1
+                            id:
+                              type: string
+                              example: 40cfc380-0ed1-11ed-9885-3ea79e467329
+                            createdAt:
+                              type: integer
+                              example: 1659052741665
+                              default: 0
+                            displayName:
+                              type: string
+                              example: Test Account
+                            email:
+                              type: string
+                              example: test@workramp.com
+                            updatedAt:
+                              type: integer
+                              example: 1659052741742
+                              default: 0
+                            academyRegistrationFieldValues:
+                              type: array
+                            assignments:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    example: 1d7b3ae0-0efe-11ed-9885-3ea79e467329
+                                  completedAt: {}
+                  trainingInvitations:
+                    type: array
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/paths/{path_id}/invite:
+    post:
+      summary: Assign Paths
+      description: Assign paths to Academy Contacts
+      operationId: assign-paths
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: path_id
+        in: path
+        description: The id of the path
+        schema:
+          type: string
+        required: true
+      - name: Content-type
+        in: header
+        description: Always use application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userEmails:
+                  type: array
+                  description: Array of Contact emails you'd like to invite to the training.
+                  items:
+                    type: string
+                dueAt:
+                  type: integer
+                  description: Number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/users/{contact_id}/registrations/{registration_id}:
+    get:
+      summary: Get Registration by Contact ID & Registration ID
+      description: 'Fetch a specific Academy registration by ID for a given Contact ID. NOTE: If you have the Registration ID, you don''t need this. You could just use the **Get Registration by ID** endpoint.'
+      operationId: get-all-registrations-for-a-user-1
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: registration_id
+        in: path
+        description: The id of the registration
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/users/:user_id/registrations\",\n    \"data\": {\n        \"user_id\": \"d3d6edf4-e25d-11ea-be19-0242ac140003\",\n        \"registration\": {\n            \"id\": \"d3d6edf4-e25d-11ea-be19-0242ac140004\",\n            \"completed_at\": 1488144236206.5808,\n            \"is_completed\": true,\n            \"completion_percentage\": 100,\n            \"score\": 95,\n            \"due_at\": 1488144236206.5808,\n            \"due_date\": 1488144236206.5808,\n            \"pass_status\": \"passed\",\n            \"content\": {\n                \"id\": \"d3d6edf4-e25d-11ea-be19-0242ac140005\",\n                \"academy_overview_description\": \"Foo Bar\",\n                \"card_banner\": \"foo_bar.jpg\",\n                \"description\": \"Bar\",\n                \"title\": \"Foo\",\n            }\n        }\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/trainings/{training_id}/registrations:
+    get:
+      summary: Get All Registrations for a Training
+      description: ''
+      operationId: get-all-registrations-for-a-training
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: training_id
+        in: path
+        description: The id of the training
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com//api/v1/academies/:academy_id/trainings/:training_id/registrations\" ,\n    \"data\": {\n        \"academy_id\": \"123\",\n        \"registrations\": [\n            {\n                \"id\": \"12345\",\n                \"completed_at\": 1488144236206.5808,\n                \"is_completed\": true,\n                \"completion_percentage\": 100,\n                \"score\": 95,\n                \"due_at\": 1488144236206.5808,\n                \"due_date\": 1488144236206.5808,\n              \t\"grading_status\": \"completed\",\n              \t\"pass_status\": \"passed\", \n\t\t\t\t\t\t\t\t\"enrollment_method\": \"invited\",\n      \t\t\t\t\t\"internal_assigner_id\": 1,\n                \"content\": {\n                    \"id\": \"4567\",\n                    \"academy_overview_description\": \"Foo Bar\",\n                    \"card_banner\": \"foo_bar.jpg\",\n                    \"description\": \"Bar\",\n                    \"title\": \"Foo\",\n                }\n            },\n\t\t\t\t\t\t{\n                \"id\": \"23456\",\n                \"completed_at\": 1488144236206.5808,\n                \"is_completed\": true,\n                \"completion_percentage\": 100,\n                \"score\": 95,\n                \"due_at\": 1488144236206.5808,\n                \"due_date\": 1488144236206.5808,\n              \t\"grading_status\": \"completed\",\n              \t\"pass_status\": \"passed\", \n\t\t\t\t\t\t\t\t\"enrollment_method\": \"self-started\",\n      \t\t\t\t\t\"internal_assigner_id\": null,\n                \"content\": {\n                    \"id\": \"4567\",\n                    \"academy_overview_description\": \"Foo Bar\",\n                    \"card_banner\": \"foo_bar.jpg\",\n                    \"description\": \"Bar\",\n                    \"title\": \"Foo\",\n                }\n            },\n\t\t\t\t\t\t{\n                \"id\": \"43212\",\n                \"completed_at\": 1488144236206.5808,\n                \"is_completed\": true,\n                \"completion_percentage\": 100,\n                \"score\": 95,\n                \"due_at\": 1488144236206.5808,\n                \"due_date\": 1488144236206.5808,\n              \t\"grading_status\": \"completed\",\n              \t\"pass_status\": \"passed\", \n\t\t\t\t\t\t\t\t\"enrollment_method\": \"self-started\",\n      \t\t\t\t\t\"internal_assigner_id\": null,\n                \"content\": {\n                    \"id\": \"4567\",\n                    \"academy_overview_description\": \"Foo Bar\",\n                    \"card_banner\": \"foo_bar.jpg\",\n                    \"description\": \"Bar\",\n                    \"title\": \"Foo\",\n                }\n            },\n\t\t\t\t\t\t{\n                \"id\": \"34567\",\n                \"completed_at\": 1488144236206.5808,\n                \"is_completed\": true,\n                \"completion_percentage\": 100,\n                \"score\": 95,\n                \"due_at\": 1488144236206.5808,\n                \"due_date\": 1488144236206.5808,\n              \t\"grading_status\": \"completed\",\n              \t\"pass_status\": \"passed\", \n\t\t\t\t\t\t\t\t\"enrollment_method\": \"invited\",\n      \t\t\t\t\t\"internal_assigner_id\": 3,\n                \"content\": {\n                    \"id\": \"4567\",\n                    \"academy_overview_description\": \"Foo Bar\",\n                    \"card_banner\": \"foo_bar.jpg\",\n                    \"description\": \"Bar\",\n                    \"title\": \"Foo\",\n                }\n            }\n        ]\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/certifications/{cert_id}:
+    get:
+      summary: Get All Enrollments for a Certification
+      description: ''
+      operationId: get-certification
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: cert_id
+        in: path
+        description: The Certification ID
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    page: 1
+                    per_page: 100
+                    has_more: false
+                    url: https://app.workramp.com/api/v1/academies/:academy_id/certifications/:cert_id
+                    data:
+                      certification:
+                        awarded_by_name: Mr Certifications
+                        awarded_by_title: Chief Certifier
+                        created_at: 1754512880983
+                        description: A really cool certification
+                        id: 0198811d-f557-79c9-93d9-cf7f67add436
+                        name: Cool Certification
+                      awarded_certifictions:
+                      - id: 0198811d-f5c3-70c5-8226-c7405dea3014
+                        name: Jane Doe
+                        email: JaneDoe@example.com
+                        awarded_at: 1488144236206.5808
+                        assigner_user_id: 1
+                        enrollment_method: invited
+                        progress_percentage: 100
+                      - id: 0198811d-f593-7420-87e1-afc443ec315e
+                        name: John Doe
+                        email: JohnDoe@example.com
+                        awarded_at: null
+                        assigner_user_id: null
+                        enrollment_method: self-started
+                        progress_percentage: 0
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 100
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  url:
+                    type: string
+                    example: https://app.workramp.com/api/v1/academies/:academy_id/certifications/:cert_id
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: '14144'
+                        name:
+                          type: string
+                          example: Jane Doe
+                        email:
+                          type: string
+                          example: JaneDoe@workramp.com
+                        awarded_at:
+                          type: number
+                          example: 1488144236206.5808
+                          default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/paths/{path_id}:
+    get:
+      summary: Get All Enrollments for a Path
+      description: ''
+      operationId: get-all-enrollments-for-a-path
+      parameters:
+      - name: academy_id
+        in: path
+        description: The ID of the Academy
+        schema:
+          type: string
+        required: true
+      - name: path_id
+        in: path
+        description: The Path ID
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 1
+                    url: /api/v1/academies/baseba11-c0de-ce11-ca11-b1adea110c8d/paths/baseba11-dead-de11-dead-b01dfacedead
+                    data:
+                      path:
+                        created_at: 1665158128175
+                        description: Here is a really excellent description
+                        id: deedcafe-c0de-babe-1ace-ca1110c8c0de
+                        name: Mars Pathfinder Path
+                      completed_paths:
+                      - id: 0198811d-f5c3-70c5-8226-c7405dea3014
+                        name: Jane Doe
+                        email: JaneDoe@example.com
+                        completed_at: 1488144236206.5808
+                        assigner_user_id: 1
+                        enrollment_method: invited
+                        progress_percentage: 100
+                      - id: 0198811d-f593-7420-87e1-afc443ec315e
+                        name: John Doe
+                        email: JohnDoe@example.com
+                        completed_at: null
+                        assigner_user_id: null
+                        enrollment_method: self-started
+                        progress_percentage: 0
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 1
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/baseba11-c0de-ce11-ca11-b1adea110c8d/paths/baseba11-dead-de11-dead-b01dfacedead
+                  data:
+                    type: object
+                    properties:
+                      path:
+                        type: object
+                        properties:
+                          created_at:
+                            type: integer
+                            example: 1665158128175
+                            default: 0
+                          description:
+                            type: string
+                            example: Here is a really excellent description
+                          id:
+                            type: string
+                            example: deedcafe-c0de-babe-1ace-ca1110c8c0de
+                          name:
+                            type: string
+                            example: Mars Pathfinder Path
+                      completed_paths:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: baseba11-deb8-1ead-ba1d-1eafb01dface
+                            name:
+                              type: string
+                              example: Donald Duck
+                            email:
+                              type: string
+                              example: demoacademyuser2@example.com
+                            completed_at:
+                              type: number
+                              example: 1726697288.7276318
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/registrations:
+    get:
+      summary: Get All Registrations
+      description: ''
+      operationId: get-all-registrations
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/registrations\",\n    \"data\": {\n        \"registrations\": [\n            {\n                \"id\": \"8933b28e-dac0-11ec-b88d-0663a65fe87f\",\n                \"completed_at\": 1488144236206.5808,\n                \"completion_percentage\": 100,\n                \"created_at\": 148814423206.1234,\n                \"due_at\": 1488144236206.5808,\n                \"due_date\": 1488144236206.5808,\n              \t\"grading_status\": \"completed\",\n                \"is_completed\": true,\n                \"pass_status\": \"passed\",\n                \"score\": 95,\n                \"content\": {\n                    \"content\": {\n                        \"id\": \"4567\",\n                        \"academy_overview_description\": \"Foo Bar\",\n                        \"card_banner\": \"foo_bar.jpg\",\n                        \"description\": \"Bar\",\n                        \"title\": \"Foo\"\n                    }\n                },\n                \"user\": {\n                    \"user\": {\n                        \"id\": \"83d0e5a0-dac0-11ec-ab66-0626dc1a526d\",\n                        \"display_name\": \"Demo Learner\",\n                        \"email\": \"demolearner@workramp.com\",\n                        \"first_name\": \"Demo\",\n                        \"last_name\": \"Learner\"\n                    }\n                }\n            }\n        ]\n    }\n}\n"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 100
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  url:
+                    type: string
+                    example: https://app.workramp.com/api/v1/academies/:academy_id/registrations
+                  data:
+                    type: object
+                    properties:
+                      registrations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: 8933b28e-dac0-11ec-b88d-0663a65fe87f
+                            completed_at:
+                              type: number
+                              example: 1488144236206.5808
+                              default: 0
+                            completion_percentage:
+                              type: integer
+                              example: 100
+                              default: 0
+                            created_at:
+                              type: number
+                              example: 148814423206.1234
+                              default: 0
+                            due_at:
+                              type: number
+                              example: 1488144236206.5808
+                              default: 0
+                            due_date:
+                              type: number
+                              example: 1488144236206.5808
+                              default: 0
+                            grading_status:
+                              type: string
+                              example: completed
+                            is_completed:
+                              type: boolean
+                              example: true
+                              default: true
+                            pass_status:
+                              type: string
+                              example: passed
+                            score:
+                              type: integer
+                              example: 95
+                              default: 0
+                            content:
+                              type: object
+                              properties:
+                                content:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      example: '4567'
+                                    academy_overview_description:
+                                      type: string
+                                      example: Foo Bar
+                                    card_banner:
+                                      type: string
+                                      example: foo_bar.jpg
+                                    description:
+                                      type: string
+                                      example: Bar
+                                    title:
+                                      type: string
+                                      example: Foo
+                            user:
+                              type: object
+                              properties:
+                                user:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      example: 83d0e5a0-dac0-11ec-ab66-0626dc1a526d
+                                    display_name:
+                                      type: string
+                                      example: Demo Learner
+                                    email:
+                                      type: string
+                                      example: demolearner@workramp.com
+                                    first_name:
+                                      type: string
+                                      example: Demo
+                                    last_name:
+                                      type: string
+                                      example: Learner
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/awarded_certifications:
+    get:
+      summary: Get All Awarded Certifications
+      description: ''
+      operationId: get-all-awarded-certifications
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: start
+        in: query
+        description: Return certificates awarded at or after this datetime (10-digit seconds from epoch)
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        description: Return certificates awarded at or before this datetime (10-digit seconds from epoch)
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/awarded_certifications\",\n    \"data\": {\n        \"awarded_certifications\": [\n            {\n              \"id\": \"2242432\",\n              \"name\": \"Basic Training\",\n              \"description\": \"Basic Training Certification\",\n              \"user_id\": \"1313313\",\n              \"user_name\": \"Johnny\",\n              \"user_email\": \"Johns\",\n              \"awarded_at\": 1488144236206.5808\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 100
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  url:
+                    type: string
+                    example: https://app.workramp.com/api/v1/academies/:academy_id/awarded_certifications
+                  data:
+                    type: object
+                    properties:
+                      awarded_certifications:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: '2242432'
+                            name:
+                              type: string
+                              example: Basic Training
+                            description:
+                              type: string
+                              example: Basic Training Certification
+                            user_id:
+                              type: string
+                              example: '1313313'
+                            user_name:
+                              type: string
+                              example: Johnny
+                            user_email:
+                              type: string
+                              example: Johns
+                            awarded_at:
+                              type: number
+                              example: 1488144236206.5808
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/registrations/{registration_id}:
+    get:
+      summary: Get Registration by ID
+      description: ''
+      operationId: get-registration
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: registration_id
+        in: path
+        description: The id of the registration
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/registrations/:registration_id\" ,\n    \"data\": {\n        \"registration\": {\n            \"id\": \"12345\",\n            \"completed_at\": 1488144236206.5808,\n            \"is_completed\": true,\n            \"completion_percentage\": 100,\n            \"score\": 95,\n            \"due_at\": 1488144236206.5808,\n            \"due_date\": 1488144236206.5808,\n            \"pass_status\": \"passed\",\n            \"content\": {\n                \"id\": \"4567\",\n                \"academy_overview_description\": \"Foo Bar\",\n                \"card_banner\": \"foo_bar.jpg\",\n                \"description\": \"Bar\",\n                \"title\": \"Foo\",\n            }\n        }\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    delete:
+      description: ''
+      operationId: delete_apiv1academies{academy_id}registrations{registration_id}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Result:
+                  summary: Result
+                  value: true
+      parameters:
+      - name: academy_id
+        in: path
+        required: true
+        description: The id of the Academy
+        schema:
+          type: string
+          default: ''
+      - name: registration_id
+        in: path
+        required: true
+        description: The id of the Registration
+        schema:
+          type: string
+          default: ''
+      tags:
+      - Academies
+    patch:
+      description: ''
+      operationId: patch_apiv1academies{academy_id}registrations{registration_id}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                Result:
+                  summary: Result
+                  value: ''
+                Result 1:
+                  summary: Result 1
+                  value:
+                    id: abcdef-123
+                    score: 100
+                    created_at: 1750348881516
+                    time_spent: null
+                    pass_status: passed
+                    is_completed: true
+                    completed_at: 1750348881000
+                    completion_percentage: 100
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                Result 2:
+                  value:
+                    type: invalid_params
+                    message: is_completed must be the boolean true
+                  summary: Result 2
+                Result 3:
+                  value:
+                    type: invalid_params
+                    message: completed_at, if provided, must be a valid previous or current iso8601 timestamp
+                  summary: Result 3
+      parameters:
+      - name: academy_id
+        in: path
+        required: true
+        description: The id of the Academy
+        schema:
+          type: string
+          default: ''
+      - name: registration_id
+        in: path
+        required: true
+        description: The id of the Registration
+        schema:
+          type: string
+          default: ''
+      - name: Content-Type
+        in: header
+        required: false
+        description: Always send JSON format
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                is_completed:
+                  type: boolean
+                  description: Currently supports only the value - true
+                completed_at:
+                  type: string
+                  format: date-time
+                  description: Current or previous iso8601 timestamp. Defaults to current time if blank.
+                score:
+                  type: integer
+                  default: '100'
+                  description: Specify a score between 0-100.
+              type: object
+              required:
+              - is_completed
+      security:
+      - sec0: []
+      summary: Update Registration (Mark Complete)
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/users/{contact_id}/registrations:
+    get:
+      summary: Deprecated Get All Registrations for a Contact
+      description: 'Fetch all Academy registrations for a given Contact id. Please consider moving to the non-deprecated endpoint: **Get All Registrations for a Contact**'
+      operationId: get-all-registrations-for-a-user
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/users/:user_id/registrations\",\n    \"data\": {\n        \"user_id\": \"d3d6edf4-e25d-11ea-be19-0242ac140003\",\n        \"registrations\": [\n            {\n                \"id\": 12345,\n                \"completed_at\": 1488144236206.5808,\n                \"is_completed\": true,\n                \"completion_percentage\": 100,\n                \"score\": 95,\n                \"due_at\": 1488144236206.5808,\n                \"due_date\": 1488144236206.5808,\n                \"pass_status\": \"passed\",\n                \"content\": {\n                    \"id\": \"4567\",\n                    \"academy_overview_description\": \"Foo Bar\",\n                    \"card_banner\": \"foo_bar.jpg\",\n                    \"description\": \"Bar\",\n                    \"title\": \"Foo\",\n                }\n            }\n        ]\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/trainings:
+    get:
+      summary: Get All Trainings
+      description: ''
+      operationId: get-all-trainings
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/trainings\",\n    \"data\": {\n        \"trainings\": [\n            {\n              \"id\": \"d3d6edf4-e25d-11ea-be19-0242ac140013\",\n              \"type\": \"course\",\n              \"name\": \"Some Course\",\n              \"created_at\": 1488144236206.5808,\n              \"card_banner\": nil,\n              \"description\": \"Description\",\n              \"time_estimate_seconds\": 1300\n            }\n        ]\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/trainings/{training_id}:
+    get:
+      summary: Get Training
+      description: This endpoint is for getting the details of a particular Guide, Resource, or SCORM course when you know its ID.
+      operationId: get-training
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: training_id
+        in: path
+        description: The id of the training
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Guide:
+                  value: "{\n    \"url\": \"/api/v1/academies/fffa38ac-ba81-11ec-bdee-027c588d9553/trainings/050aa80e-dabc-11ec-8ca6-067360dfb065\",\n    \"data\": {\n        \"training\": {\n            \"id\": \"050aa80e-dabc-11ec-8ca6-067360dfb065\",\n            \"type\": \"guide\",\n            \"name\": \"Forklift Operations\",\n            \"created_at\": 1653326161493,\n            \"card_banner\": nil,\n            \"description\": \"Description\",\n            \"time_estimate_seconds\": 1300\n        }\n    }\n}\n"
+                SCORM:
+                  value: "{\n    \"url\": \"/api/v1/academies/fffa38ac-ba81-11ec-bdee-027c588d9553/trainings/d7ea5350-e8db-11ec-ae4e-067360dfb065\",\n    \"data\": {\n        \"training\": {\n            \"id\": \"d7ea5350-e8db-11ec-ae4e-067360dfb065\",\n            \"type\": \"scorm\",\n            \"name\": \"How to play Golf\",\n            \"created_at\": 1654879145958\n        }\n    }\n}\n"
+                Resource:
+                  value: "{\n    \"url\": \"/api/v1/academies/fffa38ac-ba81-11ec-bdee-027c588d9553/trainings/c5953390-0849-11ed-9fb5-027c588d9553\",\n    \"data\": {\n        \"training\": {\n            \"id\": \"c5953390-0849-11ed-9fb5-027c588d9553\",\n            \"type\": \"resource\",\n            \"name\": \"Restaurant Locations near Kansas City Office\",\n            \"created_at\": 1658334845887\n        }\n    }\n}\n"
+              schema:
+                oneOf:
+                - title: SCORM
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      example: /api/v1/academies/fffa38ac-ba81-11ec-bdee-027c588d9553/trainings/d7ea5350-e8db-11ec-ae4e-067360dfb065
+                    data:
+                      type: object
+                      properties:
+                        training:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: d7ea5350-e8db-11ec-ae4e-067360dfb065
+                            type:
+                              type: string
+                              example: scorm
+                            name:
+                              type: string
+                              example: How to play Golf
+                            created_at:
+                              type: integer
+                              example: 1654879145958
+                              default: 0
+                - title: Resource
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      example: /api/v1/academies/fffa38ac-ba81-11ec-bdee-027c588d9553/trainings/c5953390-0849-11ed-9fb5-027c588d9553
+                    data:
+                      type: object
+                      properties:
+                        training:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: c5953390-0849-11ed-9fb5-027c588d9553
+                            type:
+                              type: string
+                              example: resource
+                            name:
+                              type: string
+                              example: Restaurant Locations near Kansas City Office
+                            created_at:
+                              type: integer
+                              example: 1658334845887
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{"type":"not_found","message":"Error. Not found."}'
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: not_found
+                  message:
+                    type: string
+                    example: Error. Not found.
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/search/{search_term}:
+    get:
+      summary: Search for Trainings
+      description: ''
+      operationId: search-for-trainings
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: search_term
+        in: path
+        description: The search term that will be used to search for academies with that term
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy_id/search/:search_term\",\n    \"data\": {\n        \"trainings\": [\n            {\n                \"id\": \"1424\",\n                \"type\": \"course\",\n                \"title\": \"Some Course\",\n                \"name\": \"Some Course\",\n                \"created_at\": 1488144236206.5808\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 100
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  url:
+                    type: string
+                    example: https://app.workramp.com/api/v1/academies/:academy_id/search/:search_term
+                  data:
+                    type: object
+                    properties:
+                      trainings:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: '1424'
+                            type:
+                              type: string
+                              example: course
+                            title:
+                              type: string
+                              example: Some Course
+                            name:
+                              type: string
+                              example: Some Course
+                            created_at:
+                              type: number
+                              example: 1488144236206.5808
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/paths:
+    get:
+      summary: Get All Offered Paths
+      description: This endpoint is for getting all the paths available to learners in your academy.
+      operationId: get-all-paths-academy
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    url: https://app.workramp.com/api/v1/academies/:academy_id/paths
+                    data:
+                      paths:
+                      - created_at: 1651860613984
+                        description: This is a description
+                        id: c6a7baae-cd67-11ec-a110-027c588d9553
+                        name: Path To Greatness
+                      - created_at: 1665158128175
+                        description: Here is a really excellent description
+                        id: 76c09776-4658-11ed-9127-020df940d6b7
+                        name: Mars Pathfinder Path
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/certifications:
+    get:
+      summary: Get All Offered Certifications
+      description: This endpoint is for getting all the certifications offered in your academy. If you are looking to get information about learners -- their awarded certifications, see **Get All Awarded Certifications For a Contact** or **Get All Awarded Certifications**.
+      operationId: get-all-certifications-2
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    page: 1
+                    per_page: 100
+                    has_more: false
+                    url: https://app.workramp.com/api/v1/academies/:academy_id/certifications
+                    data:
+                      certifications:
+                      - id: '22422424'
+                        name: Some Cert
+                        description: Some Description of the Cert
+                        created_at: 1488144236206.5808
+                        awarded_by_name: Jane
+                        awarded_by_title: Doe
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 100
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  url:
+                    type: string
+                    example: https://app.workramp.com/api/v1/academies/:academy_id/certifications
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: '22422424'
+                        name:
+                          type: string
+                          example: Some Cert
+                        description:
+                          type: string
+                          example: Some Description of the Cert
+                        created_at:
+                          type: number
+                          example: 1488144236206.5808
+                          default: 0
+                        awarded_by_name:
+                          type: string
+                          example: Jane
+                        awarded_by_title:
+                          type: string
+                          example: Doe
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/collections:
+    get:
+      summary: Get All Offered Collections
+      description: This endpoint is for getting all the Collections offered in your academy.
+      operationId: get-all-offered-collections
+      parameters:
+      - name: academy_id
+        in: path
+        description: The ID of the Academy
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  'has_more' => false,\n    'item_count' => 1,\n    'page' => 1,\n    'per_page' => 20,\n    'url' => https://app.workramp.com/api/v1/academies/001001001/collections,\n    'data' => {\n    \t'collections' => {\n        'created_at' => 1722020032546\n        'description' => \"Description,\n        'id' => \"112112112\",\n        'name' => \"Name\"\n      }\n  \t}\n          \n      "
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/collections/{collection_id}:
+    get:
+      summary: Get Collection
+      description: This endpoint is for getting detailed information for a specific Collection in your Academy. The response will include information about each piece of content within the Collection.
+      operationId: get-collection
+      parameters:
+      - name: academy_id
+        in: path
+        description: The ID of the Academy
+        schema:
+          type: string
+        required: true
+      - name: collection_id
+        in: path
+        description: The ID of the Collection
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  'url' => https://app.workramp.com/api/v1/academies/001001001/collections/334334334,\n  'data' => {\n    'collection' => {\n      \"academy_collection_contents\" => [\n        {\n          \"id\" => \"112112112\",\n          \"content_id\" => \"22422424\",\n          \"content_type\" => \"guide\",\n          \"content\" => {\n            \"card_banner\" => nil,\n            \"description\" => \"Description,\n            \"id\" => \"22422424\",\n            \"time_estimate_seconds\" => 1200,\n            \"title\" => \"Title\"\n          }\n        }\n      ]\n    }\n  }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/paths/{path_id}/details:
+    get:
+      summary: Get Path
+      description: This endpoint is for getting detailed information for a specific Path in your Academy. The response will include information about each piece of content within the Path.
+      operationId: get-path
+      parameters:
+      - name: academy_id
+        in: path
+        description: The ID of the Academy
+        schema:
+          type: string
+        required: true
+      - name: path_id
+        in: path
+        description: The ID of the Path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  'url' => https://app.workramp.com/api/v1/academies/001001001/paths/112112112/details,\n  'data' => {\n    'path' => {\n      \"academy_certification_contents\" => [\n        {\n          \"id\" => 223223223,\n          \"academy_certification_id\" => 112112112,\n          \"content_id\" => 334334334,\n          \"content_type\" => \"guide\",\n          \"ui_order\" => 1,\n          \"created_at\" => 1722020033428,\n        \t\"updated_at\" => 1722020033715,\n          \"content\" => {\n            \"card_banner\" => nil,\n              \"description\" => \"Description\",\n              \"id\" => 334334334,\n              \"time_estimate_seconds\" => 1200,\n              \"title\" => \"Guide Title\"\n          }\n        ]\n    \t}\n    }\n  },\n  \"banner_image\" => nil,\n   \"id\" => 112112112,\n   \"title\" => \"Path Title\"\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/certifications/{certification_id}/details:
+    get:
+      summary: Get Certification
+      description: This endpoint is for getting detailed information for a specific Certification in your Academy. The response will include information about each piece of content within the Certification.
+      operationId: get-certification-1
+      parameters:
+      - name: academy_id
+        in: path
+        description: The ID of the Academy
+        schema:
+          type: string
+        required: true
+      - name: certification_id
+        in: path
+        description: The ID of the Certification
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  'url' => https://app.workramp.com/api/v1/academies/001001001/certifications/112112112/details,\n  'data' => {\n    'certification' => {\n      \"academy_certification_contents\" => [\n        {\n          \"id\" => 223223223,\n          \"academy_certification_id\" => 112112112,\n          \"content_id\" => 334334334,\n          \"content_type\" => \"guide\",\n          \"ui_order\" => 1,\n          \"created_at\" => 1722020033428,\n        \t\"updated_at\" => 1722020033715,\n          \"content\" => {\n            \"card_banner\" => nil,\n              \"description\" => \"Description\",\n              \"id\" => 334334334,\n              \"time_estimate_seconds\" => 1200,\n              \"title\" => \"Guide Title\"\n          }\n        ]\n    \t}\n    }\n  },\n  \"banner_image\" => nil,\n   \"id\" => 112112112,\n   \"title\" => \"Certification Title\"\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/events:
+    get:
+      summary: Get All Events
+      description: ''
+      operationId: get-all-academy-events
+      parameters:
+      - name: academy_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n\t\t\"page\": 1,\n \t\t\"per_page\": 20,\n \t\t\"has_more\": false,\n \t\t\"item_count\": 3,\n \t\t\"url\": \"/api/v1/academies/:academy_id/events\",\n \t\t\"data\": {\n  \t\t\t\"events\": [\n            {\n              \"created_at\": \"2024-12-31T16:00:00Z\",\n              \"description\": \"some description\",\n              \"id\": \"019321c0-86d5-73bc-8999-1edda9b69d32\",\n              \"num_live_sessions\": 2,\n              \"num_on_demand_content\": 2,\n              \"published\": true,\n              \"title\": \"Torphy, Champlin and Dare\",\n              \"updated_at\": \"2024-12-31T16:00:00Z\"\n            },\n            {\n              \"created_at\": \"2024-12-31T16:00:00Z\",\n              \"description\": \"some description\",\n              \"id\": \"019321c0-86db-7b87-a952-939b49748376\",\n              \"num_live_sessions\": 3,\n              \"num_on_demand_content\": 1,\n              \"published\": true,\n              \"title\": \"Beatty Group\",\n              \"updated_at\": \"2024-12-31T16:00:00Z\"\n            },\n            {\n               \"created_at\": \"2024-12-31T16:00:00Z\",\n              \"description\": \"some description\",\n              \"id\": \"019321c0-86e0-7c69-9a1f-e89a11f4d2ff\",\n              \"num_live_sessions\": 4,\n              \"num_on_demand_content\": 2,\n              \"published\": false,\n              \"title\": \"Goyette, Beahan and Rohan\",\n              \"updated_at\": \"2024-12-31T16:00:00Z\"\n            }\n      \t]\n  \t}\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/:academy_id/events
+                  data:
+                    type: object
+                    properties:
+                      events:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            created_at:
+                              type: string
+                              example: '2024-12-31T16:00:00Z'
+                            description:
+                              type: string
+                              example: some description
+                            id:
+                              type: string
+                              example: 019321c0-86d5-73bc-8999-1edda9b69d32
+                            num_live_sessions:
+                              type: integer
+                              example: 2
+                              default: 0
+                            num_on_demand_content:
+                              type: integer
+                              example: 2
+                              default: 0
+                            published:
+                              type: boolean
+                              example: true
+                              default: true
+                            title:
+                              type: string
+                              example: Torphy, Champlin and Dare
+                            updated_at:
+                              type: string
+                              example: '2024-12-31T16:00:00Z'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/events/{event_id}:
+    get:
+      summary: Get Sessions For Event
+      description: ''
+      operationId: get-all-event-sessions
+      parameters:
+      - name: academy_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: event_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: after
+        in: query
+        description: 'ex: 2024-12-31T16:00:00Z. Use to filter sessions so that none are returned with a start time prior to the specified value.'
+        schema:
+          type: string
+      - name: before
+        in: query
+        description: 'ex: 2024-12-31T16:00:00Z. Use to filter sessions so that none are returned with a start time after the specified value.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \t\"url\": \"/api/v1/academies/:academy_id/events/:event_id\",\n \t\t\"data\": {\n      \t\"event\": {\n          \t\"created_at\": \"2024-12-31T16:00:00Z\",\n             \"description\": nil,\n             \"id\": \"01932258-3f67-72f2-b2a8-cf6bd1560c5a\",\n             \"num_live_sessions\": 2,\n             \"num_on_demand_content\": 1,\n             \"published\": false,\n             \"title\": \"Swaniawski and Sons\",\n             \"updated_at\": \"2024-12-31T16:00:00Z\",\n             \"academy_event_sessions\": [\n              \t\t{\n                    \"created_at\": \"2024-12-31T16:00:00Z\",\n                    \"description\": \"some description\",\n                    \"end_time\": \"2024-12-31T16:00:00Z,\n                    \"id\": \"01932258-3f71-7286-be59-5da0408db832\",\n                    \"start_time\": \"2025-01-11T14:00:00Z,\n                    \"title\": \"The Wizard of Oz\",\n                    \"updated_at\": \"2025-01-11T16:00:00Z\",\n                    \"url\": \"\",\n                    \"zoom_api_account_id\": nil,\n                    \"zoom_meeting_id\": nil,\n                    \"zoom_meeting_join_url\": nil,\n                    \"zoom_meeting_start_url\": nil\n                  }\n            ]\n        }\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/events/{event_id}/attendees:
+    get:
+      summary: Get Attendees For Event
+      description: ''
+      operationId: get-attendees-for-event
+      parameters:
+      - name: academy_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: event_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: after
+        in: query
+        description: 'ex: 2024-12-31T16:00:00Z. Use to filter sessions so that none are returned with a start time prior to the specified value.'
+        schema:
+          type: string
+      - name: before
+        in: query
+        description: 'ex: 2024-12-31T16:00:00Z. Use to filter sessions so that none are returned with a start time after the specified value.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/event_sessions/{event_session_id}/attendees:
+    get:
+      summary: Get Attendees for Event Session
+      description: ''
+      operationId: get-attendees-for-event-session
+      parameters:
+      - name: academy_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: event_session_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/webhook_subscriptions:
+    get:
+      summary: Get All Webhook Subscriptions
+      description: ''
+      operationId: get-all-webhook-subscriptions
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n  {\n    \"webhookID\": \"id-string-here\",\n    \"webhookName\": \"Fancy Webhook\",\n    \"url\": \"https://example.com/workramp-webhook-endpoint\",\n    \"eventTypes\": [\n      \"userRegistration\"\n    ]\n  },\n  {\n    \"webhookID\": \"id-string-here\",\n    \"webhookName\": \"Fancy Webhook #2\",\n    \"url\": \"https://example.com/workramp-webhook-endpoint-2\",\n    \"eventTypes\": [\n      \"contentCompletion.path\"\n    ]\n  }\n]\n"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    webhookID:
+                      type: string
+                      example: id-string-here
+                    webhookName:
+                      type: string
+                      example: Fancy Webhook
+                    url:
+                      type: string
+                      example: https://example.com/workramp-webhook-endpoint
+                    eventTypes:
+                      type: array
+                      items:
+                        type: string
+                        example: userRegistration
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    post:
+      summary: Create Webhook Subscription
+      description: ''
+      operationId: create-webhook-subscription
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - webhookName
+              - url
+              - eventTypes
+              properties:
+                webhookName:
+                  type: string
+                  description: Descriptive name
+                url:
+                  type: string
+                  description: HTTPS endpoint
+                eventTypes:
+                  type: array
+                  description: Valid event types
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"webhookID\": \"id-string-here\",\n  \"webhookName\": \"Fancy Webhook\",\n  \"url\": \"https://example.com/workramp-webhook-endpoint\",\n  \"eventTypes\": [\n    \"userRegistration\"\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  webhookID:
+                    type: string
+                    example: id-string-here
+                  webhookName:
+                    type: string
+                    example: Fancy Webhook
+                  url:
+                    type: string
+                    example: https://example.com/workramp-webhook-endpoint
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: userRegistration
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/webhook_subscriptions/{subscription_id}:
+    get:
+      summary: Get Webhook Subscription
+      description: ''
+      operationId: get-webhook-subscription
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: subscription_id
+        in: path
+        description: The id of the webhook subscription
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"webhookID\": \"id-string-here\",\n  \"webhookName\": \"Fancy Webhook\",\n  \"url\": \"https://example.com/workramp-webhook-endpoint\",\n  \"eventTypes\": [\n    \"userRegistration\"\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  webhookID:
+                    type: string
+                    example: id-string-here
+                  webhookName:
+                    type: string
+                    example: Fancy Webhook
+                  url:
+                    type: string
+                    example: https://example.com/workramp-webhook-endpoint
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: userRegistration
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    delete:
+      summary: Delete Webhook Subscription
+      description: ''
+      operationId: delete-webhook-subscription
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: subscription_id
+        in: path
+        description: The id of the webhook subscription
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"success\": true\n}"
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    patch:
+      summary: Edit Webhook Subscription
+      description: ''
+      operationId: edit-webhook-subscription
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: subscription_id
+        in: path
+        description: The id of the webhook subscription
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                webhookName:
+                  type: string
+                  description: Descriptive name
+                url:
+                  type: string
+                  description: HTTPS endpoint
+                eventTypes:
+                  type: array
+                  description: Valid event types
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"webhookID\": \"id-string-here\",\n  \"webhookName\": \"Fancy Webhook\",\n  \"url\": \"https://example.com/workramp-webhook-endpoint\",\n  \"eventTypes\": [\n    \"userRegistration\"\n  ]\n}"
+              schema:
+                type: object
+                properties:
+                  webhookID:
+                    type: string
+                    example: id-string-here
+                  webhookName:
+                    type: string
+                    example: Fancy Webhook
+                  url:
+                    type: string
+                    example: https://example.com/workramp-webhook-endpoint
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+                      example: userRegistration
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/academy_object_attributes:
+    get:
+      description: ''
+      operationId: get_academy_object_attribute_values
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value: ''
+                Result:
+                  summary: Result
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 2
+                    url: /api/v1/academies/:academy_id/academy_object_attributes
+                    data:
+                      academy_object_attributes:
+                      - id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                        name: Difficulty
+                        academy_object_attribute_values:
+                        - id: 0197a76a-4834-712c-874e-e503a14a5775
+                          name: Beginner
+                        - id: 0197a76a-5ffc-71d4-9b95-630287b28941
+                          name: Intermediate
+                        - id: 0197a76a-6dd9-7c9e-b8ea-4b148bc5a330
+                          name: Advanced
+                      - id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                        name: Content Type
+                        academy_object_attribute_values:
+                        - id: 0197a76a-25c8-7ee1-894d-b01ee1dffefa
+                          name: Certification
+                        - id: 0197a76a-79de-77cd-bbf6-ba87341ae6bb
+                          name: Course
+      parameters:
+      - in: path
+        name: academy_id
+        schema:
+          type: string
+          default: ''
+        required: true
+        description: The id of the Academy
+      - name: page
+        in: query
+        required: false
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+      - name: per_page
+        in: query
+        required: false
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/academy_object_attribute:
+    get:
+      description: ''
+      operationId: get_academy_object_attribute_values
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value: ''
+                Result:
+                  summary: Result
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 5
+                    url: /api/v1/academies/:academy_id/academy_object_attribute_values
+                    data:
+                      academy_object_attribute_values:
+                      - id: 0197a76a-25c8-7ee1-894d-b01ee1dffefa
+                        name: Certification
+                        academy_object_attribute:
+                          id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                          name: Content Type
+                      - id: 0197a76a-4834-712c-874e-e503a14a5775
+                        name: Beginner
+                        academy_object_attribute:
+                          id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                          name: Difficulty
+                      - id: 0197a76a-5ffc-71d4-9b95-630287b28941
+                        name: Intermediate
+                        academy_object_attribute:
+                          id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                          name: Difficulty
+                      - id: 0197a76a-6dd9-7c9e-b8ea-4b148bc5a330
+                        name: Advanced
+                        academy_object_attribute:
+                          id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                          name: Difficulty
+                      - id: 0197a76a-79de-77cd-bbf6-ba87341ae6bb
+                        name: Course
+                        academy_object_attribute:
+                          id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                          name: Content Type
+      parameters:
+      - in: path
+        name: academy_id
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+      - name: per_page
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id/academy_object_attributes:
+    get:
+      description: ''
+      operationId: get_academy_object_attribute_values
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 2
+                    url: /api/v1/academies/:academy_id/academy_object_attributes
+                    data:
+                      academy_object_attributes:
+                      - id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                        name: Difficulty
+                        academy_object_attribute_values:
+                        - id: 0197a76a-4834-712c-874e-e503a14a5775
+                          name: Beginner
+                        - id: 0197a76a-5ffc-71d4-9b95-630287b28941
+                          name: Intermediate
+                        - id: 0197a76a-6dd9-7c9e-b8ea-4b148bc5a330
+                          name: Advanced
+                      - id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                        name: Content Type
+                        academy_object_attribute_values:
+                        - id: 0197a76a-25c8-7ee1-894d-b01ee1dffefa
+                          name: Certification
+                        - id: 0197a76a-79de-77cd-bbf6-ba87341ae6bb
+                          name: Course
+      parameters: []
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/academy_object_attributess:
+    get:
+      description: ''
+      operationId: get_academy_object_attribute_values
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value: ''
+                New Example 1:
+                  summary: New Example 1
+                  value: ''
+                Result:
+                  summary: Result
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 5
+                    url: /api/v1/academies/:academy_id/academy_object_attribute_values
+                    data:
+                      academy_object_attribute_values:
+                      - id: 0197a76a-25c8-7ee1-894d-b01ee1dffefa
+                        name: Certification
+                        academy_object_attribute:
+                          id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                          name: Content Type
+                      - id: 0197a76a-4834-712c-874e-e503a14a5775
+                        name: Beginner
+                        academy_object_attribute:
+                          id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                          name: Difficulty
+                      - id: 0197a76a-5ffc-71d4-9b95-630287b28941
+                        name: Intermediate
+                        academy_object_attribute:
+                          id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                          name: Difficulty
+                      - id: 0197a76a-6dd9-7c9e-b8ea-4b148bc5a330
+                        name: Advanced
+                        academy_object_attribute:
+                          id: 0197a76a-3a98-799e-a828-5d5acf131c4e
+                          name: Difficulty
+                      - id: 0197a76a-79de-77cd-bbf6-ba87341ae6bb
+                        name: Course
+                        academy_object_attribute:
+                          id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                          name: Content Type
+      parameters:
+      - in: path
+        name: academy_id
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+      - name: per_page
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/:academy_id/academy_object_attributes:
+    get:
+      description: ''
+      operationId: get_new-endpoint
+      responses:
+        '200':
+          description: ''
+      parameters: []
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/academy_object_attributes_2:
+    get:
+      description: ''
+      operationId: get_apiv1academies{academy_id}academy_object_attribute_values
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                New Example:
+                  summary: New Example
+                  value:
+                    page: 1
+                    per_page: 20
+                    has_more: false
+                    item_count: 2
+                    url: /api/v1/academies/:academy_id/academy_object_attributes
+                    data:
+                      academy_object_attributes:
+                      - id: 0197a76a-154a-7f5c-9da7-b3322894a1b7
+                        name: Content Type
+                        academy_object_attribute_values:
+                        - id: 0197a76a-25c8-7ee1-894d-b01ee1dffefa
+                          name: Certification
+                        - id: 0197a76a-79de-77cd-bbf6-ba87341ae6bb
+                          name: Course
+      parameters:
+      - in: path
+        name: academy_id
+        schema:
+          type: string
+          default: ''
+        required: true
+        description: The id of the Academy
+      - name: page
+        in: query
+        required: false
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+      - name: per_page
+        in: query
+        required: false
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+      x-readme:
+        samples-languages:
+        - shell
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/${academy_id}/academy_object_attributes:
+    get:
+      description: ''
+      operationId: get_apiv1academies{academy_id}academy_object_attribute_values
+      responses:
+        '200':
+          description: ''
+      parameters:
+      - name: academy_id
+        in: path
+        required: true
+        description: The id of the Academy
+        schema:
+          type: string
+          default: ''
+      - name: page
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: integer
+          format: int32
+          default: '1'
+      - name: per_page
+        in: query
+        required: false
+        description: ''
+        schema:
+          type: integer
+          format: int32
+          default: '20'
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/:academy id/paths_users:
+    get:
+      summary: Get All Completed Path Enrollments
+      description: ''
+      operationId: get-all-paths-1
+      parameters:
+      - name: page
+        in: query
+        description: The page number of the results
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: The number of results returned per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: completed_only
+        in: query
+        description: To get all path users, set to false
+        schema:
+          type: string
+          default: 'true'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 100,\n    \"has_more\": false,\n    \"url\": \"https://app.workramp.com/api/v1/academies/:academy id/paths_users/\",\n    \"data\": {\n        \"paths_users\": [\n            {\n              \"id\": \"1424242\",\n              \"user_id\": \"2242432\",\n              \"user_name\": \"Johnny\",\n              \"user_email\": \"johnny@jimmy.com\",\n              \"path_id\": \"2242432\",\n              \"path_name\":  \"Basic Training\",\n              \"path_description\": \"Basic Training Path\",\n              \"progress_percentage\": 100,\n              \"completed_at\": 1488144236206.5808\n            }\n          }\n        ]\n    }\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/registrations/by_date_range:
+    get:
+      description: ''
+      operationId: get_apiv1academies:academy_idregistrationsby_date_range
+      responses:
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: ''
+                    enum:
+                    - 'Missing required parameter: start_time'
+                    - Invalid date format. Use Unix timestamp or ISO8601.
+                required:
+                - error
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+      parameters:
+      - in: path
+        name: academy_id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: start_time
+        schema:
+          type: string
+          format: date
+        description: ' Start of date range (Unix timestamp or ISO8601)'
+        required: true
+      - in: query
+        name: end_time
+        schema:
+          type: string
+          default: Now
+        description: End of date range (Unix timestamp or ISO8601)
+      - in: query
+        name: training_id
+        schema:
+          type: string
+        description: Filter results to a specific training (Guide, Resource, or SCORM)
+      - in: query
+        name: page
+        schema:
+          type: string
+          default: '1'
+        description: Page number for pagination
+      - in: query
+        name: per_page
+        schema:
+          type: string
+          default: '20'
+        description: Items per page
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/segments/{segment_id}/add_users:
+    post:
+      summary: Add Contacts to Segment
+      description: Add Contacts to an Academy Segment
+      operationId: add-users-to-segment
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: segment_id
+        in: path
+        description: The id of the segment
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userEmails
+              properties:
+                userEmails:
+                  type: array
+                  description: 'Array of Contact emails you''d like to add to the segment. **NOTE: Contact must be registered in order to be placed in a segment**'
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"numAddedToGroup\": 1,\n    \"numConvertedToManual\": 0,\n    \"numAlreadyInGroup\": 0,\n    \"numDeletedUser\": 0,\n    \"numUnregisteredUser\": 0\n}"
+              schema:
+                type: object
+                properties:
+                  numAddedToGroup:
+                    type: integer
+                    example: 1
+                    default: 0
+                  numConvertedToManual:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numAlreadyInGroup:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numDeletedUser:
+                    type: integer
+                    example: 0
+                    default: 0
+                  numUnregisteredUser:
+                    type: integer
+                    example: 0
+                    default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/instant_auth_request:
+    post:
+      summary: Instant Auth
+      description: Using a JWT, generate an instant login url for your Academy
+      operationId: instant-auth
+      parameters:
+      - name: academy_id
+        in: path
+        description: The UUID of your Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: application/json
+        schema:
+          type: string
+          default: application/json
+      - name: Accept
+        in: header
+        description: application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RAW_BODY:
+                  type: string
+                  description: JSON payload, with the key "jwt" and value being the JWT token itself, signed with your secret key.
+                  default: '{"jwt": "..."}'
+                  format: json
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"absoluteLoginUrl\": \"https://your.academy.com/superlonghexencodedjwt?return_to=\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '401':
+          description: '401'
+          content:
+            text/plain:
+              examples:
+                Result:
+                  value: ''
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/contacts/{contact_id}/registrations:
+    get:
+      summary: Get All Registrations for a Contact
+      description: Get all Guide/Resource/SCORM registrations for a contact
+      operationId: get-all-registrations-for-a-contact
+      parameters:
+      - name: page
+        in: query
+        description: Results page to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Results per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 20,\n    \"has_more\": false,\n    \"item_count\": 3,\n    \"url\": \"/api/v1/academies/ce94a26c-8ef0-11ee-afe2-aa41bb3ba07f/contacts/cec36bec-8ef0-11ee-afe2-aa41bb3ba07f/registrations\",\n    \"data\": {\n        \"contact\": {\n            \"academy_segments\": [],\n            \"created_at\": 1701287540727,\n            \"display_name\": \"Prof. Mertie Welch\",\n            \"email\": \"marlena@shields-schiller.example\",\n            \"first_name\": \"Prof.\",\n            \"id\": \"cec36bec-8ef0-11ee-afe2-aa41bb3ba07f\",\n            \"is_pending\": false,\n            \"last_name\": \"Welch\"\n        },\n        \"registrations\": [\n            {\n                \"completed_at\": 1701179472411,\n                \"completion_percentage\": 100,\n                \"created_at\": 1701287541001,\n                \"due_at\": 1701087318562,\n                \"due_date\": 1701087318562,\n              \t\"grading_status\": \"completed\",\n                \"id\": \"ceed40d4-8ef0-11ee-afe2-aa41bb3ba07f\",\n                \"is_completed\": true,\n                \"pass_status\": \"completed\",\n                \"score\": 100,\n                \"time_spent\": 8,\n                \"content\": {\n                    \"academy_overview_description\": null,\n                    \"card_banner\": null,\n                    \"created_at\": 1701287540862,\n                    \"id\": \"ced8136c-8ef0-11ee-afe2-aa41bb3ba07f\",\n                    \"type\": \"guide\",\n                    \"title\": \"Medicine\"\n                }\n            },\n            {\n                \"completed_at\": 1700825798490,\n                \"completion_percentage\": 100,\n                \"created_at\": 1701287541083,\n                \"due_at\": 1701226104708,\n                \"due_date\": 1701226104708,\n              \t\"grading_status\": \"completed\",\n                \"id\": \"cef9ca34-8ef0-11ee-afe2-aa41bb3ba07f\",\n                \"is_completed\": true,\n                \"pass_status\": \"completed\",\n                \"score\": 100,\n                \"time_spent\": 18,\n                \"content\": {\n                    \"academy_overview_description\": null,\n                    \"card_banner\": null,\n                    \"created_at\": 1701287540939,\n                    \"id\": \"cee3d9ae-8ef0-11ee-afe2-aa41bb3ba07f\",\n                    \"type\": \"scorm\",\n                    \"title\": \"Law 578\"\n                }\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/ce94a26c-8ef0-11ee-afe2-aa41bb3ba07f/contacts/cec36bec-8ef0-11ee-afe2-aa41bb3ba07f/registrations
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        type: object
+                        properties:
+                          academy_segments:
+                            type: array
+                          created_at:
+                            type: integer
+                            example: 1701287540727
+                            default: 0
+                          display_name:
+                            type: string
+                            example: Prof. Mertie Welch
+                          email:
+                            type: string
+                            example: marlena@shields-schiller.example
+                          first_name:
+                            type: string
+                            example: Prof.
+                          id:
+                            type: string
+                            example: cec36bec-8ef0-11ee-afe2-aa41bb3ba07f
+                          is_pending:
+                            type: boolean
+                            example: false
+                            default: true
+                          last_name:
+                            type: string
+                            example: Welch
+                      registrations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            completed_at:
+                              type: integer
+                              example: 1701179472411
+                              default: 0
+                            completion_percentage:
+                              type: integer
+                              example: 100
+                              default: 0
+                            created_at:
+                              type: integer
+                              example: 1701287541001
+                              default: 0
+                            due_at:
+                              type: integer
+                              example: 1701087318562
+                              default: 0
+                            due_date:
+                              type: integer
+                              example: 1701087318562
+                              default: 0
+                            grading_status:
+                              type: string
+                              example: completed
+                            id:
+                              type: string
+                              example: ceed40d4-8ef0-11ee-afe2-aa41bb3ba07f
+                            is_completed:
+                              type: boolean
+                              example: true
+                              default: true
+                            pass_status:
+                              type: string
+                              example: completed
+                            score:
+                              type: integer
+                              example: 100
+                              default: 0
+                            time_spent:
+                              type: integer
+                              example: 8
+                              default: 0
+                            content:
+                              type: object
+                              properties:
+                                academy_overview_description: {}
+                                card_banner: {}
+                                created_at:
+                                  type: integer
+                                  example: 1701287540862
+                                  default: 0
+                                id:
+                                  type: string
+                                  example: ced8136c-8ef0-11ee-afe2-aa41bb3ba07f
+                                type:
+                                  type: string
+                                  example: guide
+                                title:
+                                  type: string
+                                  example: Medicine
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/contacts/{contact_id}/paths:
+    get:
+      summary: Get all Paths for a Contact
+      description: ''
+      operationId: get-all-paths-for-a-contact
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: Results page to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Results per page
+        schema:
+          type: string
+          default: '20'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 20,\n    \"has_more\": false,\n    \"item_count\": 3,\n    \"url\": \"/api/v1/academies/a42aa798-8eef-11ee-ba5c-aa41bb3ba07f/contacts/a47919f0-8eef-11ee-ba5c-aa41bb3ba07f/paths\",\n    \"data\": {\n        \"contact\": {\n            \"academy_segments\": [],\n            \"created_at\": 1701287040279,\n            \"display_name\": \"Seth Cremin\",\n            \"email\": \"modesto@mayer.test\",\n            \"first_name\": \"Seth\",\n            \"id\": \"a47919f0-8eef-11ee-ba5c-aa41bb3ba07f\",\n            \"is_pending\": false,\n            \"last_name\": \"Cremin\"\n        },\n        \"path_enrollments\": [\n            {\n                \"awarded\": false,\n                \"awarded_at\": null,\n                \"can_recertify\": false,\n                \"completed\": true,\n                \"completed_at\": 1701287040361,\n                \"created_at\": 1701287040361,\n                \"due_at\": 1701779364929,\n                \"expired\": false,\n                \"expires_at\": 1701721015669,\n                \"has_learner_seen_award\": false,\n                \"has_learner_seen_completed_and_requires_grading\": false,\n                \"id\": \"a485a6de-8eef-11ee-ba5c-aa41bb3ba07f\",\n                \"is_completed_and_requires_grading\": false,\n                \"is_started\": true,\n                \"last_accessed_at\": 1700824371476,\n                \"path\": {\n                    \"created_at\": 1701287040262,\n                    \"description\": null,\n                    \"id\": \"a4768c6c-8eef-11ee-ba5c-aa41bb3ba07f\",\n                    \"name\": \"Marks, Pouros and Kuhic\"\n                },\n                \"progress_percentage\": 100,\n                \"public_url\": null,\n                \"short_id\": null,\n                \"time_spent_cache\": 543,\n                \"updated_at\": 1701287048376\n            },\n            {\n                \"awarded\": false,\n                \"awarded_at\": null,\n                \"can_recertify\": false,\n                \"completed\": false,\n                \"completed_at\": 1701287040384,\n                \"created_at\": 1701287040384,\n                \"due_at\": 1701587831186,\n                \"expired\": false,\n                \"expires_at\": 1701294767639,\n                \"has_learner_seen_award\": false,\n                \"has_learner_seen_completed_and_requires_grading\": false,\n                \"id\": \"a4892e6c-8eef-11ee-ba5c-aa41bb3ba07f\",\n                \"is_completed_and_requires_grading\": false,\n                \"is_started\": true,\n                \"last_accessed_at\": 1701284614020,\n                \"path\": {\n                    \"created_at\": 1701287040270,\n                    \"description\": null,\n                    \"id\": \"a477c4a6-8eef-11ee-ba5c-aa41bb3ba07f\",\n                    \"name\": \"Schimmel Inc\"\n                },\n                \"progress_percentage\": 50,\n                \"public_url\": null,\n                \"short_id\": null,\n                \"time_spent_cache\": 654,\n                \"updated_at\": 1701287048429\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/a42aa798-8eef-11ee-ba5c-aa41bb3ba07f/contacts/a47919f0-8eef-11ee-ba5c-aa41bb3ba07f/paths
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        type: object
+                        properties:
+                          academy_segments:
+                            type: array
+                          created_at:
+                            type: integer
+                            example: 1701287040279
+                            default: 0
+                          display_name:
+                            type: string
+                            example: Seth Cremin
+                          email:
+                            type: string
+                            example: modesto@mayer.test
+                          first_name:
+                            type: string
+                            example: Seth
+                          id:
+                            type: string
+                            example: a47919f0-8eef-11ee-ba5c-aa41bb3ba07f
+                          is_pending:
+                            type: boolean
+                            example: false
+                            default: true
+                          last_name:
+                            type: string
+                            example: Cremin
+                      path_enrollments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            awarded:
+                              type: boolean
+                              example: false
+                              default: true
+                            awarded_at: {}
+                            can_recertify:
+                              type: boolean
+                              example: false
+                              default: true
+                            completed:
+                              type: boolean
+                              example: true
+                              default: true
+                            completed_at:
+                              type: integer
+                              example: 1701287040361
+                              default: 0
+                            created_at:
+                              type: integer
+                              example: 1701287040361
+                              default: 0
+                            due_at:
+                              type: integer
+                              example: 1701779364929
+                              default: 0
+                            expired:
+                              type: boolean
+                              example: false
+                              default: true
+                            expires_at:
+                              type: integer
+                              example: 1701721015669
+                              default: 0
+                            has_learner_seen_award:
+                              type: boolean
+                              example: false
+                              default: true
+                            has_learner_seen_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            id:
+                              type: string
+                              example: a485a6de-8eef-11ee-ba5c-aa41bb3ba07f
+                            is_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            is_started:
+                              type: boolean
+                              example: true
+                              default: true
+                            last_accessed_at:
+                              type: integer
+                              example: 1700824371476
+                              default: 0
+                            path:
+                              type: object
+                              properties:
+                                created_at:
+                                  type: integer
+                                  example: 1701287040262
+                                  default: 0
+                                description: {}
+                                id:
+                                  type: string
+                                  example: a4768c6c-8eef-11ee-ba5c-aa41bb3ba07f
+                                name:
+                                  type: string
+                                  example: Marks, Pouros and Kuhic
+                            progress_percentage:
+                              type: integer
+                              example: 100
+                              default: 0
+                            public_url: {}
+                            short_id: {}
+                            time_spent_cache:
+                              type: integer
+                              example: 543
+                              default: 0
+                            updated_at:
+                              type: integer
+                              example: 1701287048376
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/contacts/{contact_id}/certifications:
+    get:
+      summary: Get All Certifications for a Contact
+      description: This includes all Cert enrollments. If you only want ones where the user completed and passed all the requirements and was awarded the certificate, please see **Get All Awarded Certifications For a Contact**.
+      operationId: get-all-certifications-for-a-contact
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: contact_id
+        in: path
+        description: The id of the Contact
+        schema:
+          type: string
+        required: true
+      - name: page
+        in: query
+        description: Results page to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Results per page
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"page\": 1,\n    \"per_page\": 20,\n    \"has_more\": false,\n    \"item_count\": 2,\n    \"url\": \"/api/v1/academies/178e485c-88a1-11ee-8ac9-aa41bb3ba07f/contacts/ace086ba-8eee-11ee-ac93-aa41bb3ba07f/certifications\",\n    \"data\": {\n        \"contact\": {\n            \"academy_segments\": [],\n            \"created_at\": 1701286624882,\n            \"display_name\": \"Kristofer Metz\",\n            \"email\": \"damien@hettinger-erdman.example\",\n            \"first_name\": \"Kristofer\",\n            \"id\": \"ace086ba-8eee-11ee-ac93-aa41bb3ba07f\",\n            \"is_pending\": false,\n            \"last_name\": \"Metz\"\n        },\n        \"certification_enrollments\": [\n            {\n                \"awarded\": true,\n                \"awarded_at\": 1701286624957,\n                \"can_recertify\": false,\n                \"certification\": {\n                    \"awarded_by_name\": \"Rachelle Ratke Ret.\",\n                    \"awarded_by_title\": \"Global Accounting Liaison\",\n                    \"created_at\": 1701286624867,\n                    \"description\": null,\n                    \"id\": \"acde3e28-8eee-11ee-ac93-aa41bb3ba07f\",\n                    \"name\": \"Kris-Towne\"\n                },\n                \"completed\": false,\n                \"completed_at\": null,\n                \"created_at\": 1701286624951,\n                \"due_at\": 1701733386124,\n                \"expired\": false,\n                \"expires_at\": 1701511527629,\n                \"has_learner_seen_award\": false,\n                \"has_learner_seen_completed_and_requires_grading\": false,\n                \"id\": \"aceb2eda-8eee-11ee-ac93-aa41bb3ba07f\",\n                \"is_completed_and_requires_grading\": false,\n                \"is_started\": true,\n                \"last_accessed_at\": 1700792876875,\n                \"linked_in_add_to_profile_clicked_at\": 1701286624927,\n                \"progress_percentage\": 100,\n                \"public_url\": \"/certificate/wYk19Vc2Bw\",\n                \"short_id\": \"wYk19Vc2Bw\",\n                \"time_spent_cache\": 543,\n                \"updated_at\": 1701286630439\n            },\n            {\n                \"awarded\": false,\n                \"awarded_at\": 1700738628478,\n                \"can_recertify\": false,\n                \"certification\": {\n                    \"awarded_by_name\": \"Janessa Bosco MD\",\n                    \"awarded_by_title\": \"Regional Sales Planner\",\n                    \"created_at\": 1701286624873,\n                    \"description\": null,\n                    \"id\": \"acdf4624-8eee-11ee-ac93-aa41bb3ba07f\",\n                    \"name\": \"Bashirian, Gibson and Harris\"\n                },\n                \"completed\": false,\n                \"completed_at\": null,\n                \"created_at\": 1701286624983,\n                \"due_at\": 1701437532444,\n                \"expired\": false,\n                \"expires_at\": 1701521790282,\n                \"has_learner_seen_award\": false,\n                \"has_learner_seen_completed_and_requires_grading\": false,\n                \"id\": \"acf01224-8eee-11ee-ac93-aa41bb3ba07f\",\n                \"is_completed_and_requires_grading\": false,\n                \"is_started\": true,\n                \"last_accessed_at\": 1701223032446,\n                \"linked_in_add_to_profile_clicked_at\": 1701286624981,\n                \"progress_percentage\": 50,\n                \"public_url\": null,\n                \"short_id\": null,\n                \"time_spent_cache\": 654,\n                \"updated_at\": 1701286630555\n            }\n        ]\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 2
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/academies/178e485c-88a1-11ee-8ac9-aa41bb3ba07f/contacts/ace086ba-8eee-11ee-ac93-aa41bb3ba07f/certifications
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        type: object
+                        properties:
+                          academy_segments:
+                            type: array
+                          created_at:
+                            type: integer
+                            example: 1701286624882
+                            default: 0
+                          display_name:
+                            type: string
+                            example: Kristofer Metz
+                          email:
+                            type: string
+                            example: damien@hettinger-erdman.example
+                          first_name:
+                            type: string
+                            example: Kristofer
+                          id:
+                            type: string
+                            example: ace086ba-8eee-11ee-ac93-aa41bb3ba07f
+                          is_pending:
+                            type: boolean
+                            example: false
+                            default: true
+                          last_name:
+                            type: string
+                            example: Metz
+                      certification_enrollments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            awarded:
+                              type: boolean
+                              example: true
+                              default: true
+                            awarded_at:
+                              type: integer
+                              example: 1701286624957
+                              default: 0
+                            can_recertify:
+                              type: boolean
+                              example: false
+                              default: true
+                            certification:
+                              type: object
+                              properties:
+                                awarded_by_name:
+                                  type: string
+                                  example: Rachelle Ratke Ret.
+                                awarded_by_title:
+                                  type: string
+                                  example: Global Accounting Liaison
+                                created_at:
+                                  type: integer
+                                  example: 1701286624867
+                                  default: 0
+                                description: {}
+                                id:
+                                  type: string
+                                  example: acde3e28-8eee-11ee-ac93-aa41bb3ba07f
+                                name:
+                                  type: string
+                                  example: Kris-Towne
+                            completed:
+                              type: boolean
+                              example: false
+                              default: true
+                            completed_at: {}
+                            created_at:
+                              type: integer
+                              example: 1701286624951
+                              default: 0
+                            due_at:
+                              type: integer
+                              example: 1701733386124
+                              default: 0
+                            expired:
+                              type: boolean
+                              example: false
+                              default: true
+                            expires_at:
+                              type: integer
+                              example: 1701511527629
+                              default: 0
+                            has_learner_seen_award:
+                              type: boolean
+                              example: false
+                              default: true
+                            has_learner_seen_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            id:
+                              type: string
+                              example: aceb2eda-8eee-11ee-ac93-aa41bb3ba07f
+                            is_completed_and_requires_grading:
+                              type: boolean
+                              example: false
+                              default: true
+                            is_started:
+                              type: boolean
+                              example: true
+                              default: true
+                            last_accessed_at:
+                              type: integer
+                              example: 1700792876875
+                              default: 0
+                            linked_in_add_to_profile_clicked_at:
+                              type: integer
+                              example: 1701286624927
+                              default: 0
+                            progress_percentage:
+                              type: integer
+                              example: 100
+                              default: 0
+                            public_url:
+                              type: string
+                              example: /certificate/wYk19Vc2Bw
+                            short_id:
+                              type: string
+                              example: wYk19Vc2Bw
+                            time_spent_cache:
+                              type: integer
+                              example: 543
+                              default: 0
+                            updated_at:
+                              type: integer
+                              example: 1701286630439
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/trainings/{training_id}/invite:
+    post:
+      summary: Assign Trainings
+      description: Assign trainings to Academy Contacts (Guides, Resources, SCORM)
+      operationId: assign-trainings
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: training_id
+        in: path
+        description: The id of the training
+        schema:
+          type: string
+        required: true
+      - name: Content-type
+        in: header
+        description: Always use application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userEmails:
+                  type: array
+                  description: Array of Contact emails you'd like to invite to the training.
+                  items:
+                    type: string
+                trainingType:
+                  type: string
+                  description: 'Can be one of the following: "guide", "resource", "scorm".'
+                dueAt:
+                  type: integer
+                  description: Number of milliseconds since 1970-01-01 00:00:00 UTC.
+                  format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"errors\": [],\n    \"assignments\": [\n        {\n            \"id\": \"1d7b3ae0-0efe-11ed-9885-3ea79e467329\",\n            \"completedAt\": null,\n            \"completionPercentage\": null,\n            \"contentId\": \"ffc2ff46-0e95-11ed-bc8c-3ea79e467329\",\n            \"contentType\": \"scorm\",\n            \"createdAt\": 1659072009744,\n            \"passStatusMetadata\": {\n                \"didPass\": false,\n                \"didFail\": false,\n                \"doesRequireGrading\": false,\n                \"isInProgress\": false\n            },\n            \"score\": null,\n            \"timeSpent\": null,\n            \"updatedAt\": 1659072009744,\n            \"userId\": \"40cfc380-0ed1-11ed-9885-3ea79e467329\",\n            \"userType\": \"external\"\n        }\n    ],\n    \"trainingInvitations\": []\n}"
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                  assignments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 1d7b3ae0-0efe-11ed-9885-3ea79e467329
+                        completedAt: {}
+                        completionPercentage: {}
+                        contentId:
+                          type: string
+                          example: ffc2ff46-0e95-11ed-bc8c-3ea79e467329
+                        contentType:
+                          type: string
+                          example: scorm
+                        createdAt:
+                          type: integer
+                          example: 1659072009744
+                          default: 0
+                        passStatusMetadata:
+                          type: object
+                          properties:
+                            didPass:
+                              type: boolean
+                              example: false
+                              default: true
+                            didFail:
+                              type: boolean
+                              example: false
+                              default: true
+                            doesRequireGrading:
+                              type: boolean
+                              example: false
+                              default: true
+                            isInProgress:
+                              type: boolean
+                              example: false
+                              default: true
+                        score: {}
+                        timeSpent: {}
+                        updatedAt:
+                          type: integer
+                          example: 1659072009744
+                          default: 0
+                        userId:
+                          type: string
+                          example: 40cfc380-0ed1-11ed-9885-3ea79e467329
+                        userType:
+                          type: string
+                          example: external
+                  trainingInvitations:
+                    type: array
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+  /api/v1/academies/{academy_id}/email_domains:
+    put:
+      summary: Update Allowed Email Domains
+      description: Updates the list of allowed email domains that users can use to register. This endpoint overwrites the list, if you need to add or remove individual domains use the POST or DELETE endpoints. Send an empty list to remove all existing domains.
+      operationId: update-allowed-email-domains
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email_domains
+              properties:
+                email_domains:
+                  type: array
+                  description: The list of allowed domains that users can use to register.
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\": true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n}"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid parameters\",\n  \"errors\": {\n    \"email_domains\": [\n      \"is missing\"\n    ]\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: Invalid parameters
+                  errors:
+                    type: object
+                    properties:
+                      email_domains:
+                        type: array
+                        items:
+                          type: string
+                          example: is missing
+      deprecated: false
+      tags:
+      - Academies
+    delete:
+      summary: Remove Allowed Email Domain
+      description: Remove email domains from the existing list that only allows registration from specific email address domains
+      operationId: remove-allowed-email-domain
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email_domains
+              properties:
+                email_domains:
+                  type: array
+                  description: A list of email domains to remove from the existing list of allowed domains
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\": true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n}"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid parameters\",\n  \"errors\": {\n    \"email_domains\": [\n      \"is missing\"\n    ]\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: Invalid parameters
+                  errors:
+                    type: object
+                    properties:
+                      email_domains:
+                        type: array
+                        items:
+                          type: string
+                          example: is missing
+      deprecated: false
+      tags:
+      - Academies
+    get:
+      summary: Get Allowed Email Domains
+      description: Returns the list of allowed email domains that users can use to register in the Academy.
+      operationId: get-allowed-email-domains
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\": true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n}"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+      deprecated: false
+      tags:
+      - Academies
+    post:
+      summary: Add Allowed Email Domain
+      description: Adds email domains to existing list to only allow registration from specific email address domains
+      operationId: add-allowed-email-domain
+      parameters:
+      - name: academy_id
+        in: path
+        description: The id of the Academy
+        schema:
+          type: string
+        required: true
+      - name: Content-Type
+        in: header
+        description: Always application/json
+        schema:
+          type: string
+          default: application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email_domains
+              properties:
+                email_domains:
+                  type: array
+                  description: A list of email domains to add to the existing list of allowed domains
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"emailDomainsAllowed\": [\n    \"google.com\"\n  ],\n  \"emailDomainsAllowedEnabled\": true,\n  \"emailDomainsBlocked\": [],\n  \"emailDomainsBlockedEnabled\": false\n}"
+              schema:
+                type: object
+                properties:
+                  emailDomainsAllowed:
+                    type: array
+                    items:
+                      type: string
+                      example: google.com
+                  emailDomainsAllowedEnabled:
+                    type: boolean
+                    example: true
+                    default: true
+                  emailDomainsBlocked:
+                    type: array
+                  emailDomainsBlockedEnabled:
+                    type: boolean
+                    example: false
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"type\": \"invalid_params\",\n  \"message\": \"Invalid parameters\",\n  \"errors\": {\n    \"email_domains\": [\n      \"is missing\"\n    ]\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: invalid_params
+                  message:
+                    type: string
+                    example: Invalid parameters
+                  errors:
+                    type: object
+                    properties:
+                      email_domains:
+                        type: array
+                        items:
+                          type: string
+                          example: is missing
+      deprecated: false
+      tags:
+      - Academies
+    servers:
+    - url: https://app.workramp.com
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-refined-from:
+- workramp-api-settings-openapi.yml
+- workramp-json-api-openapi.yml
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true
+x-readme-fauxas: true

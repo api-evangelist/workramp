@@ -1,0 +1,106 @@
+openapi: 3.2.0
+info:
+  title: json-api Reseller Customers API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Reseller Customers
+paths:
+  /api/v1/reseller_customers:
+    get:
+      summary: White Label Customers
+      description: Retrieve all customer enterprises associated with your enterprise
+      operationId: white-label-customers
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"page\": 1,\n  \"per_page\": 20,\n  \"has_more\": false,\n  \"item_count\": 1,\n  \"url\": \"/api/v1/reseller_customers\",\n  \"data\": {\n    \"customers\": [\n      {\n        \"created_at\": 1749509412282,\n        \"disable_all_emails\": true,\n        \"enterprise_base_url\": \"https://woof.foo.bar\",\n        \"enterprise_id\": 2,\n        \"enterprise_name\": \"TEST ENTERPRISE 2\",\n        \"id\": 1,\n        \"updated_at\": 1749509412282\n      }\n    ]\n  }\n}\n"
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  has_more:
+                    type: boolean
+                    example: false
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 1
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/reseller_customers
+                  data:
+                    type: object
+                    properties:
+                      customers:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            created_at:
+                              type: integer
+                              example: 1749509412282
+                              default: 0
+                            disable_all_emails:
+                              type: boolean
+                              example: true
+                              default: true
+                            enterprise_base_url:
+                              type: string
+                              example: https://woof.foo.bar
+                            enterprise_id:
+                              type: integer
+                              example: 2
+                              default: 0
+                            enterprise_name:
+                              type: string
+                              example: TEST ENTERPRISE 2
+                            id:
+                              type: integer
+                              example: 1
+                              default: 0
+                            updated_at:
+                              type: integer
+                              example: 1749509412282
+                              default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Reseller Customers
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true

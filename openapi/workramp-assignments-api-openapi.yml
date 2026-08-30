@@ -1,0 +1,547 @@
+openapi: 3.2.0
+info:
+  title: json-api Assignments API
+  version: '1.0'
+servers:
+- url: https://app.workramp.com
+security:
+- sec0: []
+tags:
+- name: Assignments
+paths:
+  /api/v1/assignments/guide:
+    get:
+      summary: Get All Guide Assignments in Date Range
+      description: ''
+      operationId: get-guide-assignments-in-date-range
+      parameters:
+      - name: start_time
+        in: query
+        description: The minimum created/updated timestamp. This should be an ISO 8601 date/time.
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: The maximum created/updated timestamp. This should be an ISO8601 date/time.
+        schema:
+          type: string
+      - name: due_date
+        in: query
+        description: ISO8601 date or datetime to filter on assignment due date
+        schema:
+          type: string
+      - name: guide_id
+        in: query
+        description: A specific guide to limit the results to. - If `guide_id` is not provided it will return _all_ Guide assignments created or updated within the date range.
+        schema:
+          type: string
+      - name: include_deleted
+        in: query
+        description: Optional - if you want to also retrieve assignments which have been deleted, pass true. Use the is_deleted field in the response to detect these.
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: Page of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of results to return per page (1-200)
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    page: 1
+                    per_page: 4
+                    has_more: true
+                    item_count: 4
+                    url: /api/v1/assignments/guide
+                    data:
+                      assignments:
+                      - user:
+                          id: 197
+                          name: Lydia Rodarte-Quayle
+                          email: admin@example.com
+                          is_admin: true
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544548827
+                          updated_at: 1756425850000
+                          groups:
+                          - id: 19
+                            name: Excellent Veterinary Doctors
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Teaching 520
+                          id: 01910fa7-f395-7e65-8e29-01eb2b62db13
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544553802
+                          due_date: 1722976553000
+                          esignatures: []
+                          id: 01910fa7-ff4a-765b-ae6d-01352b956ed2
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: 5
+                          updated_at: 1741385699378
+                      - user:
+                          id: 202
+                          name: Gustavo Fring
+                          email: gustavo.fring5@example.com
+                          is_admin: false
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544548855
+                          updated_at: 1722544549245
+                          groups:
+                          - id: 19
+                            name: Excellent Veterinary Doctors
+                          - id: 21
+                            name: Thoughtful Bookkeepers
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Teaching 520
+                          id: 01910fa7-f395-7e65-8e29-01eb2b62db13
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544554189
+                          due_date: 1722976553000
+                          esignatures: []
+                          id: 01910fa8-00cd-7283-8318-b01caf48bdf0
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: 5
+                          updated_at: 1741385699333
+                      - user:
+                          id: 197
+                          name: Lydia Rodarte-Quayle
+                          email: admin@example.com
+                          is_admin: true
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544548827
+                          updated_at: 1756425850000
+                          groups:
+                          - id: 19
+                            name: Excellent Veterinary Doctors
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Creative Arts 370
+                          id: 01910fa7-f3c4-7ad2-848b-35fb1baf493d
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544554382
+                          due_date: 1722630954000
+                          esignatures: []
+                          id: 01910fa8-018e-7781-8f5a-d66a4febae90
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: 5
+                          updated_at: 1741385699406
+                      - user:
+                          id: 238
+                          name: Declan
+                          email: declan41@example.com
+                          is_admin: false
+                          is_deleted: false
+                          is_permanently_deleted: false
+                          created_at: 1722544549013
+                          updated_at: 1722544549631
+                          groups:
+                          - id: 20
+                            name: Old Fashioned Attorneys
+                          - id: 22
+                            name: Puzzled Opticians
+                          custom_attributes: []
+                          user_identifiers: []
+                          managers: []
+                        guide:
+                          display_title: Creative Arts 370
+                          id: 01910fa7-f3c4-7ad2-848b-35fb1baf493d
+                          time_estimate_seconds: null
+                        guide_assignment:
+                          completed_at: null
+                          completion_percentage: 0
+                          created_at: 1722544554516
+                          due_date: 1722630954000
+                          esignatures: []
+                          id: 01910fa8-0214-7075-b273-5478f1956d71
+                          is_completed: false
+                          is_completed_and_passed: false
+                          is_deleted: false
+                          is_mandatory: false
+                          last_viewed_at: null
+                          num_completed_tasks: 0
+                          num_completed_test_questions: 0
+                          num_correct_test_questions: 0
+                          num_graded_test_questions: 0
+                          num_viewed_tasks: 0
+                          override_score: null
+                          path_assignment_id: null
+                          path_id: null
+                          score: null
+                          status: assigned
+                          time_spent: null
+                          rating: null
+                          updated_at: 1741385699447
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    example: true
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 29
+                    default: 0
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/assignments/guide
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            guide:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: 0194fb51-cc67-7c03-b14e-fd744ab2ce2a
+                                displayTitle:
+                                  type: string
+                                  example: Test Guide
+                            guideAssignment:
+                              type: object
+                              properties: {}
+                            user:
+                              type: object
+                              properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Assignments
+  /api/v1/assignments/path:
+    get:
+      summary: Get All Path Assignments in Date Range
+      description: ''
+      operationId: get-path-assignments-in-date-range
+      parameters:
+      - name: start_time
+        in: query
+        description: The minimum created/updated timestamp. This should be an ISO 8601 date/time.
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: The maximum created/updated timestamp. This should be an ISO8601 date/time.
+        schema:
+          type: string
+      - name: due_date
+        in: query
+        description: ISO8601 date or datetime to filter on assignment due date
+        schema:
+          type: string
+      - name: path_id
+        in: query
+        description: A specific path to limit the results to.  If `path_id` is not provided it will return _all_ Path assignments created or updated within the date range.
+        schema:
+          type: string
+      - name: include_deleted
+        in: query
+        description: Optional - if you want to also retrieve assignments which have been deleted, pass true. Use the is_deleted field in the response to detect these.
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: Page of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of results to return per page (1-200)
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"has_more\": true,\n    \"item_count\": 29,\n    \"page\": 1,\n    \"per_page\": 20,\n    \"url\": \"/api/v1/assignments/path\",\n    \"data\": {\n        \"assignments\": [\n            {\n                \"path\": {\n                    \"id\": \"0194fb51-cc67-7c03-b14e-fd744ab2ce2a\",\n                    \"displayTitle\": \"Test Path\"\n                },\n                \"pathAssignment\": {},\n                \"user\": {}\n            }\n        ]\n    }\n}\n"
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    example: true
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 29
+                    default: 0
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/assignments/path
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            path:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: 0194fb51-cc67-7c03-b14e-fd744ab2ce2a
+                                displayTitle:
+                                  type: string
+                                  example: Test Path
+                            pathAssignment:
+                              type: object
+                              properties: {}
+                            user:
+                              type: object
+                              properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Assignments
+  /api/v1/assignments/scorm:
+    get:
+      summary: Get All SCORM Assignments in Date Range
+      description: ''
+      operationId: get-scorm-assignments-in-date-range
+      parameters:
+      - name: start_time
+        in: query
+        description: The minimum created/updated timestamp. This should be an ISO 8601 date/time.
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: The maximum created/updated timestamp. This should be an ISO8601 date/time.
+        schema:
+          type: string
+      - name: due_date
+        in: query
+        description: ISO8601 date or datetime to filter on assignment due date
+        schema:
+          type: string
+      - name: scorm_id
+        in: query
+        description: A specific SCORM to limit the results to. -  If `scorm_id` is not provided it will return _all_ SCORM assignments created or updated within the date range.
+        schema:
+          type: string
+      - name: include_deleted
+        in: query
+        description: Optional - if you want to also retrieve assignments which have been deleted, pass true. Use the is_deleted field in the response to detect these.
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: Page of results to return
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of results to return per page (1-200)
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"has_more\": true,\n    \"item_count\": 29,\n    \"page\": 1,\n    \"per_page\": 20,\n    \"url\": \"/api/v1/assignments/scorm\",\n    \"data\": {\n        \"assignments\": [\n            {\n                \"scorm\": {\n                    \"id\": \"0194fb51-cc67-7c03-b14e-fd744ab2ce2a\",\n                    \"displayTitle\": \"Test SCORM\"\n                },\n                \"scormAssignment\": {},\n                \"user\": {}\n            }\n        ]\n    }\n}\n"
+              schema:
+                type: object
+                properties:
+                  has_more:
+                    type: boolean
+                    example: true
+                    default: true
+                  item_count:
+                    type: integer
+                    example: 29
+                    default: 0
+                  page:
+                    type: integer
+                    example: 1
+                    default: 0
+                  per_page:
+                    type: integer
+                    example: 20
+                    default: 0
+                  url:
+                    type: string
+                    example: /api/v1/assignments/scorm
+                  data:
+                    type: object
+                    properties:
+                      assignments:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            scorm:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: 0194fb51-cc67-7c03-b14e-fd744ab2ce2a
+                                displayTitle:
+                                  type: string
+                                  example: Test SCORM
+                            scormAssignment:
+                              type: object
+                              properties: {}
+                            user:
+                              type: object
+                              properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Assignments
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+      x-default: ACCESS_TOKEN
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: false
+x-readme-fauxas: true
