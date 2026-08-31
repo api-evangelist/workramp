@@ -58,7 +58,7 @@ tags:
   - Assessments
   - Certifications
   - Coaching
-  - Go-To-Market
+  - Go-to-Market
   - SCIM
   - SCORM
   - Webhook
@@ -105,6 +105,8 @@ apis:
   humanURL: https://developers.workramp.com/reference/getting-started
   baseURL: https://app.workramp.com/api/v1
   tags:
+  - API Settings
+  tags_raw:
   - Api Settings
   properties:
   - type: OpenAPI
@@ -245,6 +247,8 @@ apis:
   humanURL: https://developers.workramp.com/reference/getting-started
   baseURL: https://app.workramp.com/api/v1
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -265,6 +269,8 @@ apis:
   humanURL: https://developers.workramp.com/reference/getting-started
   baseURL: https://app.workramp.com/api/v1
   tags:
+  - Group
+  tags_raw:
   - Groups
   properties:
   - type: OpenAPI
@@ -485,6 +491,8 @@ apis:
   humanURL: https://developers.workramp.com/reference/getting-started
   baseURL: https://app.workramp.com/api/v1
   tags:
+  - SCIM
+  tags_raw:
   - Scim
   properties:
   - type: OpenAPI
@@ -505,6 +513,8 @@ apis:
   humanURL: https://developers.workramp.com/reference/getting-started
   baseURL: https://app.workramp.com/api/v1
   tags:
+  - SCORM
+  tags_raw:
   - Scorm
   properties:
   - type: OpenAPI
@@ -625,6 +635,8 @@ apis:
   humanURL: https://developers.workramp.com/reference/getting-started
   baseURL: https://app.workramp.com/api/v1
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
