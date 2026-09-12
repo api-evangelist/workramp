@@ -2,23 +2,21 @@
   "repo": "workramp",
   "feeds": [
     {
-      "source": "https://help.workramp.com/en/feed.xml",
-      "feed_url": "https://help.workramp.com/en/feed.xml",
-      "title": "",
-      "saved": 0,
-      "method": "feed",
-      "nature": "undetermined",
-      "nature_basis": null
-    },
-    {
       "source": "https://help.workramp.com/en/collections/2493185-api",
       "feed_url": "https://help.workramp.com/en/collections/2493185-api",
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://help.workramp.com/en/feed.xml",
+      "feed_url": "https://help.workramp.com/en/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     }
   ],
-  "fetched": "2026-08-30T22:33:40Z",
+  "fetched": "2026-09-06T19:17:18Z",
   "post_count": 29,
   "agent_pulled": "2026-07-04",
   "feed_nature": "vendor-blog",
