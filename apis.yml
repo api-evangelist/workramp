@@ -56,8 +56,8 @@ tags:
   - Training
   - Onboarding
   - LMS
-  - Assessments
-  - Certifications
+  - Assessment
+  - Certification
   - Coaching
   - Go-To-Market
   - SCIM
@@ -168,6 +168,8 @@ apis:
   humanURL: https://developers.workramp.com/reference/getting-started
   baseURL: https://app.workramp.com/api/v1
   tags:
+  - Certification
+  tags_raw:
   - Certifications
   properties:
   - type: OpenAPI
