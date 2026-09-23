@@ -12,13 +12,16 @@ paths:
   /new-endpoint:
     get:
       description: ''
-      operationId: ''
+      operationId: getNewEndpoint
       responses:
         '200':
           description: ''
       parameters: []
       tags:
       - New Endpoint
+      summary: Get new endpoint
+      x-summary-source: derived
+      x-operation-id-source: derived
 components:
   securitySchemes:
     sec0:

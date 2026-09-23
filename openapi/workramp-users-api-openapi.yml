@@ -16,7 +16,7 @@ paths:
       description: 'Gets all users within the enterprise.
 
 
-        See also: <a href="/reference/get-all-users-attributes">Get All Users (Including Attributes)</a>'
+        See also: Get All Users (Including Attributes)'
       operationId: get-all-users-in-enterprise
       parameters:
       - name: limit
@@ -1065,7 +1065,7 @@ paths:
       description: 'This returns a list of all users, including built-in and custom attributes.
 
 
-        See also: <a href="/reference/get-all-users-in-enterprise">Get All Users</a>'
+        See also: Get All Users'
       operationId: get-all-users-attributes
       parameters:
       - name: includeDeleted

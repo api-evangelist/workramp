@@ -7,7 +7,7 @@ servers:
 security:
 - sec0: []
 tags:
-- name: Api Settings
+- name: API Settings
 paths:
   /:
     get:
@@ -50,7 +50,9 @@ paths:
                           name: Course
       parameters: []
       tags:
-      - Api Settings
+      - API Settings
+      summary: Get academy object attribute values
+      x-summary-source: derived
 components:
   securitySchemes:
     sec0:

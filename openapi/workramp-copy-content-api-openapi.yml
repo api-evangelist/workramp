@@ -51,6 +51,8 @@ paths:
               - item_folder_id
       tags:
       - Copy Content
+      summary: Post apiv1copy content
+      x-summary-source: derived
 components:
   securitySchemes:
     sec0:

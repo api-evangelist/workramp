@@ -100,6 +100,8 @@ paths:
               - name
       tags:
       - Item Folders
+      summary: Post apiv1item folders
+      x-summary-source: derived
   /api/v1/item_folders/{item_folder_id}:
     delete:
       description: Delete a single item folder
@@ -228,6 +230,8 @@ paths:
       parameters: []
       tags:
       - Item Folders
+      summary: Get new endpoint
+      x-summary-source: derived
     post:
       description: ''
       operationId: post_apiv1item-folders
@@ -237,6 +241,8 @@ paths:
       parameters: []
       tags:
       - Item Folders
+      summary: Post apiv1item folders
+      x-summary-source: derived
 components:
   securitySchemes:
     sec0:

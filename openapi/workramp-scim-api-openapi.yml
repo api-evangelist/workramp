@@ -7,7 +7,7 @@ servers:
 security:
 - sec0: []
 tags:
-- name: Scim
+- name: SCIM
 paths:
   /scim/v2/Users:
     get:
@@ -176,7 +176,7 @@ paths:
         samples-languages:
         - shell
       tags:
-      - Scim
+      - SCIM
     post:
       summary: 'SCIM: Create User'
       description: ''
@@ -318,7 +318,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
   /scim/v2/Users/{id}:
     get:
       summary: 'SCIM: Get User'
@@ -448,7 +448,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
     put:
       summary: 'SCIM: Update User'
       description: ''
@@ -575,7 +575,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
   /scim/v2/Groups:
     get:
       summary: 'SCIM: Get All Groups'
@@ -673,7 +673,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
     post:
       summary: 'SCIM: Create Group'
       description: ''
@@ -744,7 +744,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
   /scim/v2/Groups/{id}:
     get:
       summary: 'SCIM: Get Group'
@@ -812,7 +812,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
     patch:
       summary: 'SCIM: Patch Group'
       description: ''
@@ -860,7 +860,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
     delete:
       summary: 'SCIM: Delete Group'
       description: ''
@@ -901,7 +901,7 @@ paths:
         samples-languages:
         - text
       tags:
-      - Scim
+      - SCIM
 components:
   securitySchemes:
     sec0:

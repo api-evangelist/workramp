@@ -1737,6 +1737,8 @@ paths:
           default: ''
       tags:
       - Academies
+      summary: Delete apiv1academies{academy id}registrations{registration id}
+      x-summary-source: derived
     patch:
       description: ''
       operationId: patch_apiv1academies{academy_id}registrations{registration_id}
@@ -3145,6 +3147,8 @@ paths:
           default: '20'
       tags:
       - Academies
+      summary: Get academy object attribute values
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/{academy_id}/academy_object_attribute:
@@ -3222,6 +3226,8 @@ paths:
           default: '20'
       tags:
       - Academies
+      summary: Get academy object attribute values
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/{academy_id/academy_object_attributes:
@@ -3266,6 +3272,8 @@ paths:
       parameters: []
       tags:
       - Academies
+      summary: Get academy object attribute values
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/{academy_id}/academy_object_attributess:
@@ -3343,6 +3351,8 @@ paths:
           default: '20'
       tags:
       - Academies
+      summary: Get academy object attribute values
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/:academy_id/academy_object_attributes:
@@ -3355,6 +3365,8 @@ paths:
       parameters: []
       tags:
       - Academies
+      summary: Get new endpoint
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/{academy_id}/academy_object_attributes_2:
@@ -3413,6 +3425,8 @@ paths:
         - shell
       tags:
       - Academies
+      summary: Get apiv1academies{academy id}academy object attribute values
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/${academy_id}/academy_object_attributes:
@@ -3448,6 +3462,8 @@ paths:
           default: '20'
       tags:
       - Academies
+      summary: Get apiv1academies{academy id}academy object attribute values
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/:academy id/paths_users:
@@ -3568,6 +3584,8 @@ paths:
         description: Items per page
       tags:
       - Academies
+      summary: Get apiv1academies:academy idregistrationsby date range
+      x-summary-source: derived
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/{academy_id}/segments/{segment_id}/add_users:
