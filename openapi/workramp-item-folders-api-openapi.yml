@@ -186,7 +186,7 @@ paths:
   /api/v1/item-folders:
     get:
       description: ''
-      operationId: get_new-endpoint
+      operationId: getApiV1ItemFolders
       responses:
         '200':
           description: ''
@@ -232,9 +232,11 @@ paths:
       - Item Folders
       summary: Get new endpoint
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: get_new-endpoint
     post:
       description: ''
-      operationId: post_apiv1item-folders
+      operationId: postApiV1ItemFolders
       responses:
         '200':
           description: ''
@@ -243,6 +245,8 @@ paths:
       - Item Folders
       summary: Post apiv1item folders
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: post_apiv1item-folders
 components:
   securitySchemes:
     sec0:

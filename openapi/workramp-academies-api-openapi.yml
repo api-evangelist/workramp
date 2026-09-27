@@ -3154,7 +3154,7 @@ paths:
   /api/v1/academies/{academy_id}/academy_object_attribute:
     get:
       description: ''
-      operationId: get_academy_object_attribute_values
+      operationId: getApiV1AcademiesByAcademyIdAcademyObjectAttribute
       responses:
         '200':
           description: ''
@@ -3228,12 +3228,14 @@ paths:
       - Academies
       summary: Get academy object attribute values
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: get_academy_object_attribute_values
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/{academy_id/academy_object_attributes:
     get:
       description: ''
-      operationId: get_academy_object_attribute_values
+      operationId: getApiV1Academies{academyIdAcademyObjectAttributes
       responses:
         '200':
           description: ''
@@ -3274,12 +3276,14 @@ paths:
       - Academies
       summary: Get academy object attribute values
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: get_academy_object_attribute_values
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/{academy_id}/academy_object_attributess:
     get:
       description: ''
-      operationId: get_academy_object_attribute_values
+      operationId: getApiV1AcademiesByAcademyIdAcademyObjectAttributess
       responses:
         '200':
           description: ''
@@ -3353,6 +3357,8 @@ paths:
       - Academies
       summary: Get academy object attribute values
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: get_academy_object_attribute_values
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/:academy_id/academy_object_attributes:
@@ -3432,7 +3438,7 @@ paths:
   /api/v1/academies/${academy_id}/academy_object_attributes:
     get:
       description: ''
-      operationId: get_apiv1academies{academy_id}academy_object_attribute_values
+      operationId: getApiV1Academies${academyId}AcademyObjectAttributes
       responses:
         '200':
           description: ''
@@ -3464,6 +3470,8 @@ paths:
       - Academies
       summary: Get apiv1academies{academy id}academy object attribute values
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: get_apiv1academies{academy_id}academy_object_attribute_values
     servers:
     - url: https://app.workramp.com
   /api/v1/academies/:academy id/paths_users:
