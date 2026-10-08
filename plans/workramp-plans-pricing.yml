@@ -104,3 +104,56 @@ notes:
   - Prices are "starting from" figures; the page routes every product to "Get a quote".
   - Products are sold individually as well as bundled — "Get individual products whenever you need them".
   - Confirm also sells a separate Frontline line; Scale-Up is the line that contains WorkRamp.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - seat
+  units:
+  - seat
+  plans:
+  - name: Learn:Up
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods: []
+  - name: Perform
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods: []
+  - name: Practice
+    access: other
+    model: seat
+    model_how: derived
+    units:
+    - seat
+    periods: []
+  - name: Academy
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Create
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Library
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Custom
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
