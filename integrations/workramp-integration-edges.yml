@@ -17,7 +17,35 @@ edges:
       - workramp
   detected_by: sweep-cdp.py
   first_seen: '2026-10-14'
+- partner_name: Okta (own)
+  partner: okta
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.okta.com/integrations/workramp/
+  mirror_of: okta/integrations/okta-integration-edges.yml
+  apps:
+  - WorkRamp
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Single Sign-On
+  badges:
+  - OKTA_VERIFIED
+  features:
+  - CREATE
+  - DEACTIVATE
+  - GROUP_LINKING
+  - GROUP_PUSH
+  - IDENTITY_SECURITY_POSTURE_MANAGEMENT
+  - SAML
+  - UPDATE
 method: searched
 checked:
 - https://www.twilio.com/docs/segment/connections/sources/catalog/cloud-apps/workramp
+- okta/integrations/okta-integration-edges.yml
 source: https://www.twilio.com/docs/segment/connections/sources/catalog/cloud-apps/workramp

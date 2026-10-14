@@ -15,3 +15,16 @@
   relationship: connector-coverage
   status: not-a-workflow
   arazzo: null
+- slug: workramp-okta-own
+  label: Okta (own)
+  partner: okta
+  partner_name: Okta (own)
+  category: Single Sign-On
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://www.okta.com/integrations/workramp/
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
