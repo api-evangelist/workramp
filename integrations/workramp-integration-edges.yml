@@ -44,8 +44,34 @@ edges:
   - IDENTITY_SECURITY_POSTURE_MANAGEMENT
   - SAML
   - UPDATE
+- partner_name: Zapier
+  partner: zapier
+  partner_match: aggregator
+  type: marketplace
+  marketplace: zapier-directory
+  channel: ipaas-listing
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://zapier.com/apps/workramp/integrations
+  category: null
+  contract_reference:
+    register: Zapier app directory (zapier.com/api/v4/apps)
+    spec_file: null
+    role: ipaas-connector:zapier
+    registered_name: WorkRamp
+    matched_domain: workramp.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: workramp
+    beta: false
+    builder: unknown (not in the directory record)
+  detected_by: sweep-workflow-automation.py
+  first_seen: '2026-10-15'
 method: searched
 checked:
 - https://www.twilio.com/docs/segment/connections/sources/catalog/cloud-apps/workramp
+- https://zapier.com/api/v4/apps/
 - okta/integrations/okta-integration-edges.yml
 source: https://www.twilio.com/docs/segment/connections/sources/catalog/cloud-apps/workramp
