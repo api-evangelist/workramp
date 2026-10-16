@@ -2,6 +2,13 @@
   "repo": "workramp",
   "feeds": [
     {
+      "source": "https://www.confirm.com/blog",
+      "feed_url": "https://www.confirm.com/blog/feed/",
+      "title": "",
+      "saved": 2,
+      "method": "discovered"
+    },
+    {
       "source": "https://help.workramp.com/en/collections/2493185-api",
       "feed_url": "https://help.workramp.com/en/collections/2493185-api",
       "title": "",
@@ -16,8 +23,8 @@
       "method": "feed"
     }
   ],
-  "fetched": "2026-10-03T12:30:02Z",
-  "post_count": 51,
+  "fetched": "2026-10-10T13:15:00Z",
+  "post_count": 54,
   "agent_pulled": "2026-07-04",
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",
