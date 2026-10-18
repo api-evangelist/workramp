@@ -81,7 +81,7 @@
     - alpha
     in_cloud: true
     builder: unknown (community connector; contributor not in the record)
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: workramp-fivetran
   label: Fivetran
@@ -107,7 +107,7 @@
     - connectors/applications/workramp
     vendor_link: https://www.workramp.com/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: workramp-meltano
   label: Meltano
@@ -139,7 +139,7 @@
     - bronze
     - unknown
     builder: 'community (Meltano Hub variant maintainers: airbyte, pathlight)'
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: workramp-microsoft-teams-own
   label: Microsoft Teams (own)
