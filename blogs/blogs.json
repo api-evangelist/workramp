@@ -5,8 +5,15 @@
       "source": "https://www.confirm.com/blog",
       "feed_url": "https://www.confirm.com/blog/feed/",
       "title": "",
-      "saved": 2,
+      "saved": 0,
       "method": "discovered"
+    },
+    {
+      "source": "https://www.confirm.com/blog/feed/",
+      "feed_url": "https://www.confirm.com/blog/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     },
     {
       "source": "https://help.workramp.com/en/collections/2493185-api",
@@ -23,8 +30,8 @@
       "method": "feed"
     }
   ],
-  "fetched": "2026-10-10T13:15:00Z",
-  "post_count": 54,
+  "fetched": "2026-10-17T14:53:57Z",
+  "post_count": 65,
   "agent_pulled": "2026-07-04",
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",
